@@ -1,0 +1,22 @@
+Reasonable Password Policy Example
+	password_hash(base64_encode(hash('sha256', $_POST['password'], true)),PASSWORD_DEFAULT)
+	Passwords must be at between 12 and 4,096 characters in length.
+	Passwords can contain any characters (including Unicode).
+	We strongly encourage the use of a password manager like KeePass or KeePassX to generate and store your passwords.
+
+Persistent Authentication Tokens
+	just generate a unique token when a user checks the "Remember Me" box 
+	store the unique token in a cookie
+	have a database table that associates tokens with each user's account 
+
+Account Recovery
+	having access to a user's email account or cell phone grants an attacker into every application or service they have an account with.
+	Allow your users to attach a GnuPG public key to their profile. When an account recovery request is issued for their account, encrypt the account recovery token with their 
+	public key so only someone in possession of their private key can access it.
+
+Login
+	-> Synchronizer token
+	-> session_id
+	-> JWT token
+	-> OAUTH2 token
+	
