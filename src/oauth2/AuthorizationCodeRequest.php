@@ -56,18 +56,20 @@ class AuthorizationCodeRequest {
 	}
 	
 	/**
-	 * Constructs request and redirects to endpoint.
+	 * Executes request and wraps response.
 	 * 
+	 * @param RequestExecutor $executor Performs request execution.
+	 * @param ResponseWrapper $wrapper Performs wrapping of response. 
 	 * @throws ClientException
 	 */
-	public function execute() {
+	public function execute(RequestExecutor $executor, ResponseWrapper $wrapper) {
 		if(!$this->clientID) throw new ClientException("Setting client ID is required for authorization code requests!");
-		$url = $this->endpointURL."?response_type=code".
-			"&client_id=".$this->clientID
-        	.($this->redirectURL?"&redirect_uri=".$this->redirectURL:"")
-        	.($this->scope?"&scope=".$this->scope:"")
-        	.($this->state?"&redirect_uri=".$this->state:"");
-		header("Location: ".$url);
-		exit();
+		$parameters = array();
+		$parameters["response_type"] = "code";
+		$parameters["client_id"] = $this->clientID;
+		if($this->redirectURL) 	$parameters["redirect_uri"] = $this->redirectURL;
+		if($this->scope) 		$parameters["scope"] = $this->scope;
+		if($this->state) 		$parameters["state"] = $this->state;
+		$wrapper->wrap($executor->execute($this->endpointURL, $parameters));
 	}
 }

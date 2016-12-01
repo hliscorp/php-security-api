@@ -1,6 +1,9 @@
 <?php
 namespace OAuth2;
 
+/**
+ * Encapsulates a refresh token request according to RFC6749
+ */
 class RefreshTokenRequest {
 	protected $endpointURL;
 	protected $refreshToken;
@@ -34,16 +37,20 @@ class RefreshTokenRequest {
 	}
 	
 	/**
-	 * Constructs request and redirects to endpoint.
+	 * Executes request and wraps response.
 	 * 
+	 * @param RequestExecutor $executor Performs request execution.
+	 * @param ResponseWrapper $wrapper Performs wrapping of response. 
 	 * @throws ClientException
 	 */
-	public function execute() {
+	public function execute(RequestExecutor $executor, ResponseWrapper $wrapper) {
 		if(!$this->refreshToken) throw new ClientException("Refresh token is required for refresh token requests!");
-		$url = $this->endpointURL."?grant_type=refresh_token"
-			."&refreshToken=".$this->refreshToken
-        	.($this->scope?"&scope=".$this->scope:"");
-		header("Location: ".$url);
-		exit();
+		$parameters = array();
+		$parameters["grant_type"] = "refresh_token";
+		$parameters["refreshToken"] = $this->refreshToken;
+		if($this->scope) {
+			$parameters["scope"] = $this->scope;
+		}
+		$wrapper->wrap($executor->execute($this->endpointURL, $parameters));
 	}
 }

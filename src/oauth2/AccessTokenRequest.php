@@ -11,7 +11,7 @@ class AccessTokenRequest {
 	protected $code;
 	
 	/**
-	 * Location URL of access token endpoint @ Oauth2 Server
+	 * Sets URL of access token endpoint @ Oauth2 Server
 	 * 
 	 * @param string $endpointURL
 	 */
@@ -47,19 +47,22 @@ class AccessTokenRequest {
 	}
 	
 	/**
-	 * Constructs request and redirects to endpoint.
+	 * Executes request and wraps response.
 	 * 
+	 * @param RequestExecutor $executor Performs request execution.
+	 * @param ResponseWrapper $wrapper Performs wrapping of response. 
 	 * @throws ClientException
 	 */
-	public function execute() {
-		if(!$this->clientID) throw new ClientException("Setting client ID is required for authorization code requests!");
+	public function execute(RequestExecutor $executor, ResponseWrapper $wrapper) {
+		if(!$this->clientID) throw new ClientException("Client ID is required for access token requests!");
 		if(!$this->code) throw new ClientException("Authorization code is required for access token requests!");
-		$url = $this->endpointURL."?grant_type=authorization_code"
-			."&client_id=".$this->clientID
-			."&code=".$this->code
-        	.($this->redirectURL?"&redirect_uri=".$this->redirectURL:"");
-		header("Location: ".$url);
-		exit();
+		$parameters = array();
+		$parameters["grant_type"] = "authorization_code";
+		$parameters["client_id"] = $this->clientID;
+		$parameters["code"] = $this->code;
+		if($this->redirectURL) {
+			$parameters["redirect_uri"] = $this->redirectURL;
+		}
+		$wrapper->wrap($executor->execute($this->endpointURL, $parameters));
 	}
-	
 }
