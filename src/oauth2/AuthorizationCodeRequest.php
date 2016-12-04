@@ -4,7 +4,7 @@ namespace OAuth2;
 /**
  * Encapsulates an authorization code request according to RFC6749
  */
-class AuthorizationCodeRequest {
+class AuthorizationCodeRequest implements Request {
 	protected $endpointURL;
 	protected $clientInformation;
 	protected $redirectURL;
@@ -57,10 +57,8 @@ class AuthorizationCodeRequest {
 	}
 	
 	/**
-	 * Executes request.
-	 * 
-	 * @param RequestExecutor $executor Performs request execution.
-	 * @throws ClientException
+	 * {@inheritDoc}
+	 * @see \OAuth2\Request::execute()
 	 */
 	public function execute(RequestExecutor $executor) {
 		if(!$this->clientInformation || !$this->clientInformation->getApplicationID()) {

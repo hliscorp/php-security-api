@@ -1,10 +1,17 @@
 <?php
 namespace OAuth2;
 
+require_once("AccessTokenResponse.php");
+require_once("ClientException.php");
+require_once("ClientInformation.php");
+require_once("RequestExecutor.php");
+require_once("ResponseWrapper.php");
+require_once("ServerException.php");
+
 /**
  * Encapsulates an access token request according to RFC6749
  */
-class AccessTokenRequest {
+class AccessTokenRequest implements Request {
 	protected $endpointURL;
 	protected $clientInformation;
 	protected $redirectURL;
@@ -45,12 +52,10 @@ class AccessTokenRequest {
 	public function setRedirectURL($redirectURL) {
 		$this->redirectURL = $redirectURL;
 	}
-	
+
 	/**
-	 * Executes request.
-	 * 
-	 * @param RequestExecutor $executor Performs request execution.
-	 * @throws ClientException
+	 * {@inheritDoc}
+	 * @see \OAuth2\Request::execute()
 	 */
 	public function execute(RequestExecutor $executor) {
 		if(!$this->clientInformation || !$this->clientInformation->getApplicationID()) {

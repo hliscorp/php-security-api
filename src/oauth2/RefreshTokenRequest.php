@@ -4,7 +4,7 @@ namespace OAuth2;
 /**
  * Encapsulates a refresh token request according to RFC6749
  */
-class RefreshTokenRequest {
+class RefreshTokenRequest implements Request {
 	protected $endpointURL;
 	protected $refreshToken;
 	protected $scope;
@@ -35,12 +35,10 @@ class RefreshTokenRequest {
 	public function setScope($scope) {
 		$this->scope = $scope;
 	}
-	
+
 	/**
-	 * Executes request and wraps response.
-	 * 
-	 * @param RequestExecutor $executor Performs request execution.
-	 * @throws ClientException
+	 * {@inheritDoc}
+	 * @see \OAuth2\Request::execute()
 	 */
 	public function execute(RequestExecutor $executor) {
 		if(!$this->refreshToken) throw new ClientException("Refresh token is required for refresh token requests!");

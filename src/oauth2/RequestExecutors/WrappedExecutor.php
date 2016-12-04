@@ -2,7 +2,7 @@
 namespace OAuth2;
 
 /**
- * Basic cURL implementation of OAuth2 request execution in accordance to RFC6749.
+ * Implements an executor on top of cURL implementing OAuth2 request execution rules in accordance to RFC6749.
  */
 class WrappedExecutor implements RequestExecutor {
 	protected $responseWrapper;
