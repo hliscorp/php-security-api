@@ -12,12 +12,14 @@ class AccessTokenResponse {
 	protected $scope;
 	
 	/**
-	 * Sets access token issued by the authorization server.
-	 * 
-	 * @param string $accessToken
+	 * Populates response based on parameter keys defined in RFC6749
 	 */
-	public function setAccessToken($accessToken) {
-		$this->accessToken = $accessToken;
+	public function __construct($parameters) {
+		$this->accessToken = $parameters["access_token"]; 
+		$this->tokenType = $parameters["token_type"];
+		if(!empty($parameters["expires_in"])) 	$this->expiresIn = $parameters["expires_in"];
+		if(!empty($parameters["refresh_token"]))$this->refreshToken = $parameters["refresh_token"];
+		if(!empty($parameters["scope"])) 		$this->scope = $parameters["scope"];
 	}
 	
 	/**
@@ -28,15 +30,6 @@ class AccessTokenResponse {
 	public function getAccessToken() {
 		return $this->accessToken;
 	}
-
-	/**
-	 * Sets token type received by the authorization server to use for protected resource request.
-	 *
-	 * @param string $tokenType
-	 */
-	public function setTokenType($tokenType) {
-		$this->tokenType = $tokenType;
-	}
 	
 	/**
 	 * Gets token type received by the authorization server to use for protected resource request.
@@ -45,15 +38,6 @@ class AccessTokenResponse {
 	 */
 	public function getTokenType() {
 		return $this->tokenType;
-	}
-
-	/**
-	 * Sets access token lifetime (in seconds) issued by the authorization server.
-	 *
-	 * @param string $expiresIn
-	 */
-	public function setExpiresIn($expiresIn) {
-		$this->expiresIn = $expiresIn;
 	}
 	
 	/**
@@ -64,15 +48,6 @@ class AccessTokenResponse {
 	public function getExpiresIn() {
 		return $this->expiresIn;
 	}
-
-	/**
-	 * Sets refresh token used to obtain new access tokens using the same authorization grant
-	 *
-	 * @param string $refreshToken
-	 */
-	public function setRefreshToken($refreshToken) {
-		$this->refreshToken = $refreshToken;
-	}
 	
 	/**
 	 * Gets refresh token used to obtain new access tokens using the same authorization grant
@@ -81,15 +56,6 @@ class AccessTokenResponse {
 	 */
 	public function getRefreshToken() {
 		return $this->refreshToken;
-	}
-
-	/**
-	 * Sets scope of token issued by the authorization server.
-	 *
-	 * @param string $scope
-	 */
-	public function setScope($scope) {
-		$this->scope = $scope;
 	}
 	
 	/**

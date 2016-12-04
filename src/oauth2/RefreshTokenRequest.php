@@ -40,10 +40,9 @@ class RefreshTokenRequest {
 	 * Executes request and wraps response.
 	 * 
 	 * @param RequestExecutor $executor Performs request execution.
-	 * @param ResponseWrapper $wrapper Performs wrapping of response. 
 	 * @throws ClientException
 	 */
-	public function execute(RequestExecutor $executor, ResponseWrapper $wrapper) {
+	public function execute(RequestExecutor $executor) {
 		if(!$this->refreshToken) throw new ClientException("Refresh token is required for refresh token requests!");
 		$parameters = array();
 		$parameters["grant_type"] = "refresh_token";
@@ -51,6 +50,6 @@ class RefreshTokenRequest {
 		if($this->scope) {
 			$parameters["scope"] = $this->scope;
 		}
-		$wrapper->wrap($executor->execute($this->endpointURL, $parameters));
+		$executor->execute($this->endpointURL, $parameters);
 	}
 }

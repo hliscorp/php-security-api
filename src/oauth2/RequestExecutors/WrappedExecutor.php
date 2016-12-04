@@ -4,16 +4,23 @@ namespace OAuth2;
 /**
  * Basic cURL implementation of OAuth2 request execution in accordance to RFC6749.
  */
-class DefaultRequestExecutor implements RequestExecutor {
+class WrappedExecutor implements RequestExecutor {
+	protected $responseWrapper;
 	protected $headers = array('Content-Type: application/x-www-form-urlencoded');
+	
+	public function __construct(ResponseWrapper $responseWrapper) {
+		$this->responseWrapper = $responseWrapper;
+		$this->headers[]='Content-Type: application/x-www-form-urlencoded';
+	}
 		
 	/**
 	 * Adds authorization token header.
 	 * 
+	 * @param string $tokenType
 	 * @param string $accessToken
 	 */
-	public function addAuthorizationHeader($accessToken) {
-		$this->headers[] = "Authorization: Bearer ".$accessToken;		
+	public function addAuthorizationToken($tokenType, $accessToken) {
+		$this->headers[] = "Authorization: ".$tokenType." ".$accessToken;		
 	}
 	
 	/**
@@ -25,14 +32,14 @@ class DefaultRequestExecutor implements RequestExecutor {
 		curl_setopt($ch, CURLOPT_URL,$endpointURL);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameters));
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		try {
 			$server_output = curl_exec ($ch);
 			if($server_output===false) {
 				throw new ClientException(curl_error($ch));
 			}
-			return $server_output;
+			$this->responseWrapper->wrap($server_output);
 		} finally {
 			curl_close ($ch);
 		}

@@ -8,14 +8,12 @@ class AuthorizationCodeResponse {
 	protected $code;
 	protected $state;
 
-
 	/**
-	 * Sets authorization code.
-	 *
-	 * @param string $code
+	 * Populates response based on parameter keys defined in RFC6749
 	 */
-	public function setCode($code) {
-		$this->code = $code;
+	public function __construct($parameters) {
+		$this->code = $parameters["code"];
+		if(!empty($parameters["state"])) 	$this->state = $parameters["state"];
 	}
 	
 	/**
@@ -25,15 +23,6 @@ class AuthorizationCodeResponse {
 	 */
 	public function getCode() {
 		return $this->code;
-	}
-	
-	/**
-	 * Sets opaque value used by the client to maintain state between the request and callback
-	 *
-	 * @param string $scope
-	 */
-	public function setState($state) {
-		$this->state = $state;
 	}
 	
 	/**

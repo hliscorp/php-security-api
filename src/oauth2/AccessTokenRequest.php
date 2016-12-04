@@ -47,13 +47,12 @@ class AccessTokenRequest {
 	}
 	
 	/**
-	 * Executes request and wraps response.
+	 * Executes request.
 	 * 
 	 * @param RequestExecutor $executor Performs request execution.
-	 * @param ResponseWrapper $wrapper Performs wrapping of response. 
 	 * @throws ClientException
 	 */
-	public function execute(RequestExecutor $executor, ResponseWrapper $wrapper) {
+	public function execute(RequestExecutor $executor) {
 		if(!$this->clientInformation || !$this->clientInformation->getApplicationID()) {
 			throw new ClientException("Client ID is required for access token requests!");
 		}
@@ -70,6 +69,6 @@ class AccessTokenRequest {
 		if($this->redirectURL) {
 			$parameters["redirect_uri"] = $this->redirectURL;
 		}
-		$wrapper->wrap($executor->execute($this->endpointURL, $parameters));
+		$executor->execute($this->endpointURL, $parameters);
 	}
 }
