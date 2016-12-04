@@ -6,12 +6,12 @@ namespace OAuth2;
  */
 class AccessTokenRequest {
 	protected $endpointURL;
-	protected $clientID;
+	protected $clientInformation;
 	protected $redirectURL;
 	protected $code;
 	
 	/**
-	 * Sets URL of access token endpoint @ Oauth2 Server
+	 * (Mandatory) Sets URL of access token endpoint @ Oauth2 Server
 	 * 
 	 * @param string $endpointURL
 	 */
@@ -20,7 +20,7 @@ class AccessTokenRequest {
 	}
 	
 	/**
-	 * Sets authorization code
+	 * (Mandatory) Sets authorization code
 	 * 
 	 * @param string $code
 	 */
@@ -29,18 +29,18 @@ class AccessTokenRequest {
 	}
 	
 	/**
-	 * Sets unique client identifier.
+	 * (Mandatory) Sets client information.
 	 * 
-	 * @param string $clientID
+	 * @param string $clientInformation
 	 */
-	public function setClientID($clientID) {
-		$this->clientID = $clientID;
+	public function setClientInformation(ClientInformation $clientInformation) {
+		$this->clientInformation = $clientInformation;
 	}
 	
 	/**
-	 * Sets callback redirect URL to send access token to.
+	 * (Optional) Sets callback redirect URL to send access token to.
 	 * 
-	 * @param string $clientID
+	 * @param string $redirectURL
 	 */
 	public function setRedirectURL($redirectURL) {
 		$this->redirectURL = $redirectURL;
@@ -54,12 +54,19 @@ class AccessTokenRequest {
 	 * @throws ClientException
 	 */
 	public function execute(RequestExecutor $executor, ResponseWrapper $wrapper) {
-		if(!$this->clientID) throw new ClientException("Client ID is required for access token requests!");
-		if(!$this->code) throw new ClientException("Authorization code is required for access token requests!");
+		if(!$this->clientInformation || !$this->clientInformation->getApplicationID()) {
+			throw new ClientException("Client ID is required for access token requests!");
+		}
+		if(!$this->code) {
+			throw new ClientException("Authorization code is required for access token requests!");
+		}
 		$parameters = array();
 		$parameters["grant_type"] = "authorization_code";
-		$parameters["client_id"] = $this->clientID;
+		$parameters["client_id"] = $this->clientInformation->getApplicationID();
 		$parameters["code"] = $this->code;
+		if($this->clientInformation->getApplicationSecret()) {
+			$parameters["client_secret"] = $this->clientInformation->getApplicationSecret();
+		}
 		if($this->redirectURL) {
 			$parameters["redirect_uri"] = $this->redirectURL;
 		}

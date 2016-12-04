@@ -6,26 +6,27 @@ namespace OAuth2;
  */
 class AuthorizationCodeRequest {
 	protected $endpointURL;
-	protected $clientID;
+	protected $clientInformation;
 	protected $redirectURL;
 	protected $scope;
 	protected $state;
 	
 	/**
-	 * Location URL of authorization code endpoint @ Oauth2 Server
-	 * @param unknown $endpointURL
+	 * (Mandatory) Sets URL of authorization code endpoint @ Oauth2 Server
+	 * 
+	 * @param string $endpointURL
 	 */
 	public function __construct($endpointURL) {
 		$this->endpointURL = $endpointURL;
 	}
 	
 	/**
-	 * Sets unique client identifier.
+	 * (Mandatory) Sets client information.
 	 * 
-	 * @param string $clientID
+	 * @param string $clientInformation
 	 */
-	public function setClientID($clientID) {
-		$this->clientID = $clientID;
+	public function setClientInformation(ClientInformation $clientInformation) {
+		$this->clientInformation = $clientInformation;
 	}
 	
 	/**
@@ -63,10 +64,12 @@ class AuthorizationCodeRequest {
 	 * @throws ClientException
 	 */
 	public function execute(RequestExecutor $executor, ResponseWrapper $wrapper) {
-		if(!$this->clientID) throw new ClientException("Setting client ID is required for authorization code requests!");
+		if(!$this->clientInformation || !$this->clientInformation->getApplicationID()) {
+			throw new ClientException("Client ID is required for authorization code requests!");
+		}
 		$parameters = array();
 		$parameters["response_type"] = "code";
-		$parameters["client_id"] = $this->clientID;
+		$parameters["client_id"] = $this->clientInformation->getApplicationID();
 		if($this->redirectURL) 	$parameters["redirect_uri"] = $this->redirectURL;
 		if($this->scope) 		$parameters["scope"] = $this->scope;
 		if($this->state) 		$parameters["state"] = $this->state;
