@@ -1,46 +1,48 @@
 <?php
 require_once("AuthorizationResult.php");
+require_once("PageAuthorizationDAO.php");
+require_once("UserAuthorizationDAO.php");
 
 /**
- * Encapsulates request authorization.
+ * Encapsulates request authorization via DAOs.
  */
-class Authorization {
-    private $authorizedHomePage;
-    private $guestHomePage;
+class DAOAuthorization {
+    private $loggedInFailureCallback;
+    private $loggedOutFailureCallback;
     
     /**
      * Creates an object
      * 
-     * @param string $authorizedHomePage
-     * @param string $guestHomePage
+     * @param string $loggedInFailureCallback Callback page to use when authorization fails for logged in users.
+     * @param string $loggedOutFailureCallback Callback page to use when authorization fails for logged out (guest) users.
      */
-    public function __construct($authorizedHomePage = "index", $guestHomePage = "login") {
-        $this->authorizedHomePage = $authorizedHomePage;
-        $this->guestHomePage = $guestHomePage;
+    public function __construct($loggedInFailureCallback = "index", $loggedOutFailureCallback = "login") {
+        $this->loggedInFailureCallback = $loggedInFailureCallback;
+        $this->loggedOutFailureCallback = $loggedOutFailureCallback;
     }
     
     /**
      * Performs an authorization task
      * 
-     * @param Page $page
-     * @param User $user
+     * @param PageAuthorizationDAO $page
+     * @param UserAuthorizationDAO $user
      * @return AuthorizationResult
      */
-    public function authorize(Page $page, User $user = null) {
+    public function authorize(PageAuthorizationDAO $page, UserAuthorizationDAO $user = null) {
         $status = 0;
         $callbackURI = "";
         if($page->isFound()) {
             if(!$page->isPublic()) {
                 if($user) {
                     if(!$user->isAllowed($page)) {
-                        $callbackURI = $this->authorizedHomePage;
+                        $callbackURI = $this->loggedInFailureCallback;
                         $status = AuthorizationResult::STATUS_NOT_ALLOWED;
                     } else {
                         // ok: do nothing
                         $status = AuthorizationResult::STATUS_OK;
                     }
                 } else {
-                    $callbackURI = $this->guestHomePage;
+                    $callbackURI = $this->loggedOutFailureCallback;
                     $status = AuthorizationResult::STATUS_NOT_ALLOWED;
                 }
             } else {
@@ -49,9 +51,9 @@ class Authorization {
             }
         } else {
             if($user) {
-                $callbackURI = $this->authorizedHomePage;
+                $callbackURI = $this->loggedInFailureCallback;
             } else {
-                $callbackURI = $this->guestHomePage;
+                $callbackURI = $this->loggedOutFailureCallback;
             }
             $status = AuthorizationResult::STATUS_NOT_FOUND;
         }

@@ -1,7 +1,6 @@
 <?php
 require_once("JsonWebTokenPayload.php");
 require_once("TokenException.php");
-require_once("../User.php");
 
 /**
  * Encapsulates a JsonWebToken I/O.
