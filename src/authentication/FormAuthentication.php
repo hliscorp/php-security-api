@@ -2,14 +2,21 @@
 require_once("UserAuthenticationDAO.php");
 require_once("AuthenticationException.php");
 require_once("FormLoginCredentials.php");
+require_once("PersistenceDriver.php");
 
 class FormAuthentication {
 	private $userAuthenticationDAO;
-	private $persistenceDriver;
+	private $persistenceDrivers;
 	
-	public function __construct(UserAuthenticationDAO $dao, PersistenceDriver $persistenceDriver = null) {
+	public function __construct(UserAuthenticationDAO $dao, $persistenceDrivers = array()) {
+		// check argument that it's instance of PersistenceDriver
+		foreach($persistenceDrivers as $persistentDriver) {
+			if(!($persistentDriver instanceof PersistenceDriver)) throw new AuthenticationException("Items must be instanceof PersistenceDriver");
+		}
+		
+		// save pointers
 		$this->userAuthenticationDAO = $dao;
-		$this->persistenceDriver = $persistenceDriver;
+		$this->persistenceDrivers = $persistenceDrivers;
 	}
 	
 	public function authenticate($userNameParameter="username", $passwordParameter="password", $rememberMeParameter="remember_me") {
@@ -17,10 +24,11 @@ class FormAuthentication {
 		if(isset($_POST[$rememberMeParameter])) {
 			$credentials->setRememberMe($rememberMeParameter);	
 		}
-		$userID = $this->userAuthenticationDAO->login($credentials);
-		if($this->persistenceDriver!==null) {
-			$this->persistenceDriver->save($userID);
-			// TODO: save remember me as well
+		$userID = $this->userAuthenticationDAO->login($credentials); 
+		if(!empty($userID)) {
+			foreach($this->persistenceDrivers as $persistentDriver) {
+				$this->persistenceDriver->save($userID);
+			}
 		}
 	}
 }
