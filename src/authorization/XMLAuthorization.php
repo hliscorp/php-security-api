@@ -1,5 +1,6 @@
 <?php
 require_once("AuthorizationResult.php");
+require_once("AuthorizationException.php");
 
 /**
  * Encapsulates request authorization via XML that must have routes configured as:
@@ -32,7 +33,7 @@ class XMLAuthorization {
      * @param SimpleXMLElement $xml
      * @param string $routeToAuthorize
      * @param boolean $isAuthenticated
-     * @throws SecurityException If route is misconfigured.
+     * @throws AuthorizationException If route is misconfigured.
      * @return AuthorizationResult
      */
     public function authorize(SimpleXMLElement $xml, $routeToAuthorize, $isAuthenticated) {
@@ -48,9 +49,9 @@ class XMLAuthorization {
     		if($path != $routeToAuthorize) continue;
     		
     		// check for misconfiguration
-    		if(empty($info['access'])) throw new SecurityException("Access not set for route!");
+    		if(empty($info['access'])) throw new AuthorizationException("Access not set for route!");
     		$principal = (string) $info["access"];
-    		if(!in_array($principal,array(self::ROLE_GUEST,self::ROLE_USER))) throw new SecurityException("Unrecognized role: ".$principal);
+    		if(!in_array($principal,array(self::ROLE_GUEST,self::ROLE_USER))) throw new AuthorizationException("Unrecognized role: ".$principal);
     		
     		// now perform rights check
     		if($principal == self::ROLE_USER && !$isAuthenticated) {

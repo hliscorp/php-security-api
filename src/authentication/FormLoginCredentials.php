@@ -1,4 +1,6 @@
 <?php
+require_once("LoginCredentials.php");
+
 class FormLoginCredentials extends LoginCredentials {
     private $rememberMe;
     
@@ -8,8 +10,16 @@ class FormLoginCredentials extends LoginCredentials {
         $this->password = $_POST[$paramPassword];
     }
     
-    public function setRememberMe($value=true) {
-        $this->rememberMe = $value;
+    public function setRememberMe($paramRememberMe=true) {
+    	$value = null;
+    	if($_POST[$paramRememberMe]==="0" || $_POST[$paramRememberMe]===false ||  $_POST[$paramRememberMe]===0) {
+    		$value = false;
+    	} else if($_POST[$paramRememberMe]==="1" || $_POST[$paramRememberMe]===true ||  $_POST[$paramRememberMe]===1) {
+    		$value = true;
+    	} else {
+    		throw new AuthenticationException("Value of remember me parameter must be safely convertible to boolean!");
+    	}
+    	$this->rememberMe = $value;
     }
     
     public function getRememberMe() {

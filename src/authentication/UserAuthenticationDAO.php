@@ -1,7 +1,5 @@
 <?php
-interface User {
-    function isAllowed(Page $page);
+interface UserAuthenticationDAO {
     function login(LoginCredentials $credentials);
     function logout();
-    function getId();
 }
