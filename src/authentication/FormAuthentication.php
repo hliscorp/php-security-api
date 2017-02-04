@@ -27,7 +27,7 @@ class FormAuthentication {
 		$userID = $this->userAuthenticationDAO->login($credentials); 
 		if(!empty($userID)) {
 			foreach($this->persistenceDrivers as $persistentDriver) {
-				$this->persistenceDriver->save($userID);
+				$persistentDriver->save($userID);
 			}
 		}
 	}

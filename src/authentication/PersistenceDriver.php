@@ -1,5 +1,5 @@
 <?php
 interface PersistenceDriver {
 	function load();
-	function save();
+	function save($userID);
 }

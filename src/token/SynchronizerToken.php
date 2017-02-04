@@ -48,7 +48,9 @@ final class SynchronizerToken {
             throw new TokenException("Token has expired!");
         }
         if($maximumLifetime && ($currentTime-$parts[2])>$maximumLifetime) {
-            throw new TokenRegenerationException("Token needs to be regenerated!");
+        	$tre = new TokenRegenerationException("Token needs to be regenerated!");
+        	$tre->setUserId($parts[0]);
+            throw $tre;
         }
         
         // return user identifier
