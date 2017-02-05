@@ -57,10 +57,15 @@ class SessionPersistenceDriver implements PersistenceDriver {
 	
 	public function save($userID) {
 		// regenerate id when elevating privileges
-		session_regenerate_id();
+		session_regenerate_id(true);
 		// save params to session
 		$_SESSION[$this->parameterName] = $userID;
 		$_SESSION["ip"] = $this->current_ip;
 		$_SESSION["time"] = $this->current_time;
+	}
+	
+	public function clear($userID) {
+		$_SESSION = array();
+		session_regenerate_id(true);
 	}
 }

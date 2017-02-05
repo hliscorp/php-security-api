@@ -1,5 +1,5 @@
 <?php
 interface UserAuthenticationDAO {
     function login(LoginCredentials $credentials);
-    function logout();
+    function logout($userID);
 }

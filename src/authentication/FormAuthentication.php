@@ -19,7 +19,7 @@ class FormAuthentication {
 		$this->persistenceDrivers = $persistenceDrivers;
 	}
 	
-	public function authenticate($userNameParameter="username", $passwordParameter="password", $rememberMeParameter="remember_me") {
+	public function login($userNameParameter="username", $passwordParameter="password", $rememberMeParameter="remember_me") {
 		$credentials = new FormLoginCredentials($userNameParameter, $passwordParameter);
 		if(isset($_POST[$rememberMeParameter])) {
 			$credentials->setRememberMe($rememberMeParameter);	
@@ -29,6 +29,16 @@ class FormAuthentication {
 			foreach($this->persistenceDrivers as $persistentDriver) {
 				$persistentDriver->save($userID);
 			}
+		}
+	}
+	
+	public function logout($userID) {
+		// should throw an exception if user is not already logged in
+		$this->userAuthenticationDAO->logout($userID);
+		
+		// clears data from persistence drivers 		
+		foreach($this->persistenceDrivers as $persistentDriver) {
+			$persistentDriver->clear($userID);
 		}
 	}
 }

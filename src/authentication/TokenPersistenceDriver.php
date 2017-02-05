@@ -37,6 +37,10 @@ class TokenPersistenceDriver implements PersistenceDriver {
 		$this->token = SynchronizerToken::encode($userID, $this->current_ip, $this->secret, $this->expirationTime);
 	}
 	
+	public function clear($userID) {
+		$this->token = "";
+	}
+	
 	public function getToken() {
 		return $this->token;
 	}

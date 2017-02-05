@@ -8,7 +8,7 @@ class RememberMeDriver extends PersistenceDriver {
 	private $isHttpOnly;
 	private $isSecure;
 	
-	public function __construct($secret, $parameterName = "uid", $expirationTime = 3600, $isHttpOnly = false, $isSecure = false) {
+	public function __construct($secret, $parameterName = "uid", $expirationTime = 86400, $isHttpOnly = false, $isSecure = false) {
 		$this->current_ip = (isset($_SERVER["REMOTE_ADDR"])?$_SERVER["REMOTE_ADDR"]:"");
 
 		$this->secret = $secret;
@@ -31,4 +31,9 @@ class RememberMeDriver extends PersistenceDriver {
 		setcookie($this->parameterName, $token, $this->expirationTime, "", "", $this->isSecure, $this->isHttpOnly);
 	}
 	
+	public function clear($userID) {
+		setcookie ($this->parameterName, "", 1);
+		setcookie ($this->parameterName, false);
+		unset($_COOKIE[$this->parameterName]);
+	}
 }
