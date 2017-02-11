@@ -39,7 +39,7 @@ class FormAuthentication {
 	 * @param string $rememberMeParameter Name of POST parameter that holds remember me (optional).
 	 * @return mixed Returns logged in user id (normally an integer)
 	 */
-	public function login($userNameParameter="username", $passwordParameter="password", $rememberMeParameter="remember_me") {
+	public function login($userNameParameter, $passwordParameter, $rememberMeParameter) {
 		$credentials = new FormLoginCredentials($userNameParameter, $passwordParameter);
 		if(isset($_POST[$rememberMeParameter])) {
 			$credentials->setRememberMe($rememberMeParameter);	
@@ -57,10 +57,16 @@ class FormAuthentication {
 	 * Performs a logout operation:
 	 * - informs DAO that user has logged out
 	 * - removes user id from persistence drivers (if any)
-	 * 
-	 * @param mixed $userID Unique logged in user identifier (must be integer)
 	 */
-	public function logout($userID) {
+	public function logout() {
+		// detect user_id from persistence drivers
+		$userID = null;
+		foreach($this->persistenceDrivers as $persistentDriver) {
+			$userID = $persistentDriver->load();
+			if($userID) break;
+		}
+		if(!$userID) throw new AuthenticationException("No logged in state was detected!");
+		
 		// should throw an exception if user is not already logged in
 		$this->userAuthenticationDAO->logout($userID);
 		
