@@ -5,8 +5,9 @@
 class AuthorizationResult {
     // start enum
     const STATUS_OK = 1;
-    const STATUS_NOT_ALLOWED = 2;
-    const STATUS_NOT_FOUND = 3;
+    const STATUS_UNAUTHORIZED = 2;
+    const STATUS_FORBIDDEN = 3;
+    const STATUS_NOT_FOUND = 4;
     // end enum
 
     private $status;
@@ -24,7 +25,7 @@ class AuthorizationResult {
     /**
      * Gets authorization status.
      *
-     * @return integer
+     * @return string
      */
     public function getStatus() {
         return $this->status;

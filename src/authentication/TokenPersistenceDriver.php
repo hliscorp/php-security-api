@@ -1,5 +1,6 @@
 <?php
 require_once("../token/SynchronizerToken.php");
+require_once("PersistenceDriver.php");
 
 /**
  * Encapsulates a driver that persists unique user identifier into a crypted token that's received from an Authorization header via TLS.

@@ -1,10 +1,11 @@
 <?php
 require_once("../token/SynchronizerToken.php");
+require_once("PersistenceDriver.php");
 
 /**
  * Encapsulates a driver that persists unique user identifier into a crypted "remember me" cookie variable.
  */
-class RememberMeDriver extends PersistenceDriver {
+class RememberMePersistenceDriver extends PersistenceDriver {
 	private $token;
 	
 	private $parameterName;
@@ -21,7 +22,7 @@ class RememberMeDriver extends PersistenceDriver {
 	 * @param string $isHttpOnly  Whether or not cookie should be using HTTP-only.
 	 * @param string $isSecure Whether or not cookie should be using HTTPS-only.
 	 */
-	public function __construct($secret, $parameterName = "uid", $expirationTime = 86400, $isHttpOnly = false, $isSecure = false) {
+	public function __construct($secret, $parameterName, $expirationTime, $isHttpOnly = false, $isSecure = false) {
 		$this->token = new SynchronizerToken((isset($_SERVER["REMOTE_ADDR"])?$_SERVER["REMOTE_ADDR"]:""), $secret);		
 		$this->parameterName = $parameterName;
 		$this->expirationTime = $expirationTime;

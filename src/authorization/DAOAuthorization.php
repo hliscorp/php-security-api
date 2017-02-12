@@ -16,7 +16,7 @@ class DAOAuthorization {
      * @param string $loggedInFailureCallback Callback page to use when authorization fails for logged in users.
      * @param string $loggedOutFailureCallback Callback page to use when authorization fails for logged out (guest) users.
      */
-    public function __construct($loggedInFailureCallback = "index", $loggedOutFailureCallback = "login") {
+    public function __construct($loggedInFailureCallback, $loggedOutFailureCallback) {
         $this->loggedInFailureCallback = $loggedInFailureCallback;
         $this->loggedOutFailureCallback = $loggedOutFailureCallback;
     }
@@ -36,14 +36,14 @@ class DAOAuthorization {
                 if($user) {
                     if(!$user->isAllowed($page)) {
                         $callbackURI = $this->loggedInFailureCallback;
-                        $status = AuthorizationResult::STATUS_NOT_ALLOWED;
+                        $status = AuthorizationResult::STATUS_FORBIDDEN;
                     } else {
                         // ok: do nothing
                         $status = AuthorizationResult::STATUS_OK;
                     }
                 } else {
                     $callbackURI = $this->loggedOutFailureCallback;
-                    $status = AuthorizationResult::STATUS_NOT_ALLOWED;
+                    $status = AuthorizationResult::STATUS_UNAUTHORIZED;
                 }
             } else {
                 // do nothing: it is allowed by default to display public panels
