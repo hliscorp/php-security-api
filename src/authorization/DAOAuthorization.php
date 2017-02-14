@@ -28,12 +28,12 @@ class DAOAuthorization {
      * @param UserAuthorizationDAO $user
      * @return AuthorizationResult
      */
-    public function authorize(PageAuthorizationDAO $page, UserAuthorizationDAO $user = null) {
+    public function authorize(PageAuthorizationDAO $page, UserAuthorizationDAO $user) {
         $status = 0;
         $callbackURI = "";
-        if($page->isFound()) {
+        if($page->getID()) {
             if(!$page->isPublic()) {
-                if($user) {
+                if($user->getID()) {
                     if(!$user->isAllowed($page)) {
                         $callbackURI = $this->loggedInFailureCallback;
                         $status = AuthorizationResult::STATUS_FORBIDDEN;
@@ -50,7 +50,7 @@ class DAOAuthorization {
                 $status = AuthorizationResult::STATUS_OK;
             }
         } else {
-            if($user) {
+            if($user->getID()) {
                 $callbackURI = $this->loggedInFailureCallback;
             } else {
                 $callbackURI = $this->loggedOutFailureCallback;

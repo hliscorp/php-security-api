@@ -1,5 +1,4 @@
 <?php
-require_once("../token/SynchronizerToken.php");
 require_once("PersistenceDriver.php");
 
 /**

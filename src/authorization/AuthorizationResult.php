@@ -25,7 +25,7 @@ class AuthorizationResult {
     /**
      * Gets authorization status.
      *
-     * @return string
+     * @return integer
      */
     public function getStatus() {
         return $this->status;

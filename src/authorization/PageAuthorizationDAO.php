@@ -1,6 +1,6 @@
 <?php
 interface PageAuthorizationDAO {
     function isPublic();
-    function isFound();
-    function setPage($path);
+    function setID($path);
+    function getID();
 }

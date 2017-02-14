@@ -14,7 +14,7 @@ class FormLoginCredentials extends LoginCredentials {
      * @param string $paramPassword Name of POST parameter that holds password.
      * @throws AuthenticationException If username or password are empty.
      */
-    public function __construct($paramUsername="username", $paramPassword="password") {
+    public function __construct($paramUsername, $paramPassword) {
         if(empty($_POST[$paramUsername]) || empty($_POST[$paramPassword])) {
         	throw new AuthenticationException("Parameters are mandatory: $paramUsername, $paramPassword!");
         }

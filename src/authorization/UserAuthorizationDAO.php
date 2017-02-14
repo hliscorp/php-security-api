@@ -1,5 +1,6 @@
 <?php
 interface UserAuthorizationDAO {
-    function isAllowed(Page $page);
-    function setUserID($userID);
+    function isAllowed(PageAuthorizationDAO $page);
+    function setID($userID);
+    function getID();
 }

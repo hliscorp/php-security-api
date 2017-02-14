@@ -43,12 +43,18 @@ class FormAuthentication {
 		$credentials = new FormLoginCredentials($userNameParameter, $passwordParameter);
 		if(isset($_POST[$rememberMeParameter])) {
 			$credentials->setRememberMe($rememberMeParameter);	
+		} else {
+			foreach($this->persistenceDrivers as $i=>$persistenceDriver) {
+				if($persistenceDriver instanceof RememberMePersistenceDriver) {
+					unset($this->persistenceDrivers[$i]);
+					break;
+				}
+			}
 		}
 		$userID = $this->userAuthenticationDAO->login($credentials); 
-		if(!empty($userID)) {
-			foreach($this->persistenceDrivers as $persistentDriver) {
-				$persistentDriver->save($userID);
-			}
+		if(empty($userID)) throw new AuthenticationException("Login failed!");
+		foreach($this->persistenceDrivers as $persistenceDriver) {
+			$persistenceDriver->save($userID);
 		}
 		return $userID;
 	}

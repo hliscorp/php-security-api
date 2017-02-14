@@ -8,7 +8,6 @@ interface UserAuthenticationDAO {
 	 * 
 	 * @param LoginCredentials $credentials User-password credentials needed by standard login.
 	 * @return mixed Unique user identifier (typically an integer)
-	 * @throws AuthenticationException If login fails (due to wrong credentials)
 	 */
     function login(LoginCredentials $credentials);
     
