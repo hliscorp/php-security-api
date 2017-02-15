@@ -1,6 +1,6 @@
 <?php
 /**
- * Encapsulates request authorization.
+ * Encapsulates request authorization results.
  */
 class AuthorizationResult {
     // start enum
