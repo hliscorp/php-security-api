@@ -1,6 +1,6 @@
 <?php
 /**
- * Defines blueprints for a DAO that forwards authentication to database.
+ * Defines blueprints for a DAO that forwards user-password authentication to database.
  */
 interface UserAuthenticationDAO {
 	/**

@@ -1,21 +1,21 @@
 <?php
 require_once("UserAuthenticationDAO.php");
 require_once("AuthenticationException.php");
+require_once("AuthenticationResult.php");
 require_once("FormLoginCredentials.php");
-require_once("PersistenceDriver.php");
 
 /**
  * Encapsulates authentication via data sent by POST through a html form 
  */
 class FormAuthentication {
-	private $userAuthenticationDAO;
+	private $dao;
 	private $persistenceDrivers;
 	
 	/**
 	 * Creates a form authentication object.
 	 * 
 	 * @param UserAuthenticationDAO $dao Forwards operations to database via a DAO.
-	 * @param array $persistenceDrivers List of PersistentDriver entries that allow authenticated state to persist between requests.
+	 * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that allow authenticated state to persist between requests.
 	 * @throws AuthenticationException If one of persistenceDrivers entries is not a PersistentDriver
 	 */
 	public function __construct(UserAuthenticationDAO $dao, $persistenceDrivers = array()) {
@@ -25,7 +25,7 @@ class FormAuthentication {
 		}
 		
 		// save pointers
-		$this->userAuthenticationDAO = $dao;
+		$this->dao = $dao;
 		$this->persistenceDrivers = $persistenceDrivers;
 	}
 	
@@ -37,7 +37,8 @@ class FormAuthentication {
 	 * @param string $userNameParameter Name of POST parameter that holds user name.
 	 * @param string $passwordParameter Name of POST parameter that holds password.
 	 * @param string $rememberMeParameter Name of POST parameter that holds remember me (optional).
-	 * @return mixed Returns logged in user id (normally an integer)
+	 * @return AuthenticationResult Encapsulates result of login attempt.
+	 * @throws AuthenticationException If POST parameters are invalid.
 	 */
 	public function login($userNameParameter, $passwordParameter, $rememberMeParameter) {
 		$credentials = new FormLoginCredentials($userNameParameter, $passwordParameter);
@@ -51,18 +52,28 @@ class FormAuthentication {
 				}
 			}
 		}
-		$userID = $this->userAuthenticationDAO->login($credentials); 
-		if(empty($userID)) throw new AuthenticationException("Login failed!");
-		foreach($this->persistenceDrivers as $persistenceDriver) {
-			$persistenceDriver->save($userID);
+		$userID = $this->dao->login($credentials); 
+		if(empty($userID)) {
+			$result = new AuthenticationResult(AuthenticationResultStatus::LOGIN_FAILED);
+			return $result;
+		} else {
+			// saves in persistence drivers
+			foreach($this->persistenceDrivers as $persistenceDriver) {
+				$persistenceDriver->save($userID);
+			}
+			// returns result
+			$result = new AuthenticationResult(AuthenticationResultStatus::OK);
+			$result->setUserID($userID);
+			return $result;
 		}
-		return $userID;
 	}
 	
 	/**
 	 * Performs a logout operation:
 	 * - informs DAO that user has logged out
 	 * - removes user id from persistence drivers (if any)
+	 * 
+	 * @return AuthenticationResult
 	 */
 	public function logout() {
 		// detect user_id from persistence drivers
@@ -71,14 +82,21 @@ class FormAuthentication {
 			$userID = $persistentDriver->load();
 			if($userID) break;
 		}
-		if(!$userID) throw new AuthenticationException("No logged in state was detected!");
-		
-		// should throw an exception if user is not already logged in
-		$this->userAuthenticationDAO->logout($userID);
-		
-		// clears data from persistence drivers 		
-		foreach($this->persistenceDrivers as $persistentDriver) {
-			$persistentDriver->clear($userID);
+		if(!$userID) {
+			$result = new AuthenticationResult(AuthenticationResultStatus::LOGOUT_FAILED);
+			return $result;
+		} else {
+			// should throw an exception if user is not already logged in
+			$this->dao->logout($userID);
+			
+			// clears data from persistence drivers 		
+			foreach($this->persistenceDrivers as $persistentDriver) {
+				$persistentDriver->clear($userID);
+			}	
+			
+			// returns result
+			$result = new AuthenticationResult(AuthenticationResultStatus::OK);
+			return $result;
 		}
 	}
 }

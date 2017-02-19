@@ -1,14 +1,18 @@
 <?php
 /**
+ * Enum that contains all available authorization statuses.
+ */
+class AuthorizationResultStatus {
+	const OK = 1;
+	const UNAUTHORIZED = 2;
+	const FORBIDDEN = 3;
+	const NOT_FOUND = 4;
+}
+
+/**
  * Encapsulates request authorization results.
  */
 class AuthorizationResult {
-    // start enum
-    const STATUS_OK = 1;
-    const STATUS_UNAUTHORIZED = 2;
-    const STATUS_FORBIDDEN = 3;
-    const STATUS_NOT_FOUND = 4;
-    // end enum
 
     private $status;
     private $callbackURI;

@@ -36,18 +36,18 @@ class DAOAuthorization {
                 if($user->getID()) {
                     if(!$user->isAllowed($page)) {
                         $callbackURI = $this->loggedInFailureCallback;
-                        $status = AuthorizationResult::STATUS_FORBIDDEN;
+                        $status = AuthorizationResultStatus::FORBIDDEN;
                     } else {
                         // ok: do nothing
-                        $status = AuthorizationResult::STATUS_OK;
+                        $status = AuthorizationResultStatus::OK;
                     }
                 } else {
                     $callbackURI = $this->loggedOutFailureCallback;
-                    $status = AuthorizationResult::STATUS_UNAUTHORIZED;
+                    $status = AuthorizationResultStatus::UNAUTHORIZED;
                 }
             } else {
                 // do nothing: it is allowed by default to display public panels
-                $status = AuthorizationResult::STATUS_OK;
+                $status = AuthorizationResultStatus::OK;
             }
         } else {
             if($user->getID()) {
@@ -55,7 +55,7 @@ class DAOAuthorization {
             } else {
                 $callbackURI = $this->loggedOutFailureCallback;
             }
-            $status = AuthorizationResult::STATUS_NOT_FOUND;
+            $status = AuthorizationResultStatus::NOT_FOUND;
         }
         return new AuthorizationResult($status,$callbackURI);
     }
