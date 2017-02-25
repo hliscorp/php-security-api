@@ -1,6 +1,7 @@
 <?php
-require_once("libraries/php-security-api/src/authorization/AuthorizationResult.php");
-require_once("libraries/php-security-api/src/authorization/AuthorizationException.php");
+require_once("AuthorizationResult.php");
+require_once("XMLException.php");
+
 /**
  * Encapsulates request authorization via XML that must have routes configured as:
  * <routes>
@@ -39,12 +40,6 @@ class XMLAuthorization {
         $status = 0;
         $callbackURI = "";
         
-        // check autorouting
-        $autoRouting = (int) $xml->application->auto_routing;
-        if($autoRouting) {
-        	throw new ApplicationException("XML authorization does not support auto-routing!");
-        }
-        
     	// check rights 
     	$tmp = (array) $xml->routes;
     	$tmp = $tmp["route"];
@@ -54,9 +49,9 @@ class XMLAuthorization {
     		if($path != $routeToAuthorize) continue;
     		
     		// check for misconfiguration
-    		if(empty($info['access'])) throw new ApplicationException("Access not set for route!");
+    		if(empty($info['access'])) throw new XMLException("Access not set for route!");
     		$principal = (string) $info["access"];
-    		if(!in_array($principal,array(self::ROLE_GUEST,self::ROLE_USER))) throw new AuthorizationException("Unrecognized role: ".$principal);
+    		if(!in_array($principal,array(self::ROLE_GUEST,self::ROLE_USER))) throw new XMLException("Unrecognized role: ".$principal);
     		
     		// now perform rights check
     		if($principal == self::ROLE_USER && !$isAuthenticated) {
