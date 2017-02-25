@@ -6,7 +6,6 @@ class AuthenticationResultStatus {
 	const OK = 1;
 	const LOGIN_FAILED = 2;
 	const LOGOUT_FAILED = 3;
-	const TOKEN_FAILED = 4;
 }
 
 /**
@@ -16,7 +15,6 @@ class AuthenticationResult {
     private $status;
     private $callbackURI;
     private $userID;
-    private $token;
 
     public function __construct($status) {
     	$this->status = $status;
@@ -65,23 +63,5 @@ class AuthenticationResult {
      */
     public function getUserID() {
     	return $this->userID;
-    }
-    
-    /**
-     * Sets access token.
-     * 
-     * @param string $token
-     */
-    public function setAccessToken($token) {
-    	$this->token = $token;
-    }
-    
-    /**
-     * Gets access token
-     * 
-     * @return string
-     */
-    public function getAccessToken() {
-    	return $this->token;
     }
 }

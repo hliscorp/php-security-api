@@ -1,7 +1,7 @@
 <?php
 require_once("OAuth2AuthenticationDAO.php");
 require_once("AuthenticationException.php");
-require_once("AuthenticationResult.php");
+require_once("OAuth2AuthenticationResult.php");
 require_once("OAuth2Login.php");
 require_once("OAuth2UserInformation.php");
 
@@ -35,26 +35,20 @@ class OAuth2Authentication {
 	 * Performs login by delegating to driver-specific OAuth2 implementation. 
 	 * 
 	 * @param OAuth2Login $driver Forwards authorization code & token retrieval to OAuth2 provider.
-	 * @param string $authorizationCode OAuth2 authorization code. When empty, this translates into an authorization code request.
+	 * @param string $accessToken OAuth2 access token.
 	 * @param boolean $createUserIfNotExists Whether or not login should automatically creat user in DB if it doesn't exist already.
-	 * @return AuthenticationResult Encapsulates result of login attempt.
+	 * @return OAuth2AuthenticationResult Encapsulates result of login attempt.
 	 * @throws OAuth2\ClientException When oauth2 local client generates an error situation.
 	 * @throws OAuth2\ServerException When oauth2 remote server generates an error situation. 
 	 */
-	public function login(OAuth2Login $driver, $authorizationCode="", $createUserIfNotExists=true) {
-		if(!$authorizationCode) {
-			// performs an automatic redirection to access code page
-			$url = $driver->getAuthorizationEndpoint();
-			$result = new AuthenticationResult(AuthenticationResultStatus::OK);
-			$result->setCallbackURI($url);
-			return $result;
-		}
+	public function login(OAuth2Login $driver, $accessToken, $createUserIfNotExists=true) {
+		// retrieve user information from oauth2 driver
+		$userInformation = $driver->login($accessToken);
 		// query dao for a user id and an authorization code >> redirect to temporary page
-		$userInformation = $driver->login($authorizationCode);
-		$userID = $this->dao->login($userInformation, $this->driver->getAccessToken(), $createUserIfNotExists);
+		$userID = $this->dao->login($userInformation, $accessToken, $createUserIfNotExists);
 		// save in persistence drivers
 		if(empty($userID)) {
-			$result = new AuthenticationResult(AuthenticationResultStatus::LOGIN_FAILED);
+			$result = new OAuth2AuthenticationResult(AuthenticationResultStatus::LOGIN_FAILED);
 			return $result;
 		} else {
 			// saves in persistence drivers
@@ -62,9 +56,9 @@ class OAuth2Authentication {
 				$persistenceDriver->save($userID);
 			}
 			// returns result
-			$result = new AuthenticationResult(AuthenticationResultStatus::OK);
+			$result = new OAuth2AuthenticationResult(AuthenticationResultStatus::OK);
 			$result->setUserID($userID);
-			$result->setAccessToken($driver->getAccessToken());
+			$result->setAccessToken($accessToken);
 			return $result;
 		}
 	}
@@ -73,7 +67,7 @@ class OAuth2Authentication {
 	 * Performs a logout operation:
 	 * - informs DAO that user has logged out (which must empty token)
 	 * - removes user id from persistence drivers (if any)
-	 * @return AuthenticationResult Encapsulates result of logout attempt.
+	 * @return OAuth2AuthenticationResult Encapsulates result of logout attempt.
 	 */
 	public function logout() {
 		// detect user_id from persistence drivers
@@ -83,10 +77,10 @@ class OAuth2Authentication {
 			if($userID) break;
 		}
 		if(!$userID) {
-			$result = new AuthenticationResult(AuthenticationResultStatus::LOGOUT_FAILED);
+			$result = new OAuth2AuthenticationResult(AuthenticationResultStatus::LOGOUT_FAILED);
 			return $result;
 		} else {
-			// should throw an exception if user is not already logged in
+			// should throw an exception if user is not already logged in, empty access token
 			$this->dao->logout($userID);
 			
 			// clears data from persistence drivers 		
@@ -95,7 +89,7 @@ class OAuth2Authentication {
 			}	
 			
 			// returns result
-			$result = new AuthenticationResult(AuthenticationResultStatus::OK);
+			$result = new OAuth2AuthenticationResult(AuthenticationResultStatus::OK);
 			return $result;
 		}		
 	}

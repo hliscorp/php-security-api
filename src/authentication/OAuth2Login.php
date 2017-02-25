@@ -4,24 +4,17 @@
  */
 interface OAuth2Login {
 	/**
-	 * Gets link to OAuth2 provider authorization code endpoint.
+	 * Gets remote user information from oauth2 driver via access token.
 	 * 
-	 * @return string URL to authorization code endpoint
-	 */
-	function getAuthorizationEndpoint();
-	
-	/**
-	 * Retrieves access token via authorization code then gets remote user information.
-	 * 
-	 * @param string $authorizationCode OAuth2 authorization code
+	 * @param string $accessToken OAuth2 access token
 	 * @return OAuth2UserInformation Remote user information
 	 */
-	function login($authorizationCode);
+	function login($accessToken);
 	
 	/**
-	 * Gets access token created during login operation.
+	 * Gets authorization code scopes required by login operation.
 	 * 
-	 * @return string
+	 * @return string[]
 	 */
-	function getAccessToken();
+	function getDefaultScopes();
 }

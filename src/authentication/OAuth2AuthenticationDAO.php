@@ -11,7 +11,7 @@ interface OAuth2AuthenticationDAO {
 	 * @param string $createIfNotExists Toggles whether or not user will be automatically added to DB if not found.
 	 * @return mixed Unique user identifier (typically an integer)
 	 */
-    function login(UserInformation $userInformation, $accessToken, $createIfNotExists=true);
+    function login(OAuth2UserInformation $userInformation, $accessToken, $createIfNotExists=true);
     
     /**
      * Logs out local user and removes saved access token
