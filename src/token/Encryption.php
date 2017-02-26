@@ -43,7 +43,7 @@ final class Encryption {
         $data = base64_decode($data);
         $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
         $iv = substr($data, 0, $iv_size);
-        $result = openssl_decrypt(substr($data, $iv_size), self::CYPHER_METHOD, $this->secret, 0, $iv);
+        $result = @openssl_decrypt(substr($data, $iv_size), self::CYPHER_METHOD, $this->secret, 0, $iv);
         if($result===false) throw new EncryptionException("Decryption failed!");
         return $result;
     }

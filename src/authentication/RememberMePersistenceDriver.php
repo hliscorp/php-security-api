@@ -30,11 +30,8 @@ class RememberMePersistenceDriver implements PersistenceDriver {
 	}
 
 	/**
-	 * Loads logged in user's unique identifier from driver.
-	 *
-	 * @return mixed Unique user identifier (usually an integer) or NULL if none exists.
-	 * @throws TokenException If token has expired or was issued from a different IP.
-	 * @throws EncryptionException If cookie value could not be decrypted.
+	 * {@inheritDoc}
+	 * @see PersistenceDriver::load()
 	 */
 	public function load() {
 		if(empty($_COOKIE[$this->parameterName])) {
@@ -48,20 +45,23 @@ class RememberMePersistenceDriver implements PersistenceDriver {
 			setcookie ($this->parameterName, "", 1);
 			setcookie ($this->parameterName, false);
 			unset($_COOKIE[$this->parameterName]);
-			// rethrow exception
-			throw $e;
+			// rethrow exception, unless it's token expired
+			if($e instanceof TokenExpiredException) {
+				return;
+			} else {
+				throw $e;
+			}
 		}
 	}
 
 	/**
-	 * Saves user's unique identifier into driver (eg: on login).
-	 *
-	 * @param mixed $userID Unique user identifier (usually an integer)
-	 * @throws EncryptionException If cookie could not be encrypted
+	 * {@inheritDoc}
+	 * @see PersistenceDriver::save()
 	 */
 	public function save($userID) {
 		$token = $this->token->encode($userID, $this->expirationTime);
 		setcookie($this->parameterName, $token, time()+$this->expirationTime, "", "", $this->isSecure, $this->isHttpOnly);
+		$_COOKIE[$this->parameterName] = $token;
 	}
 	
 	/**

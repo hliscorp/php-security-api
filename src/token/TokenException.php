@@ -17,5 +17,9 @@ class TokenRegenerationException extends Exception {
 	public function getUserId() {
 		return $this->userID;
 	}
-	
 }
+
+/**
+ * Exception thrown when token expires.
+ */
+class TokenExpiredException extends Exception {}

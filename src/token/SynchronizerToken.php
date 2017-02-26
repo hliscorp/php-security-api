@@ -42,6 +42,7 @@ final class SynchronizerToken {
      * @param number $maximumLifetime Time by which token should be regenerated.
      * @throws TokenException If token fails validations.
      * @throws TokenRegenerationException If token needs to be refreshed
+     * @throws TokenExpiredException If token expired beyond regeneration threshold. 
      * @throws EncryptionException If decryption of token fails.
      * @return mixed Unique user identifier.
      */
@@ -56,7 +57,7 @@ final class SynchronizerToken {
         }
         $currentTime = time();
         if($currentTime > $parts[3]) {
-            throw new TokenException("Token has expired!");
+            throw new TokenExpiredException("Token has expired!");
         }
         if($maximumLifetime && ($currentTime-$parts[2])>$maximumLifetime) {
         	$tre = new TokenRegenerationException("Token needs to be regenerated!");

@@ -31,10 +31,8 @@ class SessionPersistenceDriver implements PersistenceDriver {
 	}
 
 	/**
-	 * Loads logged in user's unique identifier from driver. Note: 
-	 *
-	 * @return mixed Unique user identifier (usually an integer) or NULL if none exists or session has expired.
-	 * @throws SecurityException On session hijacking attempts
+	 * {@inheritDoc}
+	 * @see PersistenceDriver::load()
 	 */
 	public function load() {
 		// start session, using security options if requested
@@ -56,14 +54,14 @@ class SessionPersistenceDriver implements PersistenceDriver {
 		// session hijacking prevention: session id is tied to a single ip
 		if($this->current_ip!=$_SESSION["ip"]) {
 			session_regenerate_id(true);
-			$_SERVER = array();
+			$_SESSION = array();
 			throw new SecurityException("Session hijacking attempt!");
 		}
 		
 		// session fixation prevention: if session is accessed after expiration time, it is invalidated
 		if($this->expirationTime && time()>$_SESSION["time"]) {
 			session_regenerate_id(true);
-			$_SERVER = array();
+			$_SESSION = array();
 			return;
 		}
 		
