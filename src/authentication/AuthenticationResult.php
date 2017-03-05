@@ -6,6 +6,7 @@ class AuthenticationResultStatus {
 	const OK = 1;
 	const LOGIN_FAILED = 2;
 	const LOGOUT_FAILED = 3;
+	const DEFERRED = 4;
 }
 
 /**
