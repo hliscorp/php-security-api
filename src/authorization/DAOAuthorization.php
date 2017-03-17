@@ -2,6 +2,7 @@
 require_once("AuthorizationResult.php");
 require_once("PageAuthorizationDAO.php");
 require_once("UserAuthorizationDAO.php");
+require_once("HttpRequestMethods.php");
 
 /**
  * Encapsulates request authorization via DAOs.
@@ -26,15 +27,16 @@ class DAOAuthorization {
      * 
      * @param PageAuthorizationDAO $page
      * @param UserAuthorizationDAO $user
+     * @param string $httpRequestMethod
      * @return AuthorizationResult
      */
-    public function authorize(PageAuthorizationDAO $page, UserAuthorizationDAO $user) {
+    public function authorize(PageAuthorizationDAO $page, UserAuthorizationDAO $user, $httpRequestMethod) {
         $status = 0;
         $callbackURI = "";
         if($page->getID()) {
             if(!$page->isPublic()) {
                 if($user->getID()) {
-                    if(!$user->isAllowed($page)) {
+                    if(!$user->isAllowed($page, $httpRequestMethod)) {
                         $callbackURI = $this->loggedInFailureCallback;
                         $status = AuthorizationResultStatus::FORBIDDEN;
                     } else {
