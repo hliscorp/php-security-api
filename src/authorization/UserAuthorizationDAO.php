@@ -7,9 +7,10 @@ interface UserAuthorizationDAO {
 	 * Checks if current user is allowed to access a page.
 	 * 
 	 * @param PageAuthorizationDAO $page
+	 * @param string $httpRequestMethod
 	 * @return boolean
 	 */
-    function isAllowed(PageAuthorizationDAO $page);
+    function isAllowed(PageAuthorizationDAO $page, $httpRequestMethod);
     
     /**
      * Saves id of logged in user.
