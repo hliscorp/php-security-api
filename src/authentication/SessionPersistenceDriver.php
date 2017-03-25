@@ -1,5 +1,5 @@
 <?php
-require_once("SecurityException.php");
+require_once("SessionHijackException.php");
 require_once("PersistenceDriver.php");
 
 /**
@@ -55,7 +55,7 @@ class SessionPersistenceDriver implements PersistenceDriver {
 		if($this->current_ip!=$_SESSION["ip"]) {
 			session_regenerate_id(true);
 			$_SESSION = array();
-			throw new SecurityException("Session hijacking attempt!");
+			throw new SessionHijackException("Session hijacking attempt!");
 		}
 		
 		// session fixation prevention: if session is accessed after expiration time, it is invalidated

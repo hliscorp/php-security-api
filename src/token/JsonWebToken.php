@@ -30,6 +30,7 @@ final class JsonWebToken {
      * @param JsonWebTokenPayload $receivePayload Receive payload (can be filled for cross-verification).
      * @param integer $maximumLifetime Maximum lifetime of a JsonWebToken
      * @throws TokenException When token fails validations.
+     * @throws TokenExpiredException When token fails validations.
      * @throws TokenRegenerationException When token needs to be regenerated.
      * @return JsonWebTokenPayload Receive payload.
      */
@@ -50,7 +51,7 @@ final class JsonWebToken {
             throw new TokenException("Token not started!");
         }
         if(isset($payload["exp"]) && $currentTime>$payload["exp"]) {
-            throw new TokenException("Token has expired!");
+            throw new TokenExpiredException("Token has expired!");
         }
         if($maximumLifetime && isset($payload["iat"]) && ($currentTime-$payload["iat"])>$maximumLifetime) {
             throw new TokenRegenerationException("Token needs to be regenerated!");
