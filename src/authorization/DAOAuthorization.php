@@ -2,7 +2,6 @@
 require_once("AuthorizationResult.php");
 require_once("PageAuthorizationDAO.php");
 require_once("UserAuthorizationDAO.php");
-require_once("HttpRequestMethods.php");
 
 /**
  * Encapsulates request authorization via DAOs.
