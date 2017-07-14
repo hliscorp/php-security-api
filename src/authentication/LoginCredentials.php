@@ -2,9 +2,18 @@
 /**
  * Wraps login credentials into an object.
  */
-abstract class LoginCredentials {
+class LoginCredentials {
     protected $userName;
     protected $password;
+    
+    /**
+     * Sets value of user name
+     *  
+     * @param string $userName
+     */
+    public function setUserName($userName) {
+        $this->userName = $userName;
+    }
     
     /**
      * Gets value of user name
@@ -13,6 +22,15 @@ abstract class LoginCredentials {
      */
     public function getUserName() {
         return $this->userName;
+    }
+    
+    /**
+     * Sets value of user password
+     *  
+     * @param string $userPassword
+     */
+    public function setUserName($userPassword) {
+        $this->userPassword = $userPassword;
     }
     
     /**
