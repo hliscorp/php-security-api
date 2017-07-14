@@ -27,8 +27,7 @@ class FormLoginCredentials extends LoginCredentials {
      * 
      * @param string $paramRememberMe Name of POST parameter that holds remember me flag.
      * @throws AuthenticationException If value of remember me is not safely convertible to boolean.
-     */
-    
+     */    
     public function setRememberMe($paramRememberMe) {
     	$value = null;
     	if($_POST[$paramRememberMe]==="0" || $_POST[$paramRememberMe]===false ||  $_POST[$paramRememberMe]===0) {
