@@ -25,7 +25,7 @@ class FormLoginCredentials extends LoginCredentials {
     /**
      * Sets optional remember me flag
      * 
-     * @param mixed $paramRememberMe Name of POST parameter that holds remember me flag.
+     * @param string $paramRememberMe Name of POST parameter that holds remember me flag.
      * @throws AuthenticationException If value of remember me is not safely convertible to boolean.
      */
     
