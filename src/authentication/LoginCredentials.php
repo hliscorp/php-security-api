@@ -29,8 +29,8 @@ class LoginCredentials {
      *  
      * @param string $userPassword
      */
-    public function setUserName($userPassword) {
-        $this->userPassword = $userPassword;
+    public function setPassword($password) {
+        $this->password = $password;
     }
     
     /**
