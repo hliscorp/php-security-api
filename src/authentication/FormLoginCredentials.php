@@ -18,8 +18,8 @@ class FormLoginCredentials extends LoginCredentials {
         if(empty($_POST[$paramUsername]) || empty($_POST[$paramPassword])) {
         	throw new AuthenticationException("Parameters are mandatory: $paramUsername, $paramPassword!");
         }
-        $this->userName = $_POST[$paramUsername];
-        $this->password = $_POST[$paramPassword];
+        $this->setUserName($_POST[$paramUsername]);
+        $this->setPassword($_POST[$paramPassword]);
     }
     
     /**
