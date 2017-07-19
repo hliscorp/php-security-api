@@ -10,9 +10,7 @@ require_once("XMLException.php");
  * </routes>
  */
 class XMLAuthorization {
-	const ROLE_USER = "ROLE_USER";
-	const ROLE_GUEST = "ROLE_GUEST";
-
+	const ROLE_GUEST = "GUEST";
 	private $loggedInFailureCallback;
 	private $loggedOutFailureCallback;
 	
@@ -32,13 +30,16 @@ class XMLAuthorization {
      * 
      * @param SimpleXMLElement $xml
      * @param string $routeToAuthorize
-     * @param boolean $isAuthenticated
+     * @param string[] $userRoles
      * @throws ApplicationException If route is misconfigured.
      * @return AuthorizationResult
      */
-    public function authorize(SimpleXMLElement $xml, $routeToAuthorize, $isAuthenticated) {
+    public function authorize(SimpleXMLElement $xml, $routeToAuthorize, $userRoles) {
         $status = 0;
         $callbackURI = "";
+        
+        // check if user is authenticated
+        $isUserGuest = (sizeof($userRoles)==1 && $userRoles[0]==self::ROLE_GUEST);
         
     	// check rights 
     	$tmp = (array) $xml->routes;
@@ -48,24 +49,32 @@ class XMLAuthorization {
     		$path = (string) $info['url'];
     		if($path != $routeToAuthorize) continue;
     		
-    		// check for misconfiguration
-    		if(empty($info['access'])) throw new XMLException("Access not set for route!");
-    		$principal = (string) $info["access"];
-    		if(!in_array($principal,array(self::ROLE_GUEST,self::ROLE_USER))) throw new XMLException("Unrecognized role: ".$principal);
+    		// check if page roles match with user roles
+    		if(empty($info['roles'])) throw new XMLException("Roles not set for route!");
+    		$tmp = (string) $info["roles"];
+    		$pageRoles = explode(",",$tmp);
+    		$found = false;
+    		foreach($pageRoles as $role) {
+    			if(in_array(trim($role), $userRoles)) {
+    				$found = true;
+    				break;
+    			}
+    		}
     		
     		// now perform rights check
-    		if($principal == self::ROLE_USER && !$isAuthenticated) {
-    			// not allowed
-                $status = AuthorizationResultStatus::UNAUTHORIZED;
-                $callbackURI = $this->loggedOutFailureCallback;
-    		} else {
-    			// allowed
+    		if($found) {
     			$status = AuthorizationResultStatus::OK;
+    		} else if($isUserGuest){
+    			$status = AuthorizationResultStatus::UNAUTHORIZED;
+    			$callbackURI = $this->loggedOutFailureCallback;
+    		} else {
+    			$status = AuthorizationResultStatus::FORBIDDEN;
+    			$callbackURI = $this->loggedInFailureCallback;
     		}
     	}
     	if($status==0) {
     		$status = AuthorizationResultStatus::NOT_FOUND;
-    		$callbackURI = ($isAuthenticated?$this->loggedInFailureCallback:$this->loggedOutFailureCallback);
+    		$callbackURI = ($isUserGuest?$this->loggedInFailureCallback:$this->loggedOutFailureCallback);
     	}
         return new AuthorizationResult($status,$callbackURI);
     }
