@@ -50,7 +50,7 @@ class XMLAuthorization {
     		if($path != $routeToAuthorize) continue;
     		
     		// check if page roles match with user roles
-    		if(empty($info['roles'])) throw new XMLException("Roles not set for route!");
+    		if(empty($info['roles'])) throw new XMLException("XML tag roles not set for route!");
     		$tmp = (string) $info["roles"];
     		$pageRoles = explode(",",$tmp);
     		$found = false;

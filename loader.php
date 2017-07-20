@@ -1,6 +1,6 @@
 <?php
 require_once("src/HackingException.php");
-require_once("src/authentication/FormAuthentication.php");
+require_once("src/authentication/DAOAuthentication.php");
 require_once("src/authentication/SessionPersistenceDriver.php");
 require_once("src/authentication/RememberMePersistenceDriver.php");
 require_once("src/authentication/TokenPersistenceDriver.php");
