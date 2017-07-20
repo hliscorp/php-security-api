@@ -36,7 +36,7 @@ class XMLAuthentication {
 	 * @param string $username Value of user name
 	 * @param string $password Value of user password
 	 * @return XMLAuthenticationResult Encapsulates result of login attempt.
-	 * @throws AuthenticationException If POST parameters are invalid.
+	 * @throws XMLException If POST parameters are invalid.
 	 */
 	public function login($username, $password) {
 		$userID = null;
@@ -49,11 +49,11 @@ class XMLAuthentication {
 		foreach($tmp as $info) {
 			$currentUserName = (string) $info['username'];
 			$currentPassword = (string) $info['password'];
-			if(!$currentUserName || !$currentPassword) throw new XMLException("XML tag users / user requires: username, password parameters");
+			if(!$currentUserName || !$currentPassword) throw new AuthenticationException("XML tag users / user requires: username, password parameters");
 			if($username == $currentUserName && $password = $currentPassword) {			
 				$userID = (string) $info["id"];
 				$roles = (string) $info["roles"];
-				if(!$userID || !$roles) throw new XMLException("XML tag users / user requires: id, roles parameters");
+				if(!$userID || !$roles) throw new AuthenticationException("XML tag users / user requires: id, roles parameters");
 				$tmp = explode(",",$roles);
 				foreach($tmp as $role) {
 					$userRoles[] = trim($role);
