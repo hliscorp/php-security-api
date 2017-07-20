@@ -1,6 +1,6 @@
 <?php
 require_once("AuthorizationResult.php");
-require_once("XMLException.php");
+require_once("AuthorizationException.php");
 
 /**
  * Encapsulates request authorization via XML that must have routes configured as:
@@ -50,7 +50,7 @@ class XMLAuthorization {
     		if($path != $routeToAuthorize) continue;
     		
     		// check if page roles match with user roles
-    		if(empty($info['roles'])) throw new XMLException("XML tag roles not set for route!");
+    		if(empty($info['roles'])) throw new AuthorizationException("XML tag roles not set for route!");
     		$tmp = (string) $info["roles"];
     		$pageRoles = explode(",",$tmp);
     		$found = false;
