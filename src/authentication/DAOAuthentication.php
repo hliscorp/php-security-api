@@ -2,12 +2,11 @@
 require_once("UserAuthenticationDAO.php");
 require_once("AuthenticationException.php");
 require_once("AuthenticationResult.php");
-require_once("FormLoginCredentials.php");
 
 /**
  * Encapsulates authentication via data sent by POST through a html form 
  */
-class FormAuthentication {
+class DAOAuthentication {
 	private $dao;
 	private $persistenceDrivers;
 	
@@ -34,17 +33,15 @@ class FormAuthentication {
 	 * - queries DAO for an user id based on credentials
 	 * - saves user_id in persistence drivers (if any)
 	 * 
-	 * @param string $userNameParameter Name of POST parameter that holds user name.
-	 * @param string $passwordParameter Name of POST parameter that holds password.
-	 * @param string $rememberMeParameter Name of POST parameter that holds remember me (optional).
+	 * @param string $username Value of user name
+	 * @param string $password Value of user password
+	 * @param null|boolean $rememberMe Value of remember me option (if any)
 	 * @return AuthenticationResult Encapsulates result of login attempt.
 	 * @throws AuthenticationException If POST parameters are invalid.
 	 */
-	public function login($userNameParameter, $passwordParameter, $rememberMeParameter) {
-		$credentials = new FormLoginCredentials($userNameParameter, $passwordParameter);
-		if(isset($_POST[$rememberMeParameter])) {
-			$credentials->setRememberMe($rememberMeParameter);	
-		} else {
+	public function login($username, $password, $rememberMe=null) {
+		// do no persist into RememberMePersistenceDriver unless "remember me" is active
+		if(!$rememberMe) {
 			foreach($this->persistenceDrivers as $i=>$persistenceDriver) {
 				if($persistenceDriver instanceof RememberMePersistenceDriver) {
 					unset($this->persistenceDrivers[$i]);
@@ -52,7 +49,9 @@ class FormAuthentication {
 				}
 			}
 		}
-		$userID = $this->dao->login($credentials); 
+		
+		// perform login
+		$userID = $this->dao->login($username, $password, $rememberMe); 
 		if(empty($userID)) {
 			$result = new AuthenticationResult(AuthenticationResultStatus::LOGIN_FAILED);
 			return $result;
