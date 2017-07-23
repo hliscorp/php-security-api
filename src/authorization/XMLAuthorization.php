@@ -40,7 +40,7 @@ class XMLAuthorization {
         
         // check if user is authenticated
         $isUserGuest = (sizeof($userRoles)==1 && $userRoles[0]==self::ROLE_GUEST);
-        
+
     	// check rights 
     	$tmp = (array) $xml->routes;
     	$tmp = $tmp["route"];
@@ -74,7 +74,7 @@ class XMLAuthorization {
     	}
     	if($status==0) {
     		$status = AuthorizationResultStatus::NOT_FOUND;
-    		$callbackURI = ($isUserGuest?$this->loggedInFailureCallback:$this->loggedOutFailureCallback);
+    		$callbackURI = ($isUserGuest?$this->loggedOutFailureCallback:$this->loggedInFailureCallback);
     	}
         return new AuthorizationResult($status,$callbackURI);
     }

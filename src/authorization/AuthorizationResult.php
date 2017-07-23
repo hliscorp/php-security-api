@@ -2,7 +2,7 @@
 /**
  * Enum that contains all available authorization statuses.
  */
-class AuthorizationResultStatus {
+interface AuthorizationResultStatus {
 	const OK = 1;
 	const UNAUTHORIZED = 2;
 	const FORBIDDEN = 3;

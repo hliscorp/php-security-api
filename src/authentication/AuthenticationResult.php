@@ -2,7 +2,7 @@
 /**
  * Enum that contains all available authentication statuses.
  */
-class AuthenticationResultStatus {
+interface AuthenticationResultStatus {
 	const OK = 1;
 	const LOGIN_FAILED = 2;
 	const LOGOUT_FAILED = 3;
@@ -24,7 +24,7 @@ class AuthenticationResult {
     /**
      * Gets authentication status.
      *
-     * @return string
+     * @return AuthenticationResultStatus
      */
     public function getStatus() {
         return $this->status;
