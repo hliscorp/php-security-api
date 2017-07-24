@@ -61,7 +61,7 @@ class DAOAuthentication {
 				$persistenceDriver->save($userID);
 			}
 			// returns result
-			$result = new AuthenticationResult(AuthenticationResultStatus::OK);
+			$result = new AuthenticationResult(AuthenticationResultStatus::LOGIN_OK);
 			$result->setUserID($userID);
 			return $result;
 		}
@@ -94,7 +94,7 @@ class DAOAuthentication {
 			}	
 			
 			// returns result
-			$result = new AuthenticationResult(AuthenticationResultStatus::OK);
+			$result = new AuthenticationResult(AuthenticationResultStatus::LOGOUT_OK);
 			return $result;
 		}
 	}

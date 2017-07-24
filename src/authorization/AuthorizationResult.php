@@ -3,10 +3,10 @@
  * Enum that contains all available authorization statuses.
  */
 interface AuthorizationResultStatus {
-	const OK = 1;
-	const UNAUTHORIZED = 2;
-	const FORBIDDEN = 3;
-	const NOT_FOUND = 4;
+	const OK = 5;
+	const UNAUTHORIZED = 6;
+	const FORBIDDEN = 7;
+	const NOT_FOUND = 8;
 }
 
 /**
