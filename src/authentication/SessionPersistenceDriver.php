@@ -76,6 +76,9 @@ class SessionPersistenceDriver implements PersistenceDriver {
 	 * @see PersistenceDriver::save()
 	 */
 	public function save($userID) {
+		// regenerate id when elevating privileges
+		session_regenerate_id(true);
+		// save params to session
 		$_SESSION[$this->parameterName] = $userID;
 		$_SESSION["ip"] = $this->current_ip;
 		$_SESSION["time"] = time()+$this->expirationTime;
@@ -85,7 +88,7 @@ class SessionPersistenceDriver implements PersistenceDriver {
 	 * {@inheritDoc}
 	 * @see PersistenceDriver::clear()
 	 */
-	public function clear($userID) {
+	public function clear() {
 		$_SESSION = array();
 		session_regenerate_id(true);
 	}
