@@ -56,7 +56,7 @@ class OAuth2Authentication {
 				$persistenceDriver->save($userID);
 			}
 			// returns result
-			$result = new OAuth2AuthenticationResult(AuthenticationResultStatus::OK);
+			$result = new OAuth2AuthenticationResult(AuthenticationResultStatus::LOGIN_OK);
 			$result->setUserID($userID);
 			$result->setAccessToken($accessToken);
 			return $result;
@@ -89,7 +89,7 @@ class OAuth2Authentication {
 			}	
 			
 			// returns result
-			$result = new OAuth2AuthenticationResult(AuthenticationResultStatus::OK);
+			$result = new OAuth2AuthenticationResult(AuthenticationResultStatus::LOGOUT_OK);
 			return $result;
 		}		
 	}
