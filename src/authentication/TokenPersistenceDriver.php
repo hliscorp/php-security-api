@@ -60,7 +60,7 @@ class TokenPersistenceDriver implements PersistenceDriver {
 	 * {@inheritDoc}
 	 * @see PersistenceDriver::clear()
 	 */
-	public function clear($userID) {
+	public function clear() {
 		$this->accessToken = "";
 	}
 	

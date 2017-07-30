@@ -69,7 +69,7 @@ class RememberMePersistenceDriver implements PersistenceDriver {
 	 * {@inheritDoc}
 	 * @see PersistenceDriver::clear()
 	 */
-	public function clear($userID) {
+	public function clear() {
 		setcookie ($this->parameterName, "", 1);
 		setcookie ($this->parameterName, false);
 		unset($_COOKIE[$this->parameterName]);
