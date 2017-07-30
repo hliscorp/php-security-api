@@ -3,10 +3,11 @@
  * Enum that contains all available authentication statuses.
  */
 interface AuthenticationResultStatus {
-	const OK = 1;
+	const LOGIN_OK = 1;
 	const LOGIN_FAILED = 2;
-	const LOGOUT_FAILED = 3;
-	const DEFERRED = 4;
+	const LOGOUT_OK = 3;
+	const LOGOUT_FAILED = 4;
+	const DEFERRED = 5;
 }
 
 /**
