@@ -11,7 +11,8 @@ class JsonWebTokenPayload {
     private $startTime;
     private $issuedTime;
     private $id;
-
+	// TODO: construct
+	// TODO: issuer/subject/audience check
     /**
      * Sets security token service (STS) that issued the JWT.
      *

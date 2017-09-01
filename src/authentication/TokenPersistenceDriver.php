@@ -2,66 +2,21 @@
 require_once("PersistenceDriver.php");
 
 /**
- * Encapsulates a driver that persists unique user identifier into a crypted token that's received from an Authorization header via TLS.
+ * Encapsulates a driver that persists unique user identifier into a crypted self-regenerating token that
+ * must be sent by clients via Authorization header of bearer type.
  */
-class TokenPersistenceDriver implements PersistenceDriver {
-	private $expirationTime;
-	private $regenerationTime;
+abstract class TokenPersistenceDriver implements PersistenceDriver {
+	protected $accessToken;
 	
-	private $tokenDriver;
-	private $accessToken;
-
 	/**
-	 * Creates a persistence driver object.
-	 *
-	 * @param string $secret Strong password to use for crypting. (Check: http://randomkeygen.com/)
-	 * @param number $expirationTime Time by which token expires (can be renewed), in seconds.
-	 * @param string $regenerationTime Time by which token is renewed, in seconds.
+	 * Sets access token value based on contents of HTTP authorization header of "bearer" type
 	 */
-	public function __construct($secret, $expirationTime = 3600, $regenerationTime = 60) {
-		$this->tokenDriver = new SynchronizerToken((isset($_SERVER["REMOTE_ADDR"])?$_SERVER["REMOTE_ADDR"]:""), $secret);		
-		$this->expirationTime = $expirationTime;
-		$this->regenerationTime = $regenerationTime;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @see PersistenceDriver::load()
-	 */
-	public function load() {
-		if(!isset($_SERVER["HTTP_AUTHORIZATION"]) || strpos($_SERVER["HTTP_AUTHORIZATION"],"Token ")!==0) {
+	public function setAccessToken() {
+		if(!isset($_SERVER["HTTP_AUTHORIZATION"]) || stripos($_SERVER["HTTP_AUTHORIZATION"],"Bearer ")!==0) {
 			return;
 		}
 		
-		$token = substr($_SERVER["HTTP_AUTHORIZATION"],6);
-		$userID = null;
-		// decode token
-		try {
-			$userID = $this->tokenDriver->decode($token, $this->regenerationTime);
-		} catch(TokenRegenerationException $e) {
-			$userID = $e->getUserId();
-			$this->accessToken = $this->tokenDriver->encode($userID, $this->expirationTime);
-		} catch(TokenExpiredException $e) {
-			$this->accessToken = null;
-			return;
-		}
-		return $userID;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @see PersistenceDriver::save()
-	 */
-	public function save($userID) {
-		$this->accessToken = $this->tokenDriver->encode($userID, $this->expirationTime);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 * @see PersistenceDriver::clear()
-	 */
-	public function clear() {
-		$this->accessToken = "";
+		$this->accessToken = trim(substr($_SERVER["HTTP_AUTHORIZATION"],7));
 	}
 	
 	/**
