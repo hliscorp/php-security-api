@@ -8,14 +8,24 @@ class TokenException extends AuthenticationException{}
  * Exception thrown when token needs to be refreshed.
  */
 class TokenRegenerationException extends Exception {
-	private $userID;
+	private $payload;
 	
-	public function setUserId($userID) {
-		$this->userID = $userID;
+	/**
+	 * Sets payload to use in regeneration.
+	 * 
+	 * @param mixed $payload
+	 */
+	public function setPayload($payload) {
+		$this->payload= $payload;
 	}
 	
-	public function getUserId() {
-		return $this->userID;
+	/**
+	 * Gets payload that was used in regeneration.
+	 * 
+	 * @return mixed
+	 */
+	public function getPayload() {
+		return $this->payload;
 	}
 }
 
