@@ -11,8 +11,41 @@ class JsonWebTokenPayload {
     private $startTime;
     private $issuedTime;
     private $id;
-	// TODO: construct
-	// TODO: issuer/subject/audience check
+    private $custom = array();
+    
+    public function __construct($data= array()) {
+    	if(!empty($data)) {
+    		foreach($data as $key=>$value){
+    			switch($key) {
+    				case "iss":
+    					$this->issuer = $value;
+    					break;
+    				case "sub":
+    					$this->subject = $value;
+    					break;
+    				case "aud":
+    					$this->audience = $value;
+    					break;
+    				case "exp":
+    					$this->endTime = $value;
+    					break;
+    				case "nbf":
+    					$this->startTime = $value;
+    					break;
+    				case "iat":
+    					$this->issuedTime = $value;
+    					break;
+    				case "jti":
+    					$this->id = $value;
+    					break;
+    				default:
+    					$this->custom[$key] = $value;
+    					break;
+    			}		
+    		}
+    	}
+    }
+    
     /**
      * Sets security token service (STS) that issued the JWT.
      *
@@ -138,13 +171,33 @@ class JsonWebTokenPayload {
     public function getApplicationId() {
         return $this->id;
     }
+    
+    /**
+     * Sets custom payload parameter not among those specified in https://tools.ietf.org/html/rfc7519#section-4.1
+     * 
+     * @param string $name
+     * @param string $value
+     */
+    public function setCustomParameter($name, $value) {
+    	$this->custom[$key] = $value;
+    }
+    
+    /**
+     * Gets value of custom payload parameter.
+     * 
+     * @param unknown $name
+     * @return NULL|string
+     */
+    public function getCustomParameter($name) {
+    	return (isset($this->custom[$name])?$this->custom[$name]:null);
+    }
 
     /**
      * Converts payload to array.
      *
      * @return array
      */
-    public function export() {
+    public function toArray() {
         $response = array();
         if($this->issuer)           $response["iss"] = $this->issuer;
         if($this->subject)          $response["sub"] = $this->subject;
@@ -153,31 +206,7 @@ class JsonWebTokenPayload {
         if($this->startTime)        $response["nbf"] = $this->startTime;
         if($this->issuedTime)       $response["iat"] = $this->issuedTime;
         if($this->id)               $response["jti"] = $this->id;
+        if(!empty($this->custom))	$response = array_merge($response, $this->custom);
         return $response;
-    }
-
-    /**
-     * Converts array into payload
-     *
-     * @param array $data
-     * @throws TokenException If tokens don't validate.
-     */
-    public function import($data) {
-        // validate
-        if($this->audience && (empty($data["aud"]) || $data["aud"]!=$this->audience))   throw new TokenException("aud doesn't match");
-        if($this->id && (empty($data["jti"]) || $data["jti"]!=$this->id))               throw new TokenException("jti doesn't match");
-        if($this->issuer && (empty($data["iss"]) || $data["iss"]!=$this->issuer))       throw new TokenException("iss doesn't match");
-        if($this->subject && (empty($data["sub"]) || $data["sub"]!=$this->subject))     throw new TokenException("sub doesn't match");
-        
-        // save
-        foreach($data as $key=>$value){
-            if($key == "iss")               $this->issuer = $value;
-            else if($key == "sub")          $this->subject = $value;
-            else if($key == "aud")          $this->audience = $value;
-            else if($key == "exp")          $this->endTime = $value;
-            else if($key == "nbf")          $this->startTime = $value;
-            else if($key == "iat")          $this->issuedTime = $value;
-            else                            $this->id = $value;
-        }
     }
 }

@@ -2,7 +2,7 @@
 /**
  * Exception thrown when token fails validation.
  */
-class TokenException extends AuthenticationException{}
+class TokenException extends Exception {}
 
 /**
  * Exception thrown when token needs to be refreshed.

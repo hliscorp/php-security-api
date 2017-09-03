@@ -24,9 +24,9 @@ final class JsonWebToken {
 	 */
 	public function encode(JsonWebTokenPayload $sendPayload) {
 		$encodedHeaders = base64_encode(json_encode($this->headers));
-		$encodedPayload = base64_encode(json_encode($sendPayload->export()));
+		$encodedPayload = base64_encode(json_encode($sendPayload->toArray()));
 		$unsignedToken = $encodedHeaders.".".$encodedPayload;
-		return $unsignedToken.".".base64_encode($this->getSignature($this->secret,$unsignedToken));
+		return $unsignedToken.".".base64_encode($this->getSignature($this->secret, $unsignedToken));
 	}
 	
 	/**
@@ -45,7 +45,7 @@ final class JsonWebToken {
 		
 		// check signature
 		$unsignedToken = $parts[0].".".$parts[1];
-		if(base64_decode($parts[2])!=$this->getSignature($unsignedToken)) {
+		if(base64_decode($parts[2])!=$this->getSignature($this->secret, $unsignedToken)) {
 			throw new TokenException("Token decoding failed!");
 		}
 		
@@ -58,7 +58,7 @@ final class JsonWebToken {
 		if(isset($payload["exp"]) && $currentTime>$payload["exp"]) {
 			throw new TokenExpiredException("Token has expired!");
 		}
-		if($maximumLifetime && isset($payload["iat"]) && ($currentTime-$payload["iat"])>$maximumLifetime) {
+		if($maximumLifetime && isset($payload["nbf"]) && ($currentTime-$payload["nbf"])>$maximumLifetime) {
 			$exception = new TokenRegenerationException("Token needs to be regenerated!");
 			$exception->setPayload(new JsonWebTokenPayload($payload));
 			throw $exception;
