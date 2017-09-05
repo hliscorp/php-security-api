@@ -1,5 +1,5 @@
 <?php
-require_once("src/HackingException.php");
+require_once("src/SecurityException.php");
 require_once("src/token/SynchronizerToken.php");
 require_once("src/token/JsonWebToken.php");
 require_once("src/authentication/DAOAuthentication.php");
