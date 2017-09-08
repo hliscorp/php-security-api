@@ -53,7 +53,7 @@ final class JsonWebToken {
 		$payload = json_decode(base64_decode($parts[1]),true);
 		$currentTime = time();
 		if(isset($payload["nbf"]) && $currentTime<$payload["nbf"]) {
-			throw new TokenException("Token not started!");
+			throw new TokenExpiredException("Token not started!");
 		}
 		if(isset($payload["exp"]) && $currentTime>$payload["exp"]) {
 			throw new TokenExpiredException("Token has expired!");
