@@ -178,7 +178,7 @@ class JsonWebTokenPayload {
      * @param string $name
      * @param string $value
      */
-    public function setCustomParameter($name, $value) {
+    public function setCustomClaim($name, $value) {
     	$this->custom[$key] = $value;
     }
     
@@ -188,7 +188,7 @@ class JsonWebTokenPayload {
      * @param unknown $name
      * @return NULL|string
      */
-    public function getCustomParameter($name) {
+    public function getCustomClaim($name) {
     	return (isset($this->custom[$name])?$this->custom[$name]:null);
     }
 
