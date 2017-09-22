@@ -20,10 +20,10 @@ class SessionPersistenceDriver implements PersistenceDriver {
 	 * @param number $expirationTime Time by which session expires no matter what, in seconds.
 	 * @param string $isHttpOnly Whether or not session should be using HTTP-only cookies.
 	 * @param string $isSecure Whether or not session should be using HTTPS-only cookies.
+	 * @param string $ip Value of REMOTE_ADDR parameter, unless ignored.
 	 */
-	public function __construct($parameterName, $expirationTime = 0, $isHttpOnly = false, $isSecure = false) {
-		$this->current_ip = (isset($_SERVER["REMOTE_ADDR"])?$_SERVER["REMOTE_ADDR"]:"");
-		
+	public function __construct($parameterName, $expirationTime = 0, $isHttpOnly = false, $isSecure = false, $ip="") {
+		$this->current_ip = $ip;		
 		$this->parameterName = $parameterName;
 		$this->expirationTime = $expirationTime;
 		$this->isHttpOnly = $isHttpOnly;

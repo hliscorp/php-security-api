@@ -20,10 +20,10 @@ class RememberMePersistenceDriver implements PersistenceDriver {
 	 * @param number $expirationTime Time by which cookie expires (cannot be renewed), in seconds.
 	 * @param string $isHttpOnly  Whether or not cookie should be using HTTP-only.
 	 * @param string $isSecure Whether or not cookie should be using HTTPS-only.
+	 * @param string $ip Value of REMOTE_ADDR attribute, unless ignored.
 	 */
-	public function __construct($secret, $parameterName, $expirationTime, $isHttpOnly = false, $isSecure = false) {
-		if(empty($_SERVER["REMOTE_ADDR"])) throw new TokenException("Driver can only be used via a web request!"); 
-		$this->token = new SynchronizerToken($_SERVER["REMOTE_ADDR"], $secret);		
+	public function __construct($secret, $parameterName, $expirationTime, $isHttpOnly = false, $isSecure = false, $ip="") {
+		$this->token = new SynchronizerToken($ip, $secret);		
 		$this->parameterName = $parameterName;
 		$this->expirationTime = $expirationTime;
 		$this->isHttpOnly = $isHttpOnly;
