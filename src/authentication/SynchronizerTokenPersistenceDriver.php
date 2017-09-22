@@ -15,9 +15,10 @@ class SynchronizerTokenPersistenceDriver extends TokenPersistenceDriver {
 	 * @param string $secret Strong password to use for crypting. (Check: http://randomkeygen.com/)
 	 * @param number $expirationTime Time by which token expires (can be renewed), in seconds.
 	 * @param string $regenerationTime Time by which token is renewed, in seconds.
+	 * @param string $ip Value of REMOTE_ADDR attribute, unless ignored.
 	 */
-	public function __construct($secret, $expirationTime = 3600, $regenerationTime = 60) {
-		$this->tokenDriver = new SynchronizerToken((isset($_SERVER["REMOTE_ADDR"])?$_SERVER["REMOTE_ADDR"]:""), $secret);
+	public function __construct($secret, $expirationTime = 3600, $regenerationTime = 60, $ip="") {
+		$this->tokenDriver = new SynchronizerToken($ip, $secret);
 		$this->expirationTime = $expirationTime;
 		$this->regenerationTime = $regenerationTime;
 	}
