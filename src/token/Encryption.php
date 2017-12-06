@@ -28,11 +28,12 @@ final class Encryption {
      * @return string Encrypted representation of data.
      */
     public function encrypt($data){
-        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-        $encryptedData = openssl_encrypt($data, self::CYPHER_METHOD, $this->secret, 0, $iv);
-        if($encryptedData === false) throw new EncryptionException("Encryption failed!");
-        return base64_encode($iv.$encryptedData);
+        $ivlen = openssl_cipher_iv_length(self::CYPHER_METHOD);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        $ciphertext_raw = openssl_encrypt($data, self::CYPHER_METHOD, $this->secret, $options=OPENSSL_RAW_DATA, $iv);
+        if($ciphertext_raw === false) throw new EncryptionException("Encryption failed!");
+        $hmac = hash_hmac('sha256', $ciphertext_raw, $this->secret, $as_binary=true);
+        return base64_encode( $iv.$hmac.$ciphertext_raw );
     }
     
     /**
@@ -43,11 +44,15 @@ final class Encryption {
      * @return string Decrypted data.
      */
     public function decrypt($data){
-        $data = base64_decode($data);
-        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-        $iv = substr($data, 0, $iv_size);
-        $result = @openssl_decrypt(substr($data, $iv_size), self::CYPHER_METHOD, $this->secret, 0, $iv);
-        if($result===false) throw new EncryptionException("Decryption failed!");
-        return $result;
+        $c = base64_decode($data);
+        $ivlen = openssl_cipher_iv_length(self::CYPHER_METHOD);
+        $iv = substr($c, 0, $ivlen);
+        $hmac = substr($c, $ivlen, $sha2len=32);
+        $ciphertext_raw = substr($c, $ivlen+$sha2len);
+        $original_plaintext = @openssl_decrypt($ciphertext_raw, self::CYPHER_METHOD, $this->secret, $options=OPENSSL_RAW_DATA, $iv);
+        if($original_plaintext === false) throw new EncryptionException("Decryption failed!");
+        $calcmac = hash_hmac('sha256', $ciphertext_raw, $this->secret, $as_binary=true);
+        if (!hash_equals($hmac, $calcmac)) throw new EncryptionException("Decryption failed!");
+        return $original_plaintext;
     }
 }
