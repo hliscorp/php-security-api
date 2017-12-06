@@ -15,21 +15,21 @@ class SessionPersistenceDriver implements PersistenceDriver {
 	
 	/**
 	 * Creates a persistence driver object.
-	 * 
+	 *
 	 * @param string $parameterName Name of SESSION parameter that holds unique user identifier.
 	 * @param number $expirationTime Time by which session expires no matter what, in seconds.
 	 * @param string $isHttpOnly Whether or not session should be using HTTP-only cookies.
 	 * @param string $isSecure Whether or not session should be using HTTPS-only cookies.
+	 * @param string $ip Value of REMOTE_ADDR parameter, unless ignored.
 	 */
-	public function __construct($parameterName, $expirationTime = 0, $isHttpOnly = false, $isSecure = false) {
-		$this->current_ip = (isset($_SERVER["REMOTE_ADDR"])?$_SERVER["REMOTE_ADDR"]:"");
-		
+	public function __construct($parameterName, $expirationTime = 0, $isHttpOnly = false, $isSecure = false, $ip="") {
+		$this->current_ip = $ip;		
 		$this->parameterName = $parameterName;
 		$this->expirationTime = $expirationTime;
 		$this->isHttpOnly = $isHttpOnly;
 		$this->isSecure = $isSecure;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 * @see PersistenceDriver::load()
@@ -43,14 +43,18 @@ class SessionPersistenceDriver implements PersistenceDriver {
 			if($this->isSecure) {
 				ini_set("session.cookie_secure",1);
 			}
+			if($this->expirationTime) {
+				ini_set('session.gc_maxlifetime', $this->expirationTime);
+				session_set_cookie_params($this->expirationTime);
+			}
 			session_start();
-		}		
+		}
 		
 		// do nothing if session does not include uid
 		if(empty($_SESSION[$this->parameterName])) {
 			return;
 		}
-				
+		
 		// session hijacking prevention: session id is tied to a single ip
 		if($this->current_ip!=$_SESSION["ip"]) {
 			session_regenerate_id(true);
@@ -85,7 +89,7 @@ class SessionPersistenceDriver implements PersistenceDriver {
 	 * {@inheritDoc}
 	 * @see PersistenceDriver::clear()
 	 */
-	public function clear($userID) {
+	public function clear() {
 		$_SESSION = array();
 		session_regenerate_id(true);
 	}

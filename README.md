@@ -20,3 +20,6 @@ Collection of decoupled components for PHP applications implementing web securit
 
 - *SynchronizerToken*: defines a crypted state mechanism that acts like an anti-CSRF guard as well as a simple and powerful way to maintain state for single-page-applications (such as those using Angular JS).
 - *JsonWebToken*: defines authentication and authorization via JSON web tokens (see more: https://en.wikipedia.org/wiki/JSON_Web_Token). NOTE: this is not loaded by default when library is included!
+
+More information here:<br/>
+http://www.lucinda-framework.com/web-security
