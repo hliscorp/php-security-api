@@ -61,7 +61,7 @@ final class SynchronizerToken {
         }
         if($maximumLifetime && ($currentTime-$parts[2])>$maximumLifetime) {
         	$tre = new TokenRegenerationException("Token needs to be regenerated!");
-        	$tre->setUserId($parts[0]);
+        	$tre->setPayload($parts[0]);
             throw $tre;
         }
         

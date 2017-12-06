@@ -19,8 +19,6 @@ interface PersistenceDriver {
 	
 	/**
 	 * Removes user's unique identifier from driver (eg: on logout).
-	 * 
-	 * @param mixed $userID Unique user identifier (usually an integer)
 	 */
-	function clear($userID);
+	function clear();
 }

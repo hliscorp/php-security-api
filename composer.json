@@ -1,0 +1,15 @@
+{
+    "name": "lucinda/security",
+    "type": "library",
+    "description": "Encapsulates web security operations on top of OWASP guidelines",
+    "keywords": ["security","authentication","authorization","owasp","jwt","oauth2","xml","dao","token"],
+    "homepage": "http://www.lucinda-framework.com/web-security",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lucian Popescu",
+            "email": "lucian.gabriel.popescu@gmail.com",
+            "role": "Developer"
+        }
+    ]
+}
