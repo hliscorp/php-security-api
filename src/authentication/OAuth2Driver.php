@@ -1,15 +1,15 @@
 <?php
 /**
- * Defines blueprints for login via OAuth2 provider.
+ * Defines driver to abstract OAuth2 operations required by Security API.
  */
-interface OAuth2Login {
+interface OAuth2Driver {
 	/**
 	 * Gets remote user information from oauth2 driver via access token.
 	 * 
 	 * @param string $accessToken OAuth2 access token
 	 * @return OAuth2UserInformation Remote user information
 	 */
-	function login($accessToken);
+	function getUserInformation($accessToken);
 	
 	/**
 	 * Gets authorization code scopes required by login operation.
