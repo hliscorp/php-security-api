@@ -3,6 +3,7 @@
 This API, built in conformance to OWASP guidelines, is just a repository of decoupled components that correspond to most common web security patterns:
 
 - authenticating users
+
 	- via DB: authenticates users based on login form and DB through a data access object (DAO)
         - via XML: authenticates users based on <users> tag @ XML
         - via OAuth2: authenticates users based on OAuth2 client (eg: Facebook, Google)
@@ -15,6 +16,7 @@ This API, built in conformance to OWASP guidelines, is just a repository of deco
 	- via DB: authorizes user access to requested resource based on DB through a data access object (DAO)
 	- via XML: authorizes user access to requested resource based on <routes> and <users> tags @ XML
 - security validator tokens
+
 	- json web token: reads, generates, validates a json web token
         - synchronizer token: reads, generates, validates a synchronizer token
 
