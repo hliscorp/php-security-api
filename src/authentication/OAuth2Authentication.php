@@ -38,8 +38,6 @@ class OAuth2Authentication {
 	 * @param string $accessToken OAuth2 access token.
 	 * @param boolean $createUserIfNotExists Whether or not login should automatically creat user in DB if it doesn't exist already.
 	 * @return OAuth2AuthenticationResult Encapsulates result of login attempt.
-	 * @throws OAuth2\ClientException When oauth2 local client generates an error situation.
-	 * @throws OAuth2\ServerException When oauth2 remote server generates an error situation. 
 	 */
 	public function login(OAuth2Driver $driver, $accessToken, $createUserIfNotExists=true) {
 		// retrieve user information from oauth2 driver

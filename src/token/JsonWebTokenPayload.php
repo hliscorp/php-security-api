@@ -185,7 +185,7 @@ class JsonWebTokenPayload {
     /**
      * Gets value of custom payload parameter.
      * 
-     * @param unknown $name
+     * @param string $name
      * @return NULL|string
      */
     public function getCustomClaim($name) {

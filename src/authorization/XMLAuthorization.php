@@ -31,7 +31,7 @@ class XMLAuthorization {
      * @param SimpleXMLElement $xml
      * @param string $routeToAuthorize
      * @param integer $userID
-     * @throws ApplicationException If route is misconfigured.
+     * @throws AuthorizationException If route is misconfigured.
      * @return AuthorizationResult
      */
     public function authorize(SimpleXMLElement $xml, $routeToAuthorize, $userID = 0) {

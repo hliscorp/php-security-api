@@ -35,8 +35,8 @@ class XMLAuthentication {
 	 *
 	 * @param string $username Value of user name
 	 * @param string $password Value of user password
-	 * @return XMLAuthenticationResult Encapsulates result of login attempt.
-	 * @throws XMLException If POST parameters are invalid.
+	 * @return AuthenticationResult Encapsulates result of login attempt.
+	 * @throws AuthenticationException If POST parameters are invalid.
 	 */
 	public function login($username, $password) {
 		$userID = null;
@@ -75,7 +75,7 @@ class XMLAuthentication {
 	 * Performs a logout operation:
 	 * - removes user id from persistence drivers (if any)
 	 *
-	 * @return XMLAuthenticationResult
+	 * @return AuthenticationResult
 	 */
 	public function logout() {
 		// detect user_id from persistence drivers
