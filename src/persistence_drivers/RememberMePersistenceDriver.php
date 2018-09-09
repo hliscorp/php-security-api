@@ -1,5 +1,7 @@
 <?php
+namespace Lucinda\WebSecurity;
 require_once("PersistenceDriver.php");
+require_once(dirname(__DIR__)."/token/SynchronizerToken.php");
 
 /**
  * Encapsulates a driver that persists unique user identifier into a crypted "remember me" cookie variable.
@@ -41,7 +43,7 @@ class RememberMePersistenceDriver implements PersistenceDriver {
 		
 		try {
 			return $this->token->decode($_COOKIE[$this->parameterName]);
-		} catch(Exception $e) {
+		} catch(\Exception $e) {
 			// delete bad cookie
 			setcookie ($this->parameterName, "", 1);
 			setcookie ($this->parameterName, false);

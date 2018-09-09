@@ -1,6 +1,9 @@
 <?php
+namespace Lucinda\WebSecurity;
 require_once("Encryption.php");
 require_once("TokenException.php");
+require_once("TokenExpiredException.php");
+require_once("TokenRegenerationException.php");
 
 /**
  * Encapsulates a SynchronizerToken, to be used for CSRF prevention or for stateless replacement of sessions.

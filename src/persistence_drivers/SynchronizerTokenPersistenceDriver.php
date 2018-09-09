@@ -1,10 +1,12 @@
 <?php
+namespace Lucinda\WebSecurity;
 require_once("TokenPersistenceDriver.php");
+require_once(dirname(__DIR__)."/token/SynchronizerToken.php");
 
 /**
- * Encapsulates a PersistenceDriver that uses JsonWebToken to authenticate users.
+ * Encapsulates a PersistenceDriver that employs SynchronizerToken to authenticate users.
  */
-class JsonWebTokenPersistenceDriver extends TokenPersistenceDriver {
+class SynchronizerTokenPersistenceDriver extends TokenPersistenceDriver {
 	private $expirationTime;
 	private $regenerationTime;
 	private $tokenDriver;
@@ -15,9 +17,10 @@ class JsonWebTokenPersistenceDriver extends TokenPersistenceDriver {
 	 * @param string $secret Strong password to use for crypting. (Check: http://randomkeygen.com/)
 	 * @param number $expirationTime Time by which token expires (can be renewed), in seconds.
 	 * @param string $regenerationTime Time by which token is renewed, in seconds.
+	 * @param string $ip Value of REMOTE_ADDR attribute, unless ignored.
 	 */
-	public function __construct($secret, $expirationTime = 3600, $regenerationTime = 60) {
-		$this->tokenDriver = new JsonWebToken($secret);
+	public function __construct($secret, $expirationTime = 3600, $regenerationTime = 60, $ip="") {
+		$this->tokenDriver = new SynchronizerToken($ip, $secret);
 		$this->expirationTime = $expirationTime;
 		$this->regenerationTime = $regenerationTime;
 	}
@@ -32,13 +35,13 @@ class JsonWebTokenPersistenceDriver extends TokenPersistenceDriver {
 		$userID = null;
 		// decode token
 		try {
-			$payload = $this->tokenDriver->decode($this->accessToken, $this->regenerationTime);
-			$userID = $payload->getApplicationId();
+			$userID = $this->tokenDriver->decode($this->accessToken, $this->regenerationTime);
 		} catch(TokenRegenerationException $e) {
-			$userID = $e->getPayload()->getApplicationId();
-			$this->save($userID);
+			$userID = $e->getPayload();
+			$this->accessToken = $this->tokenDriver->encode($userID, $this->expirationTime);
 		} catch(TokenExpiredException $e) {
 			$this->accessToken = null;
+			return;
 		}
 		return $userID;
 	}
@@ -48,11 +51,7 @@ class JsonWebTokenPersistenceDriver extends TokenPersistenceDriver {
 	 * @see PersistenceDriver::save()
 	 */
 	public function save($userID) {
-		$payload = new JsonWebTokenPayload();
-		$payload->setApplicationId($userID);
-		$payload->setStartTime(time());
-		$payload->setEndTime(time()+$this->expirationTime);
-		$this->accessToken = $this->tokenDriver->encode($payload);
+		$this->accessToken = $this->tokenDriver->encode($userID, $this->expirationTime);
 	}
 	
 	/**
@@ -60,6 +59,6 @@ class JsonWebTokenPersistenceDriver extends TokenPersistenceDriver {
 	 * @see PersistenceDriver::clear()
 	 */
 	public function clear() {
-		$this->accessToken = null;
+		$this->accessToken = "";
 	}
 }

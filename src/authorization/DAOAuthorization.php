@@ -1,4 +1,5 @@
 <?php
+namespace Lucinda\WebSecurity;
 require_once("AuthorizationResult.php");
 require_once("PageAuthorizationDAO.php");
 require_once("UserAuthorizationDAO.php");

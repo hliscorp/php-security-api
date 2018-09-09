@@ -1,4 +1,5 @@
 <?php
+namespace Lucinda\WebSecurity;
 /**
  * Defines blueprints for a DAO that checks logged in user's access levels in database.
  */

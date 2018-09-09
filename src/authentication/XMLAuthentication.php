@@ -1,4 +1,5 @@
 <?php
+namespace Lucinda\WebSecurity;
 require_once("AuthenticationException.php");
 require_once("AuthenticationResult.php");
 
@@ -13,11 +14,11 @@ class XMLAuthentication {
 	/**
 	 * Creates a form authentication object.
 	 *
-	 * @param UserAuthenticationDAO $dao Forwards operations to database via a DAO.
+     * @param \SimpleXMLElement $xml
 	 * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that allow authenticated state to persist between requests.
 	 * @throws AuthenticationException If one of persistenceDrivers entries is not a PersistentDriver
 	 */
-	public function __construct(SimpleXMLElement $xml, $persistenceDrivers = array()) {
+	public function __construct(\SimpleXMLElement $xml, $persistenceDrivers = array()) {
 		// check argument that it's instance of PersistenceDriver
 		foreach($persistenceDrivers as $persistentDriver) {
 			if(!($persistentDriver instanceof PersistenceDriver)) throw new AuthenticationException("Items must be instanceof PersistenceDriver");

@@ -1,5 +1,6 @@
 <?php
+namespace Lucinda\WebSecurity;
 /**
  * Exception thrown on authorization errors.
  */
-class AuthorizationException extends Exception {}
+class AuthorizationException extends \Exception {}

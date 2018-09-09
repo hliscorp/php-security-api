@@ -1,4 +1,5 @@
 <?php
+namespace Lucinda\WebSecurity;
 require_once("AuthenticationResult.php");
 
 /**

@@ -1,4 +1,5 @@
 <?php
+namespace Lucinda\WebSecurity;
 /**
  * Encapsulates abstract information about remote logged in user on OAuth2 provider.
  */

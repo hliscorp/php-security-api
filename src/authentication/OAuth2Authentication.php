@@ -1,4 +1,5 @@
 <?php
+namespace Lucinda\WebSecurity;
 require_once("OAuth2AuthenticationDAO.php");
 require_once("AuthenticationException.php");
 require_once("OAuth2AuthenticationResult.php");

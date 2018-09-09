@@ -1,4 +1,5 @@
 <?php
+namespace Lucinda\WebSecurity;
 require_once("AuthorizationResult.php");
 require_once("AuthorizationException.php");
 
@@ -28,13 +29,13 @@ class XMLAuthorization {
     /**
      * Performs an authorization task.
      * 
-     * @param SimpleXMLElement $xml
+     * @param \SimpleXMLElement $xml
      * @param string $routeToAuthorize
      * @param integer $userID
      * @throws AuthorizationException If route is misconfigured.
      * @return AuthorizationResult
      */
-    public function authorize(SimpleXMLElement $xml, $routeToAuthorize, $userID = 0) {
+    public function authorize(\SimpleXMLElement $xml, $routeToAuthorize, $userID = 0) {
         $status = 0;
         $callbackURI = "";
         
@@ -77,12 +78,12 @@ class XMLAuthorization {
     /**
      * Gets user roles from XML
      * 
-     * @param SimpleXMLElement $xml
+     * @param \SimpleXMLElement $xml
      * @param integer $userID
      * @throws AuthorizationException
      * @return string[]
      */
-    private function getUserRoles(SimpleXMLElement $xml, $userID) {
+    private function getUserRoles(\SimpleXMLElement $xml, $userID) {
     	$userRoles = array();
     	if($userID) {
     		$tmp = (array) $xml->users;
@@ -110,12 +111,12 @@ class XMLAuthorization {
     /**
      * Gets page roles from XML
      *
-     * @param SimpleXMLElement $xml
+     * @param \SimpleXMLElement $xml
      * @param integer $userID
      * @throws AuthorizationException
      * @return string[]
      */
-    private function getPageRoles($xml, $routeToAuthorize) {
+    private function getPageRoles(\SimpleXMLElement $xml, $routeToAuthorize) {
     	$pageRoles = array();
     	$tmp = (array) $xml->routes;
     	$tmp = $tmp["route"];

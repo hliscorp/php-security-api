@@ -1,4 +1,5 @@
 <?php
+namespace Lucinda\WebSecurity;
 /**
  * Defines blueprints for a DAO that reflects oauth2 authentication results to database.
  */

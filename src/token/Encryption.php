@@ -1,8 +1,6 @@
 <?php
-/**
- * Exception thrown when an attempt is made to encrypt/decrypt an invalid token.
- */
-class EncryptionException extends SecurityException {}
+namespace Lucinda\WebSecurity;
+require_once("EncryptionException.php");
 
 /**
  * Encapsulates data encryption over openssl using AES-256 cypher.

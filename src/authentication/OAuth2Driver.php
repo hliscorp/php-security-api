@@ -1,4 +1,5 @@
 <?php
+namespace Lucinda\WebSecurity;
 /**
  * Defines driver to abstract OAuth2 operations required by Security API.
  */
