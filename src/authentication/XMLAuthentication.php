@@ -7,7 +7,6 @@ require_once("AuthenticationResult.php");
  * Encapsulates authentication via XML ACL
  */
 class XMLAuthentication {
-	const ROLE_GUEST = "GUEST";
 	private $xml;
 	private $persistenceDrivers;
 	
@@ -51,7 +50,7 @@ class XMLAuthentication {
 			$currentUserName = (string) $info['username'];
 			$currentPassword = (string) $info['password'];
 			if(!$currentUserName || !$currentPassword) throw new AuthenticationException("XML tag users > user requires parameters: username, password");
-			if($username == $currentUserName && $password == $currentPassword) {
+			if($username == $currentUserName && password_verify($password, $currentPassword)) {
 				$userID = (string) $info["id"];
 				if(!$userID) throw new AuthenticationException("XML tag users / user requires parameter: id");
 			}
