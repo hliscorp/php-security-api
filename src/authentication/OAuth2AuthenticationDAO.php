@@ -20,12 +20,4 @@ interface OAuth2AuthenticationDAO {
      * @param mixed $userID Unique user identifier (typically an integer)
      */
     function logout($userID);
-    
-    /**
-     * Gets access token for logged in local user.
-     * 
-     * @param mixed $userID Unique user identifier (typically an integer)
-     * @return string
-     */
-    function getAccessToken($userID);
 }
