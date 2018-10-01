@@ -14,13 +14,6 @@ interface UserAuthorizationDAO {
     function isAllowed(PageAuthorizationDAO $page, $httpRequestMethod);
     
     /**
-     * Saves id of logged in user.
-     * 
-     * @param integer $userID
-     */
-    function setID($userID);
-    
-    /**
      * Gets saved id of logged in user
      * @return integer
      */

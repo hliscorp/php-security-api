@@ -52,7 +52,7 @@ class DAOAuthentication {
 		}
 		
 		// perform login
-		$userID = $this->dao->login($username, $password, $rememberMe); 
+		$userID = $this->dao->login($username, $password); 
 		if(empty($userID)) {
 			$result = new AuthenticationResult(AuthenticationResultStatus::LOGIN_FAILED);
 			return $result;

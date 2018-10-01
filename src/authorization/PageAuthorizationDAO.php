@@ -12,13 +12,6 @@ interface PageAuthorizationDAO {
     function isPublic();
     
     /**
-     * Detects id of page requested
-     * 
-     * @param string $path Page requested.
-     */
-    function setID($path);
-    
-    /**
      * Gets detected id of page requested
      * 
      * @return integer
