@@ -1,7 +1,12 @@
 <?php
 namespace Lucinda\WebSecurity;
 /**
- * Enum that contains all available authentication statuses.
+ * Enum that contains all available authentication result statuses via following constants:
+ * - LOGIN_OK: login was successful
+ * - LOGIN_FAILED: login was unsuccessful (eg: password was wrong)
+ * - LOGOUT_OK: logout was successful
+ * - LOGOUT_FAILED: logout was unsuccessful (eg: user wasn't logged in)
+ * - DEFERRED: login was deferred to a third party provider (eg: oauth2)
  */
 interface AuthenticationResultStatus {
     const LOGIN_OK = 1;

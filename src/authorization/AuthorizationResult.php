@@ -11,7 +11,9 @@ class AuthorizationResult {
     private $callbackURI;
 
     /**
-     * @param integer $status
+     * Saves authorization result encapsulated by AuthorizationResultStatus enum along with callback URI
+     * 
+     * @param AuthorizationResultStatus $status
      * @param string $callbackURI
      */
     public function __construct($status, $callbackURI) {
@@ -22,7 +24,7 @@ class AuthorizationResult {
     /**
      * Gets authorization status.
      *
-     * @return integer
+     * @return AuthorizationResultStatus
      */
     public function getStatus() {
         return $this->status;

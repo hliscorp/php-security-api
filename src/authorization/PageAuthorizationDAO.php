@@ -7,6 +7,11 @@ namespace Lucinda\WebSecurity;
 abstract class PageAuthorizationDAO {
     protected $pageID;
 
+    /**
+     * Saves detected database ID of page requested
+     * 
+     * @param string $pageURL URL of page requested
+     */
     public function __construct($pageURL) {
         $this->pageID = $this->detectID($pageURL);
     }

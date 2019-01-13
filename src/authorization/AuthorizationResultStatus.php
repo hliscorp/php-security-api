@@ -1,7 +1,11 @@
 <?php
 namespace Lucinda\WebSecurity;
 /**
- * Enum that contains all available authorization statuses.
+ * Enum that contains all available authorization statuses via following constants:
+ * - OK: authorization was successful
+ * - UNAUTHORIZED: authorization failed because user is not authenticated
+ * - FORBIDDEN: authorization failed because authenticated user is not allowed access to requested resource
+ * - NOT_FOUND: authorization failed because no authorization policy could be found for requested resource
  */
 interface AuthorizationResultStatus {
     const OK = 6;

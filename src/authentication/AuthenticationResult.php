@@ -10,6 +10,11 @@ class AuthenticationResult {
     private $callbackURI;
     private $userID;
 
+    /**
+     * Saves authentication result encapsulated by AuthenticationResultStatus enum
+     * 
+     * @param AuthenticationResultStatus $status
+     */
     public function __construct($status) {
     	$this->status = $status;
     }

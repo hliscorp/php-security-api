@@ -1,7 +1,7 @@
 <?php
 namespace Lucinda\WebSecurity;
 /**
- * Encapsulates a JSON Web Token payload. More info:
+* Encapsulates a JSON Web Token payload. More info:
 * https://azure.microsoft.com/en-us/documentation/articles/active-directory-token-and-claims/
 */
 class JsonWebTokenPayload {
@@ -14,6 +14,11 @@ class JsonWebTokenPayload {
     private $id;
     private $custom = array();
     
+    /**
+     * Encapsulates JWT data received from client
+     * 
+     * @param string[string] $data
+     */
     public function __construct($data= array()) {
     	if(!empty($data)) {
     		foreach($data as $key=>$value){
@@ -184,10 +189,10 @@ class JsonWebTokenPayload {
     }
     
     /**
-     * Gets value of custom payload parameter.
+     * Gets value of custom payload parameter or null if not found.
      * 
      * @param string $name
-     * @return NULL|string
+     * @return string
      */
     public function getCustomClaim($name) {
     	return (isset($this->custom[$name])?$this->custom[$name]:null);
@@ -196,7 +201,7 @@ class JsonWebTokenPayload {
     /**
      * Converts payload to array.
      *
-     * @return array
+     * @return string[string]
      */
     public function toArray() {
         $response = array();

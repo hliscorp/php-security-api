@@ -13,6 +13,8 @@ final class JsonWebToken {
 	private $secret;
 	
 	/**
+	 * Saves encryption password for later encoding or decoding
+	 * 
 	 * @param string $secret Encryption password
 	 */
 	public function __construct($secret) {
