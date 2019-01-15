@@ -9,7 +9,7 @@ require_once("TokenRegenerationException.php");
  * Encapsulates a SynchronizerToken, to be used for CSRF prevention or for stateless replacement of sessions.
  * https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet
  */
-final class SynchronizerToken {
+class SynchronizerToken {
 	private $ip;
 	private $secret;
 	

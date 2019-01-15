@@ -8,7 +8,7 @@ require_once("TokenRegenerationException.php");
 /**
  * Encapsulates a JsonWebToken I/O.
  */
-final class JsonWebToken {
+class JsonWebToken {
 	private $headers = array("typ"=>"JWT","alg"=>"HS256");
 	private $secret;
 	

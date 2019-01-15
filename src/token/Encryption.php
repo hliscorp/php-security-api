@@ -5,7 +5,7 @@ require_once("EncryptionException.php");
 /**
  * Encapsulates data encryption over openssl using AES-256 cypher.
  */
-final class Encryption {
+class Encryption {
     const CYPHER_METHOD = "AES-256-CBC";
     
     private $secret;
