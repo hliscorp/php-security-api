@@ -9,10 +9,9 @@ interface OAuth2AuthenticationDAO {
 	 * 
 	 * @param OAuth2UserInformation $userInformation Object encapsulating detected OAuth2 user information.
 	 * @param string $accessToken Access token to be saved in further requests for above user.
-	 * @param string $createIfNotExists Toggles whether or not user will be automatically added to DB if not found.
 	 * @return mixed Unique user identifier (typically an integer)
 	 */
-    function login(OAuth2UserInformation $userInformation, $accessToken, $createIfNotExists=true);
+    function login(OAuth2UserInformation $userInformation, $accessToken);
     
     /**
      * Logs out local user and removes saved access token
