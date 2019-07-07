@@ -2,6 +2,7 @@
 namespace Lucinda\WebSecurity;
 require_once("AuthenticationException.php");
 require_once("AuthenticationResult.php");
+require_once("UserAuthenticationXML.php");
 
 /**
  * Encapsulates authentication via XML ACL
@@ -39,23 +40,8 @@ class XMLAuthentication {
 	 * @throws AuthenticationException If POST parameters are invalid.
 	 */
 	public function login($username, $password) {
-		$userID = null;
-		$userRoles = array();
-		
-		// extract user id
-		$tmp = (array) $this->xml->users;
-		$tmp = $tmp["user"];
-		if(!is_array($tmp)) $tmp = array($tmp);
-		foreach($tmp as $info) {
-			$currentUserName = (string) $info['username'];
-			$currentPassword = (string) $info['password'];
-			if(!$currentUserName || !$currentPassword) throw new AuthenticationException("XML tag users > user requires parameters: username, password");
-			if($username == $currentUserName && password_verify($password, $currentPassword)) {
-				$userID = (string) $info["id"];
-				if(!$userID) throw new AuthenticationException("XML tag users / user requires parameter: id");
-			}
-		}		
-		
+	    $dao = new UserAuthenticationXML($this->xml);
+		$userID = $dao->login($username, $password);
 		if(empty($userID)) {
 			$result = new AuthenticationResult(AuthenticationResultStatus::LOGIN_FAILED);
 			return $result;

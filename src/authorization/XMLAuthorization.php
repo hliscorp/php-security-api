@@ -2,6 +2,8 @@
 namespace Lucinda\WebSecurity;
 require_once("AuthorizationResult.php");
 require_once("AuthorizationException.php");
+require_once("PageAuthorizationXML.php");
+require_once("UserAuthorizationXML.php");
 
 /**
  * Encapsulates request authorization via XML that must have routes configured as:
@@ -11,7 +13,6 @@ require_once("AuthorizationException.php");
  * </routes>
  */
 class XMLAuthorization {
-	const ROLE_GUEST = "GUEST";
 	private $loggedInFailureCallback;
 	private $loggedOutFailureCallback;
 	
@@ -32,10 +33,11 @@ class XMLAuthorization {
      * @param \SimpleXMLElement $xml
      * @param string $routeToAuthorize
      * @param integer $userID
+     * @param UserAuthorizationRoles $userAuthorizationRoles
      * @throws AuthorizationException If route is misconfigured.
      * @return AuthorizationResult
      */
-    public function authorize(\SimpleXMLElement $xml, $routeToAuthorize, $userID = 0) {
+    public function authorize(\SimpleXMLElement $xml, $routeToAuthorize, $userID=0, UserAuthorizationRoles $userAuthorizationRoles) {
         $status = 0;
         $callbackURI = "";
         
@@ -43,10 +45,11 @@ class XMLAuthorization {
         $isUserGuest = ($userID==0?true:false);
         
         // get user roles
-        $userRoles = $this->getUserRoles($xml, $userID);
+        $userRoles = $userAuthorizationRoles->getRoles($userID);
         
         // get page roles
-        $pageRoles = $this->getPageRoles($xml, $routeToAuthorize);
+        $pageDAO = new PageAuthorizationXML($xml);
+        $pageRoles = $pageDAO->getRoles($routeToAuthorize);
         if(empty($pageRoles)) {
         	$status = AuthorizationResultStatus::NOT_FOUND;
         	$callbackURI = ($isUserGuest?$this->loggedOutFailureCallback:$this->loggedInFailureCallback);
@@ -73,65 +76,5 @@ class XMLAuthorization {
         }
         
         return new AuthorizationResult($status,$callbackURI);
-    }
-    
-    /**
-     * Gets user roles from XML
-     * 
-     * @param \SimpleXMLElement $xml
-     * @param integer $userID
-     * @throws AuthorizationException
-     * @return string[]
-     */
-    private function getUserRoles(\SimpleXMLElement $xml, $userID) {
-    	$userRoles = array();
-    	if($userID) {
-    		$tmp = (array) $xml->users;
-    		$tmp = $tmp["user"];
-    		if(!is_array($tmp)) $tmp = array($tmp);
-    		foreach($tmp as $info) {
-    			$userIDTemp = (string) $info["id"];
-    			$roles = (string) $info["roles"];
-    			if(!$userIDTemp || !$roles) throw new AuthorizationException("XML tag users > user requires parameters: id, roles");
-    			if($userIDTemp == $userID) {
-    				$tmp = explode(",",$roles);
-    				foreach($tmp as $role) {
-    					$userRoles[] = trim($role);
-    				}
-    			}
-    		}
-    		if(empty($userRoles)) throw new AuthorizationException("User not found in XML!");
-    	} else {
-    		$userRoles[] = self::ROLE_GUEST;
-    	}
-    	return $userRoles;
-    }
-    
-    
-    /**
-     * Gets page roles from XML
-     *
-     * @param \SimpleXMLElement $xml
-     * @param integer $userID
-     * @throws AuthorizationException
-     * @return string[]
-     */
-    private function getPageRoles(\SimpleXMLElement $xml, $routeToAuthorize) {
-    	$pageRoles = array();
-    	$tmp = (array) $xml->routes;
-    	$tmp = $tmp["route"];
-    	if(!is_array($tmp)) $tmp = array($tmp);
-    	foreach($tmp as $info) {
-    		$path = (string) $info['url'];
-    		if($path != $routeToAuthorize) continue;
-    		
-    		if(empty($info['roles'])) throw new AuthorizationException("XML tag routes > route requires parameter: roles");
-    		$tmp = (string) $info["roles"];
-    		$tmp= explode(",",$tmp);
-    		foreach($tmp as $role) {
-    			$pageRoles[] = trim($role);
-    		}    		
-    	}
-    	return $pageRoles;
     }
 }
