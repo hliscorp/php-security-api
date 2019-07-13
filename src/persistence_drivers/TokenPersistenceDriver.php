@@ -13,11 +13,12 @@ abstract class TokenPersistenceDriver implements PersistenceDriver {
 	 * Sets access token value based on contents of HTTP authorization header of "bearer" type
 	 */
 	public function setAccessToken() {
-		if(!isset($_SERVER["HTTP_AUTHORIZATION"]) || stripos($_SERVER["HTTP_AUTHORIZATION"],"Bearer ")!==0) {
-			return;
-		}
-		
-		$this->accessToken = trim(substr($_SERVER["HTTP_AUTHORIZATION"],7));
+	    $headers = getallheaders();
+	    if(!isset($headers["Authorization"]) || stripos($headers["Authorization"],"Bearer ")!==0) {
+	        return;
+	    }
+	    
+	    $this->accessToken = trim(substr($headers["Authorization"],7));
 	}
 	
 	/**
