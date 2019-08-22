@@ -1,22 +1,25 @@
 <?php
 namespace Lucinda\WebSecurity;
+
 require_once("AuthenticationResultStatus.php");
 
 /**
  * Encapsulates authentication response
  */
-class AuthenticationResult {
+class AuthenticationResult
+{
     private $status;
     private $callbackURI;
     private $userID;
 
     /**
      * Saves authentication result encapsulated by AuthenticationResultStatus enum
-     * 
+     *
      * @param AuthenticationResultStatus $status
      */
-    public function __construct($status) {
-    	$this->status = $status;
+    public function __construct($status)
+    {
+        $this->status = $status;
     }
     
     /**
@@ -24,17 +27,19 @@ class AuthenticationResult {
      *
      * @return AuthenticationResultStatus
      */
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->status;
     }
     
     /**
      * Sets callback URL.
-     * 
+     *
      * @param string $callbackURI
      */
-    public function setCallbackURI($callbackURI) {
-    	$this->callbackURI = $callbackURI;
+    public function setCallbackURI($callbackURI)
+    {
+        $this->callbackURI = $callbackURI;
     }
 
     /**
@@ -42,25 +47,28 @@ class AuthenticationResult {
      *
      * @return string
      */
-    public function getCallbackURI() {
+    public function getCallbackURI()
+    {
         return $this->callbackURI;
     }
     
     /**
      * Sets user unique identifier
-     * 
+     *
      * @param mixed $userID
      */
-    public function setUserID($userID) {
-    	$this->userID = $userID;
+    public function setUserID($userID)
+    {
+        $this->userID = $userID;
     }
     
     /**
      * Gets user unique identifier.
-     * 
+     *
      * @return mixed
      */
-    public function getUserID() {
-    	return $this->userID;
+    public function getUserID()
+    {
+        return $this->userID;
     }
 }

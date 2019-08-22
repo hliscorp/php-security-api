@@ -8,7 +8,7 @@ interface UserAuthorizationRoles
 {
     /**
      * Gets user roles
-     * 
+     *
      * @param mixed $userID
      * @return string[]
      */

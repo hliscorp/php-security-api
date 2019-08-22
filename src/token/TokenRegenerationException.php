@@ -1,9 +1,11 @@
 <?php
 namespace Lucinda\WebSecurity;
+
 /**
  * Exception thrown when token needs to be refreshed.
  */
-class TokenRegenerationException extends \Exception {
+class TokenRegenerationException extends \Exception
+{
     private $payload;
     
     /**
@@ -11,7 +13,8 @@ class TokenRegenerationException extends \Exception {
      *
      * @param mixed $payload
      */
-    public function setPayload($payload) {
+    public function setPayload($payload)
+    {
         $this->payload= $payload;
     }
     
@@ -20,7 +23,8 @@ class TokenRegenerationException extends \Exception {
      *
      * @return mixed
      */
-    public function getPayload() {
+    public function getPayload()
+    {
         return $this->payload;
     }
 }

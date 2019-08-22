@@ -1,11 +1,13 @@
 <?php
 namespace Lucinda\WebSecurity;
+
 require_once("AuthenticationResult.php");
 
 /**
  * Encapsulates authentication response via oauth2 driver
  */
-class OAuth2AuthenticationResult extends AuthenticationResult {
+class OAuth2AuthenticationResult extends AuthenticationResult
+{
     private $token;
     
     /**
@@ -13,8 +15,9 @@ class OAuth2AuthenticationResult extends AuthenticationResult {
      *
      * @param string $token
      */
-    public function setAccessToken($token) {
-    	$this->token = $token;
+    public function setAccessToken($token)
+    {
+        $this->token = $token;
     }
     
     /**
@@ -22,7 +25,8 @@ class OAuth2AuthenticationResult extends AuthenticationResult {
      *
      * @return string
      */
-    public function getAccessToken() {
-    	return $this->token;
+    public function getAccessToken()
+    {
+        return $this->token;
     }
 }
