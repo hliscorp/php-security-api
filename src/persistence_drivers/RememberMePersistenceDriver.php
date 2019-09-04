@@ -49,7 +49,7 @@ class RememberMePersistenceDriver implements PersistenceDriver
             return $this->token->decode($_COOKIE[$this->parameterName]);
         } catch (\Exception $e) {
             // delete bad cookie
-            setcookie($this->parameterName, "", 1);
+            setcookie($this->parameterName, "", time()+$this->expirationTime, "/", "", $this->isSecure, $this->isHttpOnly);
             setcookie($this->parameterName, false);
             unset($_COOKIE[$this->parameterName]);
             // rethrow exception, unless it's token expired
@@ -68,7 +68,7 @@ class RememberMePersistenceDriver implements PersistenceDriver
     public function save($userID)
     {
         $token = $this->token->encode($userID, $this->expirationTime);
-        setcookie($this->parameterName, $token, time()+$this->expirationTime, "", "", $this->isSecure, $this->isHttpOnly);
+        setcookie($this->parameterName, $token, time()+$this->expirationTime, "/", "", $this->isSecure, $this->isHttpOnly);
         $_COOKIE[$this->parameterName] = $token;
     }
     
@@ -78,7 +78,7 @@ class RememberMePersistenceDriver implements PersistenceDriver
      */
     public function clear()
     {
-        setcookie($this->parameterName, "", 1);
+        setcookie($this->parameterName, "", time()+$this->expirationTime, "/", "", $this->isSecure, $this->isHttpOnly);
         setcookie($this->parameterName, false);
         unset($_COOKIE[$this->parameterName]);
     }
