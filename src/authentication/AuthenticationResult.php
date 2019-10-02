@@ -11,6 +11,7 @@ class AuthenticationResult
     private $status;
     private $callbackURI;
     private $userID;
+    private $timePenalty;
 
     /**
      * Saves authentication result encapsulated by AuthenticationResultStatus enum
@@ -70,5 +71,25 @@ class AuthenticationResult
     public function getUserID()
     {
         return $this->userID;
+    }
+    
+    /**
+     * Sets number of seconds client will be banned from authenticating
+     * 
+     * @param integer $timePenalty
+     */
+    public function setTimePenalty($timePenalty)
+    {
+        $this->timePenalty = $timePenalty;
+    }
+    
+    /**
+     * Gets number of seconds client will be banned from authenticating
+     *
+     * @return integer|null
+     */
+    public function getTimePenalty()
+    {
+        return $this->timePenalty;
     }
 }
