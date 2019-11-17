@@ -1,7 +1,7 @@
 <?php
 namespace Lucinda\WebSecurity;
 
-require_once("SessionHijackException.php");
+require("SessionHijackException.php");
 require_once("PersistenceDriver.php");
 
 /**

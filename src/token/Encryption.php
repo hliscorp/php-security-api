@@ -1,7 +1,7 @@
 <?php
 namespace Lucinda\WebSecurity;
 
-require_once("EncryptionException.php");
+require("EncryptionException.php");
 
 /**
  * Encapsulates data encryption over openssl using AES-256 cypher.

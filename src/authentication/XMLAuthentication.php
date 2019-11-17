@@ -3,7 +3,7 @@ namespace Lucinda\WebSecurity;
 
 require_once("AuthenticationException.php");
 require_once("AuthenticationResult.php");
-require_once("UserAuthenticationXML.php");
+require("UserAuthenticationXML.php");
 
 /**
  * Encapsulates authentication via XML ACL

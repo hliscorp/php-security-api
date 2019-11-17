@@ -1,7 +1,7 @@
 <?php
 namespace Lucinda\WebSecurity;
 
-require_once("TokenPersistenceDriver.php");
+require("TokenPersistenceDriver.php");
 require_once(dirname(__DIR__)."/token/SynchronizerToken.php");
 
 /**
