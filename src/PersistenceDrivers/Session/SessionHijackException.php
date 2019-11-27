@@ -1,7 +1,7 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\PersistenceDrivers\Session;
 
-require_once(dirname(__DIR__)."/SecurityException.php");
+use Lucinda\WebSecurity\SecurityException;
 
 /**
  * Exception thrown when someone attempts to hack your site.

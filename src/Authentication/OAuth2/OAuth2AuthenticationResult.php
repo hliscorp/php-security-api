@@ -1,7 +1,7 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authentication\OAuth2;
 
-require_once("AuthenticationResult.php");
+use Lucinda\WebSecurity\Authentication\AuthenticationResult;
 
 /**
  * Encapsulates authentication response via oauth2 driver

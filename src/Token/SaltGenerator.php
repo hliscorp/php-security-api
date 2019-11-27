@@ -1,5 +1,6 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Token;
+
 
 /**
  * Generates a password of fixed length to use as salt when tokens are generated

@@ -1,10 +1,6 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Token;
 
-require("Encryption.php");
-require("TokenException.php");
-require("TokenExpiredException.php");
-require("TokenRegenerationException.php");
 
 /**
  * Encapsulates a SynchronizerToken, to be used for CSRF prevention or for stateless replacement of sessions.

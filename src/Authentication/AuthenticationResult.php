@@ -1,7 +1,6 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authentication;
 
-require_once("AuthenticationResultStatus.php");
 
 /**
  * Encapsulates authentication response

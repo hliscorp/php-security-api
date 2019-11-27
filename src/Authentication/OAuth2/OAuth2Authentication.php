@@ -1,11 +1,9 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authentication\OAuth2;
 
-require("OAuth2AuthenticationDAO.php");
-require_once("AuthenticationException.php");
-require("OAuth2AuthenticationResult.php");
-require("OAuth2Driver.php");
-require("OAuth2UserInformation.php");
+use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
+use Lucinda\WebSecurity\Authentication\AuthenticationException;
+use Lucinda\WebSecurity\Authentication\AuthenticationResultStatus;
 
 /**
  * Encapsulates authentication via an OAuth2 provider

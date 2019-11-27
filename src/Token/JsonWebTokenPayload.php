@@ -1,5 +1,6 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Token;
+
 
 /**
 * Encapsulates a JSON Web Token payload. More info:

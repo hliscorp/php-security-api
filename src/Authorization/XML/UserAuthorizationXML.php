@@ -1,7 +1,7 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authorization\XML;
 
-require_once("UserAuthorizationRoles.php");
+use Lucinda\WebSecurity\Authorization\AuthorizationException;
 
 /**
  * Encapsulates users authorization via <users> XML tag

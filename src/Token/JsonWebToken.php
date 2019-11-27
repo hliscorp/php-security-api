@@ -1,10 +1,6 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Token;
 
-require("JsonWebTokenPayload.php");
-require("TokenException.php");
-require("TokenExpiredException.php");
-require("TokenRegenerationException.php");
 
 /**
  * Encapsulates a JsonWebToken I/O.

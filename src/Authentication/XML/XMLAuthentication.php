@@ -1,9 +1,10 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authentication\XML;
 
-require_once("AuthenticationException.php");
-require_once("AuthenticationResult.php");
-require("UserAuthenticationXML.php");
+use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
+use Lucinda\WebSecurity\Authentication\AuthenticationException;
+use Lucinda\WebSecurity\Authentication\AuthenticationResult;
+use Lucinda\WebSecurity\Authentication\AuthenticationResultStatus;
 
 /**
  * Encapsulates authentication via XML ACL

@@ -1,5 +1,7 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\PersistenceDrivers\Session;
+
+use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
 
 /**
  * Encapsulates a driver that persists unique user identifier into sessions.

@@ -1,5 +1,6 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authentication;
+
 
 /**
  * Enum that contains all available authentication result statuses via following constants:

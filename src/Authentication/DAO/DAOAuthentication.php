@@ -1,9 +1,11 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authentication\DAO;
 
-require("UserAuthenticationDAO.php");
-require_once("AuthenticationException.php");
-require_once("AuthenticationResult.php");
+use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
+use Lucinda\WebSecurity\Authentication\AuthenticationException;
+use Lucinda\WebSecurity\Authentication\AuthenticationResult;
+use Lucinda\WebSecurity\PersistenceDrivers\RememberMe\RememberMePersistenceDriver;
+use Lucinda\WebSecurity\Authentication\AuthenticationResultStatus;
 
 /**
  * Encapsulates authentication via data sent by POST through a html form

@@ -1,7 +1,7 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\PersistenceDrivers\Token;
 
-require_once("PersistenceDriver.php");
+use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
 
 /**
  * Encapsulates a driver that persists unique user identifier into a crypted self-regenerating token that

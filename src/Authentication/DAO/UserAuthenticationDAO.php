@@ -1,5 +1,6 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authentication\DAO;
+
 
 /**
  * Defines blueprints for a DAO that forwards user-password authentication to database.

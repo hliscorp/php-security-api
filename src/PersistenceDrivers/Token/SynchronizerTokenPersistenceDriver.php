@@ -1,8 +1,9 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\PersistenceDrivers\Token;
 
-require("TokenPersistenceDriver.php");
-require_once(dirname(__DIR__)."/token/SynchronizerToken.php");
+use Lucinda\WebSecurity\Token\SynchronizerToken;
+use Lucinda\WebSecurity\Token\TokenRegenerationException;
+use Lucinda\WebSecurity\Token\TokenExpiredException;
 
 /**
  * Encapsulates a PersistenceDriver that employs SynchronizerToken to authenticate users.

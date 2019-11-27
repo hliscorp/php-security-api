@@ -1,5 +1,7 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Token;
+
+use Lucinda\WebSecurity\SecurityException;
 
 require_once(dirname(__DIR__)."/SecurityException.php");
 

@@ -1,5 +1,7 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authentication\XML;
+
+use Lucinda\WebSecurity\Authentication\AuthenticationException;
 
 /**
  * Encapsulates authentication via <users> XML tag

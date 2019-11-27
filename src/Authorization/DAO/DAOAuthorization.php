@@ -1,9 +1,8 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authorization\DAO;
 
-require_once("AuthorizationResult.php");
-require("PageAuthorizationDAO.php");
-require("UserAuthorizationDAO.php");
+use Lucinda\WebSecurity\Authorization\AuthorizationResult;
+use Lucinda\WebSecurity\Authorization\AuthorizationResultStatus;
 
 /**
  * Encapsulates request authorization via DAOs.

@@ -1,5 +1,7 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authorization\XML;
+
+use Lucinda\WebSecurity\Authorization\AuthorizationException;
 
 /**
  * Encapsulates route authorization via <routes> XML tag

@@ -1,7 +1,6 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authorization;
 
-require_once("AuthorizationResultStatus.php");
 
 /**
  * Encapsulates request authorization results.

@@ -1,10 +1,9 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authorization\XML;
 
-require_once("AuthorizationResult.php");
-require("AuthorizationException.php");
-require("PageAuthorizationXML.php");
-require("UserAuthorizationXML.php");
+use Lucinda\WebSecurity\Authorization\AuthorizationException;
+use Lucinda\WebSecurity\Authorization\AuthorizationResult;
+use Lucinda\WebSecurity\Authorization\AuthorizationResultStatus;
 
 /**
  * Encapsulates request authorization via XML that must have routes configured as:

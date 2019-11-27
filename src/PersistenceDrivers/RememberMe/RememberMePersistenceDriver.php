@@ -1,8 +1,9 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\PersistenceDrivers\RememberMe;
 
-require_once("PersistenceDriver.php");
-require_once(dirname(__DIR__)."/token/SynchronizerToken.php");
+use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
+use Lucinda\WebSecurity\Token\SynchronizerToken;
+use Lucinda\WebSecurity\Token\TokenExpiredException;
 
 /**
  * Encapsulates a driver that persists unique user identifier into a crypted "remember me" cookie variable.

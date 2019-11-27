@@ -1,7 +1,6 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Token;
 
-require("EncryptionException.php");
 
 /**
  * Encapsulates data encryption over openssl using AES-256 cypher.

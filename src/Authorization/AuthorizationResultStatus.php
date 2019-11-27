@@ -1,5 +1,6 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\Authorization;
+
 
 /**
  * Enum that contains all available authorization statuses via following constants:

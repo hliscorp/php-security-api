@@ -1,8 +1,10 @@
 <?php
-namespace Lucinda\WebSecurity;
+namespace Lucinda\WebSecurity\PersistenceDrivers\Token;
 
-require("TokenPersistenceDriver.php");
-require(dirname(__DIR__)."/token/JsonWebToken.php");
+use Lucinda\WebSecurity\Token\JsonWebToken;
+use Lucinda\WebSecurity\Token\TokenRegenerationException;
+use Lucinda\WebSecurity\Token\TokenExpiredException;
+use Lucinda\WebSecurity\Token\JsonWebTokenPayload;
 
 /**
  * Encapsulates a PersistenceDriver that uses JsonWebToken to authenticate users.
