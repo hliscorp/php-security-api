@@ -1,12 +1,10 @@
 <?php
 namespace Lucinda\WebSecurity\PersistenceDrivers\Session;
 
-use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
-
 /**
  * Encapsulates a driver that persists unique user identifier into sessions.
  */
-class SessionPersistenceDriver implements PersistenceDriver
+class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver
 {
     private $current_ip;
     
@@ -64,7 +62,7 @@ class SessionPersistenceDriver implements PersistenceDriver
         if ($this->current_ip!=$_SESSION["ip"]) {
             session_regenerate_id(true);
             $_SESSION = array();
-            throw new SessionHijackException("Session hijacking attempt!");
+            throw new HijackException("Session hijacking attempt!");
         }
         
         // session fixation prevention: if session is accessed after expiration time, it is invalidated

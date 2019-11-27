@@ -5,18 +5,18 @@ namespace Lucinda\WebSecurity\Authorization;
 /**
  * Encapsulates request authorization results.
  */
-class AuthorizationResult
+class Result
 {
     private $status;
     private $callbackURI;
 
     /**
-     * Saves authorization result encapsulated by AuthorizationResultStatus enum along with callback URI
+     * Saves authorization result encapsulated by ResultStatus enum along with callback URI
      *
-     * @param AuthorizationResultStatus $status
+     * @param ResultStatus $status
      * @param string $callbackURI
      */
-    public function __construct(AuthorizationResultStatus $status, string $callbackURI): void
+    public function __construct(ResultStatus $status, string $callbackURI): void
     {
         $this->status = $status;
         $this->callbackURI = $callbackURI;
@@ -25,9 +25,9 @@ class AuthorizationResult
     /**
      * Gets authorization status.
      *
-     * @return AuthorizationResultStatus
+     * @return ResultStatus
      */
-    public function getStatus(): AuthorizationResultStatus
+    public function getStatus(): ResultStatus
     {
         return $this->status;
     }

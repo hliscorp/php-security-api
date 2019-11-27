@@ -43,9 +43,9 @@ class SynchronizerToken
      *
      * @param string $token Encrypted token.
      * @param integer $maximumLifetime Time by which token should be regenerated.
-     * @throws TokenException If token fails validations.
-     * @throws TokenRegenerationException If token needs to be refreshed
-     * @throws TokenExpiredException If token expired beyond regeneration threshold.
+     * @throws Exception If token fails validations.
+     * @throws RegenerationException If token needs to be refreshed
+     * @throws ExpiredException If token expired beyond regeneration threshold.
      * @throws EncryptionException If decryption of token fails.
      * @return mixed Unique user identifier.
      */
@@ -57,14 +57,14 @@ class SynchronizerToken
         
         // validate token
         if ($this->ip!=$parts["ip"]) {
-            throw new TokenException("Token was issued from a different ip!");
+            throw new Exception("Token was issued from a different ip!");
         }
         $currentTime = time();
         if ($currentTime > $parts["expiration"]) {
-            throw new TokenExpiredException("Token has expired!");
+            throw new ExpiredException("Token has expired!");
         }
         if ($maximumLifetime && ($currentTime-$parts["time"])>$maximumLifetime) {
-            $tre = new TokenRegenerationException("Token needs to be regenerated!");
+            $tre = new RegenerationException("Token needs to be regenerated!");
             $tre->setPayload($parts["ip"]);
             throw $tre;
         }

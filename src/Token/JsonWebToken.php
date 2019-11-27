@@ -39,35 +39,35 @@ class JsonWebToken
      *
      * @param string $token JWT token
      * @param integer $maximumLifetime Maximum lifetime of a JsonWebToken
-     * @throws TokenException When token fails validations.
-     * @throws TokenExpiredException When token fails validations.
-     * @throws TokenRegenerationException When token needs to be regenerated.
+     * @throws Exception When token fails validations.
+     * @throws ExpiredException When token fails validations.
+     * @throws RegenerationException When token needs to be regenerated.
      * @return JsonWebTokenPayload Payload retrieved from json web token.
      */
     public function decode(string $token, int $maximumLifetime=0): JsonWebTokenPayload
     {
         $parts = explode(".", $token);
         if (sizeof($parts)!=3) {
-            throw new TokenException("Token size is invalid!");
+            throw new Exception("Token size is invalid!");
         }
         
         // check signature
         $unsignedToken = $parts[0].".".$parts[1];
         if (base64_decode($parts[2])!=$this->getSignature($this->salt, $unsignedToken)) {
-            throw new TokenException("Token decoding failed!");
+            throw new Exception("Token decoding failed!");
         }
         
         // validate times
         $payload = json_decode(base64_decode($parts[1]), true);
         $currentTime = time();
         if (isset($payload["nbf"]) && $currentTime<$payload["nbf"]) {
-            throw new TokenExpiredException("Token not started!");
+            throw new ExpiredException("Token not started!");
         }
         if (isset($payload["exp"]) && $currentTime>$payload["exp"]) {
-            throw new TokenExpiredException("Token has expired!");
+            throw new ExpiredException("Token has expired!");
         }
         if ($maximumLifetime && isset($payload["nbf"]) && ($currentTime-$payload["nbf"])>$maximumLifetime) {
-            $exception = new TokenRegenerationException("Token needs to be regenerated!");
+            $exception = new RegenerationException("Token needs to be regenerated!");
             $exception->setPayload(new JsonWebTokenPayload($payload));
             throw $exception;
         }

@@ -1,12 +1,11 @@
 <?php
 namespace Lucinda\WebSecurity\Authentication\OAuth2;
 
-use Lucinda\WebSecurity\Authentication\AuthenticationResult;
 
 /**
  * Encapsulates authentication response via oauth2 driver
  */
-class OAuth2AuthenticationResult extends AuthenticationResult
+class AuthenticationResult extends \Lucinda\WebSecurity\Authentication\Result
 {
     private $token;
     

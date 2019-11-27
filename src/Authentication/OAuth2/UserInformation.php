@@ -5,7 +5,7 @@ namespace Lucinda\WebSecurity\Authentication\OAuth2;
 /**
  * Encapsulates abstract information about remote logged in user on OAuth2 provider.
  */
-interface OAuth2UserInformation
+interface UserInformation
 {
     /**
      * Gets remote user id.

@@ -1,12 +1,13 @@
 <?php
 namespace Lucinda\WebSecurity\Authorization\XML;
 
-use Lucinda\WebSecurity\Authorization\AuthorizationException;
+use Lucinda\WebSecurity\Authorization\Exception;
+use Lucinda\WebSecurity\Authorization\UserRoles;
 
 /**
  * Encapsulates users authorization via <users> XML tag
  */
-class UserAuthorizationXML implements UserAuthorizationRoles
+class UserAuthorizationXML implements UserRoles
 {
     const ROLE_GUEST = "GUEST";
     
@@ -26,7 +27,7 @@ class UserAuthorizationXML implements UserAuthorizationRoles
      * Gets user roles from XML
      *
      * @param integer $userID
-     * @throws AuthorizationException
+     * @throws Exception
      * @return string[]
      */
     public function getRoles(int $userID): array
@@ -42,7 +43,7 @@ class UserAuthorizationXML implements UserAuthorizationRoles
                 $userIDTemp = (string) $info["id"];
                 $roles = (string) $info["roles"];
                 if (!$userIDTemp || !$roles) {
-                    throw new AuthorizationException("XML tag users > user requires parameters: id, roles");
+                    throw new Exception("XML tag users > user requires parameters: id, roles");
                 }
                 if ($userIDTemp == $userID) {
                     $tmp = explode(",", $roles);
@@ -52,7 +53,7 @@ class UserAuthorizationXML implements UserAuthorizationRoles
                 }
             }
             if (empty($userRoles)) {
-                throw new AuthorizationException("User not found in XML!");
+                throw new Exception("User not found in XML!");
             }
         } else {
             $userRoles[] = self::ROLE_GUEST;

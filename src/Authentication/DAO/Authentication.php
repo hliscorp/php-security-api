@@ -2,15 +2,15 @@
 namespace Lucinda\WebSecurity\Authentication\DAO;
 
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
-use Lucinda\WebSecurity\Authentication\AuthenticationException;
-use Lucinda\WebSecurity\Authentication\AuthenticationResult;
-use Lucinda\WebSecurity\PersistenceDrivers\RememberMe\RememberMePersistenceDriver;
-use Lucinda\WebSecurity\Authentication\AuthenticationResultStatus;
+use Lucinda\WebSecurity\Authentication\Exception;
+use Lucinda\WebSecurity\Authentication\Result;
+use Lucinda\WebSecurity\PersistenceDrivers\RememberMe\PersistenceDriver as RememberMePersistenceDriver;
+use Lucinda\WebSecurity\Authentication\ResultStatus;
 
 /**
  * Encapsulates authentication via data sent by POST through a html form
  */
-class DAOAuthentication
+class Authentication
 {
     private $dao;
     private $persistenceDrivers;
@@ -20,14 +20,14 @@ class DAOAuthentication
      *
      * @param UserAuthenticationDAO $dao Forwards operations to database via a DAO.
      * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that allow authenticated state to persist between requests.
-     * @throws AuthenticationException If one of persistenceDrivers entries is not a PersistentDriver
+     * @throws Exception If one of persistenceDrivers entries is not a PersistentDriver
      */
     public function __construct(UserAuthenticationDAO $dao, array $persistenceDrivers = array()): void
     {
         // check argument that it's instance of PersistenceDriver
         foreach ($persistenceDrivers as $persistentDriver) {
             if (!($persistentDriver instanceof PersistenceDriver)) {
-                throw new AuthenticationException("Items must be instanceof PersistenceDriver");
+                throw new Exception("Items must be instanceof PersistenceDriver");
             }
         }
         
@@ -44,10 +44,10 @@ class DAOAuthentication
      * @param string $username Value of user name
      * @param string $password Value of user password
      * @param boolean $rememberMe Value of remember me option (if any)
-     * @return AuthenticationResult Encapsulates result of login attempt.
-     * @throws AuthenticationException If POST parameters are invalid.
+     * @return Result Encapsulates result of login attempt.
+     * @throws Exception If POST parameters are invalid.
      */
-    public function login(string $username, string $password, bool $rememberMe=null): AuthenticationResult
+    public function login(string $username, string $password, bool $rememberMe=null): Result
     {
         // do no persist into RememberMePersistenceDriver unless "remember me" is active
         if (!$rememberMe) {
@@ -62,7 +62,7 @@ class DAOAuthentication
         // perform login
         $userID = $this->dao->login($username, $password);
         if (empty($userID)) {
-            $result = new AuthenticationResult(AuthenticationResultStatus::LOGIN_FAILED);
+            $result = new Result(ResultStatus::LOGIN_FAILED);
             return $result;
         } else {
             // saves in persistence drivers
@@ -70,7 +70,7 @@ class DAOAuthentication
                 $persistenceDriver->save($userID);
             }
             // returns result
-            $result = new AuthenticationResult(AuthenticationResultStatus::LOGIN_OK);
+            $result = new Result(ResultStatus::LOGIN_OK);
             $result->setUserID($userID);
             return $result;
         }
@@ -81,9 +81,9 @@ class DAOAuthentication
      * - informs DAO that user has logged out
      * - removes user id from persistence drivers (if any)
      *
-     * @return AuthenticationResult
+     * @return Result
      */
-    public function logout(): AuthenticationResult
+    public function logout(): Result
     {
         // detect user_id from persistence drivers
         $userID = null;
@@ -94,7 +94,7 @@ class DAOAuthentication
             }
         }
         if (!$userID) {
-            $result = new AuthenticationResult(AuthenticationResultStatus::LOGOUT_FAILED);
+            $result = new Result(ResultStatus::LOGOUT_FAILED);
             return $result;
         } else {
             // should throw an exception if user is not already logged in
@@ -106,7 +106,7 @@ class DAOAuthentication
             }
             
             // returns result
-            $result = new AuthenticationResult(AuthenticationResultStatus::LOGOUT_OK);
+            $result = new Result(ResultStatus::LOGOUT_OK);
             return $result;
         }
     }

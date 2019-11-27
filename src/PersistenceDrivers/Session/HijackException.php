@@ -1,11 +1,11 @@
 <?php
 namespace Lucinda\WebSecurity\PersistenceDrivers\Session;
 
-use Lucinda\WebSecurity\SecurityException;
+use Lucinda\WebSecurity\Exception;
 
 /**
  * Exception thrown when someone attempts to hack your site.
  */
-class SessionHijackException extends SecurityException
+class HijackException extends Exception
 {
 }

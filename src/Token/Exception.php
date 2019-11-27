@@ -1,11 +1,11 @@
 <?php
 namespace Lucinda\WebSecurity\Token;
 
-use Lucinda\WebSecurity\SecurityException;
+use Lucinda\WebSecurity\Exception;
 
 /**
  * Exception thrown when token fails validation.
  */
-class TokenException extends SecurityException
+class Exception extends Exception
 {
 }

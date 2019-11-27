@@ -1,9 +1,10 @@
 <?php
 namespace Lucinda\WebSecurity\Authorization\XML;
 
-use Lucinda\WebSecurity\Authorization\AuthorizationException;
-use Lucinda\WebSecurity\Authorization\AuthorizationResult;
-use Lucinda\WebSecurity\Authorization\AuthorizationResultStatus;
+use Lucinda\WebSecurity\Authorization\Exception;
+use Lucinda\WebSecurity\Authorization\Result;
+use Lucinda\WebSecurity\Authorization\ResultStatus;
+use Lucinda\WebSecurity\Authorization\UserRoles;
 
 /**
  * Encapsulates request authorization via XML that must have routes configured as:
@@ -12,7 +13,7 @@ use Lucinda\WebSecurity\Authorization\AuthorizationResultStatus;
  * 	...
  * </routes>
  */
-class XMLAuthorization
+class Authorization
 {
     private $loggedInFailureCallback;
     private $loggedOutFailureCallback;
@@ -35,11 +36,11 @@ class XMLAuthorization
      * @param \SimpleXMLElement $xml
      * @param string $routeToAuthorize
      * @param integer $userID
-     * @param UserAuthorizationRoles $userAuthorizationRoles
-     * @throws AuthorizationException If route is misconfigured.
-     * @return AuthorizationResult
+     * @param UserRoles $userAuthorizationRoles
+     * @throws Exception If route is misconfigured.
+     * @return Result
      */
-    public function authorize(\SimpleXMLElement $xml, string $routeToAuthorize, int $userID=0, UserAuthorizationRoles $userAuthorizationRoles): AuthorizationResult
+    public function authorize(\SimpleXMLElement $xml, string $routeToAuthorize, int $userID=0, UserRoles $userAuthorizationRoles): Result
     {
         $status = 0;
         $callbackURI = "";
@@ -54,7 +55,7 @@ class XMLAuthorization
         $pageDAO = new PageAuthorizationXML($xml);
         $pageRoles = $pageDAO->getRoles($routeToAuthorize);
         if (empty($pageRoles)) {
-            $status = AuthorizationResultStatus::NOT_FOUND;
+            $status = ResultStatus::NOT_FOUND;
             $callbackURI = ($isUserGuest?$this->loggedOutFailureCallback:$this->loggedInFailureCallback);
         } else {
             // compare user roles to page roles
@@ -68,16 +69,16 @@ class XMLAuthorization
             
             // now perform rights check
             if ($allowed) {
-                $status = AuthorizationResultStatus::OK;
+                $status = ResultStatus::OK;
             } elseif ($isUserGuest) {
-                $status = AuthorizationResultStatus::UNAUTHORIZED;
+                $status = ResultStatus::UNAUTHORIZED;
                 $callbackURI = $this->loggedOutFailureCallback;
             } else {
-                $status = AuthorizationResultStatus::FORBIDDEN;
+                $status = ResultStatus::FORBIDDEN;
                 $callbackURI = $this->loggedInFailureCallback;
             }
         }
         
-        return new AuthorizationResult($status, $callbackURI);
+        return new Result($status, $callbackURI);
     }
 }

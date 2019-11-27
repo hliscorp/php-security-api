@@ -1,13 +1,12 @@
 <?php
 namespace Lucinda\WebSecurity\PersistenceDrivers\Token;
 
-use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
 
 /**
  * Encapsulates a driver that persists unique user identifier into a crypted self-regenerating token that
  * must be sent by clients via Authorization header of bearer type.
  */
-abstract class TokenPersistenceDriver implements PersistenceDriver
+abstract class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver
 {
     protected $accessToken;
     

@@ -5,7 +5,7 @@ namespace Lucinda\WebSecurity\Token;
 /**
  * Exception thrown when token needs to be refreshed.
  */
-class TokenRegenerationException extends \Exception
+class RegenerationException extends \Exception
 {
     private $payload;
     

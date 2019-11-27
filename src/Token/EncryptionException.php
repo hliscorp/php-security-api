@@ -1,13 +1,11 @@
 <?php
 namespace Lucinda\WebSecurity\Token;
 
-use Lucinda\WebSecurity\SecurityException;
-
-require_once(dirname(__DIR__)."/SecurityException.php");
+use Lucinda\WebSecurity\Exception;
 
 /**
  * Exception thrown when an attempt is made to encrypt/decrypt an invalid token.
  */
-class EncryptionException extends SecurityException
+class EncryptionException extends Exception
 {
 }

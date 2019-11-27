@@ -1,7 +1,7 @@
 <?php
 namespace Lucinda\WebSecurity\Authentication\XML;
 
-use Lucinda\WebSecurity\Authentication\AuthenticationException;
+use Lucinda\WebSecurity\Authentication\Exception;
 
 /**
  * Encapsulates authentication via <users> XML tag
@@ -25,17 +25,17 @@ class UserAuthenticationXML
      *
      * @param string $username
      * @param string $password
-     * @throws AuthenticationException
-     * @return NULL|string
+     * @throws Exception
+     * @return string
      */
-    public function login(string $username, string $password): NULL|string
+    public function login(string $username, string $password): string
     {
         $userID = null;
         
         // extract user id
         $tmp = (array) $this->xml->users;
         if (empty($tmp)) {
-            throw new AuthenticationException("XML tag users not defined!");
+            throw new Exception("XML tag users not defined!");
         }
         $tmp = $tmp["user"];
         if (!is_array($tmp)) {
@@ -45,12 +45,12 @@ class UserAuthenticationXML
             $currentUserName = (string) $info['username'];
             $currentPassword = (string) $info['password'];
             if (!$currentUserName || !$currentPassword) {
-                throw new AuthenticationException("XML tag users > user requires parameters: username, password");
+                throw new Exception("XML tag users > user requires parameters: username, password");
             }
             if ($username == $currentUserName && password_verify($password, $currentPassword)) {
                 $userID = (string) $info["id"];
                 if (!$userID) {
-                    throw new AuthenticationException("XML tag users / user requires parameter: id");
+                    throw new Exception("XML tag users / user requires parameter: id");
                 }
             }
         }

@@ -1,11 +1,11 @@
 <?php
-namespace Lucinda\WebSecurity\Authorization\XML;
+namespace Lucinda\WebSecurity\Authorization;
 
 
 /**
  * Defines blueprints for user roles getting.
  */
-interface UserAuthorizationRoles
+interface UserRoles
 {
     /**
      * Gets user roles

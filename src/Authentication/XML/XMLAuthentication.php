@@ -2,9 +2,9 @@
 namespace Lucinda\WebSecurity\Authentication\XML;
 
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
-use Lucinda\WebSecurity\Authentication\AuthenticationException;
-use Lucinda\WebSecurity\Authentication\AuthenticationResult;
-use Lucinda\WebSecurity\Authentication\AuthenticationResultStatus;
+use Lucinda\WebSecurity\Authentication\Exception;
+use Lucinda\WebSecurity\Authentication\Result;
+use Lucinda\WebSecurity\Authentication\ResultStatus;
 
 /**
  * Encapsulates authentication via XML ACL
@@ -19,14 +19,14 @@ class XMLAuthentication
      *
      * @param \SimpleXMLElement $xml
      * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that allow authenticated state to persist between requests.
-     * @throws AuthenticationException If one of persistenceDrivers entries is not a PersistentDriver
+     * @throws Exception If one of persistenceDrivers entries is not a PersistentDriver
      */
     public function __construct(\SimpleXMLElement $xml, array $persistenceDrivers = array()): void
     {
         // check argument that it's instance of PersistenceDriver
         foreach ($persistenceDrivers as $persistentDriver) {
             if (!($persistentDriver instanceof PersistenceDriver)) {
-                throw new AuthenticationException("Items must be instanceof PersistenceDriver");
+                throw new Exception("Items must be instanceof PersistenceDriver");
             }
         }
         
@@ -42,15 +42,15 @@ class XMLAuthentication
      *
      * @param string $username Value of user name
      * @param string $password Value of user password
-     * @return AuthenticationResult Encapsulates result of login attempt.
-     * @throws AuthenticationException If POST parameters are invalid.
+     * @return Result Encapsulates result of login attempt.
+     * @throws Exception If POST parameters are invalid.
      */
-    public function login(string $username, string $password): AuthenticationResult
+    public function login(string $username, string $password): Result
     {
         $dao = new UserAuthenticationXML($this->xml);
         $userID = $dao->login($username, $password);
         if (empty($userID)) {
-            $result = new AuthenticationResult(AuthenticationResultStatus::LOGIN_FAILED);
+            $result = new Result(ResultStatus::LOGIN_FAILED);
             return $result;
         } else {
             // saves in persistence drivers
@@ -58,7 +58,7 @@ class XMLAuthentication
                 $persistenceDriver->save($userID);
             }
             // returns result
-            $result = new AuthenticationResult(AuthenticationResultStatus::LOGIN_OK);
+            $result = new Result(ResultStatus::LOGIN_OK);
             $result->setUserID($userID);
             return $result;
         }
@@ -68,9 +68,9 @@ class XMLAuthentication
      * Performs a logout operation:
      * - removes user id from persistence drivers (if any)
      *
-     * @return AuthenticationResult
+     * @return Result
      */
-    public function logout(): AuthenticationResult
+    public function logout(): Result
     {
         // detect user_id from persistence drivers
         $userID = null;
@@ -81,7 +81,7 @@ class XMLAuthentication
             }
         }
         if (!$userID) {
-            $result = new AuthenticationResult(AuthenticationResultStatus::LOGOUT_FAILED);
+            $result = new Result(ResultStatus::LOGOUT_FAILED);
             return $result;
         } else {
             // clears data from persistence drivers
@@ -90,7 +90,7 @@ class XMLAuthentication
             }
             
             // returns result
-            $result = new AuthenticationResult(AuthenticationResultStatus::LOGOUT_OK);
+            $result = new Result(ResultStatus::LOGOUT_OK);
             return $result;
         }
     }

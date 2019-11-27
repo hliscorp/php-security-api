@@ -2,14 +2,14 @@
 namespace Lucinda\WebSecurity\PersistenceDrivers\Token;
 
 use Lucinda\WebSecurity\Token\JsonWebToken;
-use Lucinda\WebSecurity\Token\TokenRegenerationException;
-use Lucinda\WebSecurity\Token\TokenExpiredException;
+use Lucinda\WebSecurity\Token\RegenerationException;
+use Lucinda\WebSecurity\Token\ExpiredException;
 use Lucinda\WebSecurity\Token\JsonWebTokenPayload;
 
 /**
  * Encapsulates a PersistenceDriver that uses JsonWebToken to authenticate users.
  */
-class JsonWebTokenPersistenceDriver extends TokenPersistenceDriver
+class JsonWebTokenPersistenceDriver extends PersistenceDriver
 {
     private $expirationTime;
     private $regenerationTime;
@@ -45,10 +45,10 @@ class JsonWebTokenPersistenceDriver extends TokenPersistenceDriver
         try {
             $payload = $this->tokenDriver->decode($this->accessToken, $this->regenerationTime);
             $userID = $payload->getApplicationId();
-        } catch (TokenRegenerationException $e) {
+        } catch (RegenerationException $e) {
             $userID = $e->getPayload()->getApplicationId();
             $this->save($userID);
-        } catch (TokenExpiredException $e) {
+        } catch (ExpiredException $e) {
             $this->accessToken = null;
         }
         return $userID;

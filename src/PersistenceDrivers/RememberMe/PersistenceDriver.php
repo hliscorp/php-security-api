@@ -1,14 +1,13 @@
 <?php
 namespace Lucinda\WebSecurity\PersistenceDrivers\RememberMe;
 
-use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
 use Lucinda\WebSecurity\Token\SynchronizerToken;
-use Lucinda\WebSecurity\Token\TokenExpiredException;
+use Lucinda\WebSecurity\Token\ExpiredException;
 
 /**
  * Encapsulates a driver that persists unique user identifier into a crypted "remember me" cookie variable.
  */
-class RememberMePersistenceDriver implements PersistenceDriver
+class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver
 {
     private $token;
     
@@ -55,7 +54,7 @@ class RememberMePersistenceDriver implements PersistenceDriver
             setcookie($this->parameterName, false);
             unset($_COOKIE[$this->parameterName]);
             // rethrow exception, unless it's token expired
-            if ($e instanceof TokenExpiredException) {
+            if ($e instanceof ExpiredException) {
                 return;
             } else {
                 throw $e;

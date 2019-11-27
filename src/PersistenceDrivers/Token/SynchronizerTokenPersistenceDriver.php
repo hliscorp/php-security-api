@@ -2,13 +2,13 @@
 namespace Lucinda\WebSecurity\PersistenceDrivers\Token;
 
 use Lucinda\WebSecurity\Token\SynchronizerToken;
-use Lucinda\WebSecurity\Token\TokenRegenerationException;
-use Lucinda\WebSecurity\Token\TokenExpiredException;
+use Lucinda\WebSecurity\Token\RegenerationException;
+use Lucinda\WebSecurity\Token\ExpiredException;
 
 /**
  * Encapsulates a PersistenceDriver that employs SynchronizerToken to authenticate users.
  */
-class SynchronizerTokenPersistenceDriver extends TokenPersistenceDriver
+class SynchronizerTokenPersistenceDriver extends PersistenceDriver
 {
     private $expirationTime;
     private $regenerationTime;
@@ -44,10 +44,10 @@ class SynchronizerTokenPersistenceDriver extends TokenPersistenceDriver
         // decode token
         try {
             $userID = $this->tokenDriver->decode($this->accessToken, $this->regenerationTime);
-        } catch (TokenRegenerationException $e) {
+        } catch (RegenerationException $e) {
             $userID = $e->getPayload();
             $this->accessToken = $this->tokenDriver->encode($userID, $this->expirationTime);
-        } catch (TokenExpiredException $e) {
+        } catch (ExpiredException $e) {
             $this->accessToken = null;
             return;
         }

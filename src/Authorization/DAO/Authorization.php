@@ -1,13 +1,13 @@
 <?php
 namespace Lucinda\WebSecurity\Authorization\DAO;
 
-use Lucinda\WebSecurity\Authorization\AuthorizationResult;
-use Lucinda\WebSecurity\Authorization\AuthorizationResultStatus;
+use Lucinda\WebSecurity\Authorization\Result;
+use Lucinda\WebSecurity\Authorization\ResultStatus;
 
 /**
  * Encapsulates request authorization via DAOs.
  */
-class DAOAuthorization
+class Authorization
 {
     private $loggedInFailureCallback;
     private $loggedOutFailureCallback;
@@ -30,9 +30,9 @@ class DAOAuthorization
      * @param PageAuthorizationDAO $page
      * @param UserAuthorizationDAO $user
      * @param string $httpRequestMethod
-     * @return AuthorizationResult
+     * @return Result
      */
-    public function authorize(PageAuthorizationDAO $page, UserAuthorizationDAO $user, string $httpRequestMethod): AuthorizationResult
+    public function authorize(PageAuthorizationDAO $page, UserAuthorizationDAO $user, string $httpRequestMethod): Result
     {
         $status = 0;
         $callbackURI = "";
@@ -41,18 +41,18 @@ class DAOAuthorization
                 if ($user->getID()) {
                     if (!$user->isAllowed($page, $httpRequestMethod)) {
                         $callbackURI = $this->loggedInFailureCallback;
-                        $status = AuthorizationResultStatus::FORBIDDEN;
+                        $status = ResultStatus::FORBIDDEN;
                     } else {
                         // ok: do nothing
-                        $status = AuthorizationResultStatus::OK;
+                        $status = ResultStatus::OK;
                     }
                 } else {
                     $callbackURI = $this->loggedOutFailureCallback;
-                    $status = AuthorizationResultStatus::UNAUTHORIZED;
+                    $status = ResultStatus::UNAUTHORIZED;
                 }
             } else {
                 // do nothing: it is allowed by default to display public panels
-                $status = AuthorizationResultStatus::OK;
+                $status = ResultStatus::OK;
             }
         } else {
             if ($user->getID()) {
@@ -60,8 +60,8 @@ class DAOAuthorization
             } else {
                 $callbackURI = $this->loggedOutFailureCallback;
             }
-            $status = AuthorizationResultStatus::NOT_FOUND;
+            $status = ResultStatus::NOT_FOUND;
         }
-        return new AuthorizationResult($status, $callbackURI);
+        return new Result($status, $callbackURI);
     }
 }

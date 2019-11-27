@@ -10,7 +10,7 @@ namespace Lucinda\WebSecurity\Authentication;
  * - LOGOUT_FAILED: logout was unsuccessful (eg: user wasn't logged in)
  * - DEFERRED: login was deferred to a third party provider (eg: oauth2)
  */
-interface AuthenticationResultStatus
+interface ResultStatus
 {
     const LOGIN_OK = 1;
     const LOGIN_FAILED = 2;

@@ -5,7 +5,7 @@ namespace Lucinda\WebSecurity\Authentication;
 /**
  * Encapsulates authentication response
  */
-class AuthenticationResult
+class Result
 {
     private $status;
     private $callbackURI;
@@ -13,11 +13,11 @@ class AuthenticationResult
     private $timePenalty;
 
     /**
-     * Saves authentication result encapsulated by AuthenticationResultStatus enum
+     * Saves authentication result encapsulated by ResultStatus enum
      *
-     * @param AuthenticationResultStatus $status
+     * @param ResultStatus $status
      */
-    public function __construct(AuthenticationResultStatus $status): void
+    public function __construct(ResultStatus $status): void
     {
         $this->status = $status;
     }
@@ -25,9 +25,9 @@ class AuthenticationResult
     /**
      * Gets authentication status.
      *
-     * @return AuthenticationResultStatus
+     * @return ResultStatus
      */
-    public function getStatus(): AuthenticationResultStatus
+    public function getStatus(): ResultStatus
     {
         return $this->status;
     }
