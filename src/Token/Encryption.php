@@ -1,7 +1,6 @@
 <?php
 namespace Lucinda\WebSecurity\Token;
 
-
 /**
  * Encapsulates data encryption over openssl using AES-256 cypher.
  */

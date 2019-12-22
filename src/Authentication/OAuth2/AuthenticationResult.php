@@ -1,7 +1,6 @@
 <?php
 namespace Lucinda\WebSecurity\Authentication\OAuth2;
 
-
 /**
  * Encapsulates authentication response via oauth2 driver
  */

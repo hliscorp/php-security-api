@@ -1,7 +1,6 @@
 <?php
 namespace Lucinda\WebSecurity\Token;
 
-
 /**
  * Encapsulates a JsonWebToken I/O.
  */

@@ -1,7 +1,6 @@
 <?php
 namespace Lucinda\WebSecurity\PersistenceDrivers\Token;
 
-
 /**
  * Encapsulates a driver that persists unique user identifier into a crypted self-regenerating token that
  * must be sent by clients via Authorization header of bearer type.

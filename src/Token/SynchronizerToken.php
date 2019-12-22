@@ -1,7 +1,6 @@
 <?php
 namespace Lucinda\WebSecurity\Token;
 
-
 /**
  * Encapsulates a SynchronizerToken, to be used for CSRF prevention or for stateless replacement of sessions.
  */

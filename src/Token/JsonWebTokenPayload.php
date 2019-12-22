@@ -1,7 +1,6 @@
 <?php
 namespace Lucinda\WebSecurity\Token;
 
-
 /**
 * Encapsulates a JSON Web Token payload. More info:
 * https://azure.microsoft.com/en-us/documentation/articles/active-directory-token-and-claims/

@@ -1,7 +1,6 @@
 <?php
 namespace Lucinda\WebSecurity\Authentication;
 
-
 /**
  * Encapsulates authentication response
  */
@@ -74,7 +73,7 @@ class Result
     
     /**
      * Sets number of seconds client will be banned from authenticating
-     * 
+     *
      * @param integer $timePenalty
      */
     public function setTimePenalty(int $timePenalty): void

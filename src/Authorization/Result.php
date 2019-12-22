@@ -1,7 +1,6 @@
 <?php
 namespace Lucinda\WebSecurity\Authorization;
 
-
 /**
  * Encapsulates request authorization results.
  */

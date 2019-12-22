@@ -1,7 +1,6 @@
 <?php
 namespace Lucinda\WebSecurity\Token;
 
-
 /**
  * Exception thrown when token needs to be refreshed.
  */

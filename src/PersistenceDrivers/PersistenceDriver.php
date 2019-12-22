@@ -1,7 +1,6 @@
 <?php
 namespace Lucinda\WebSecurity\PersistenceDrivers;
 
-
 /**
  * Defines blueprints for a driver able to persist user logged in state across requests.
  */

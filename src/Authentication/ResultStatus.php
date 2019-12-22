@@ -1,7 +1,6 @@
 <?php
 namespace Lucinda\WebSecurity\Authentication;
 
-
 /**
  * Enum that contains all available authentication result statuses via following constants:
  * - LOGIN_OK: login was successful
