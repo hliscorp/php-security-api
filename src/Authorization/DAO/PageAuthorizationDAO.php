@@ -14,7 +14,7 @@ abstract class PageAuthorizationDAO
      *
      * @param string $pageURL URL of page requested
      */
-    public function __construct(string $pageURL): void
+    public function __construct(string $pageURL)
     {
         $this->pageID = $this->detectID($pageURL);
     }

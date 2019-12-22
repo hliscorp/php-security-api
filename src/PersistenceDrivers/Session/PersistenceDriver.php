@@ -22,7 +22,7 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
      * @param string $isSecure Whether or not session should be using HTTPS-only cookies.
      * @param string $ip Value of REMOTE_ADDR parameter, unless ignored.
      */
-    public function __construct(string $parameterName, int $expirationTime = 0, string $isHttpOnly = false, string $isSecure = false, string $ip=""): void
+    public function __construct(string $parameterName, int $expirationTime = 0, string $isHttpOnly = false, string $isSecure = false, string $ip="")
     {
         $this->current_ip = $ip;
         $this->parameterName = $parameterName;

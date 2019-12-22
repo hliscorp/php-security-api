@@ -15,7 +15,7 @@ class UserAuthenticationXML
      *
      * @param \SimpleXMLElement $xml
      */
-    public function __construct(\SimpleXMLElement $xml): void
+    public function __construct(\SimpleXMLElement $xml)
     {
         $this->xml = $xml;
     }

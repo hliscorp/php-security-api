@@ -22,7 +22,7 @@ class JsonWebTokenPersistenceDriver extends PersistenceDriver
      * @param integer $expirationTime Time by which token expires (can be renewed), in seconds.
      * @param string $regenerationTime Time by which token is renewed, in seconds.
      */
-    public function __construct(string $salt, int $expirationTime = 3600, string $regenerationTime = 60): void
+    public function __construct(string $salt, int $expirationTime = 3600, string $regenerationTime = 60)
     {
         $this->tokenDriver = new JsonWebToken($salt);
         $this->expirationTime = $expirationTime;

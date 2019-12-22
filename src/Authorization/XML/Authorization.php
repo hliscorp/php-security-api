@@ -24,7 +24,7 @@ class Authorization
      * @param string $loggedInFailureCallback
      * @param string $loggedOutFailureCallback
      */
-    public function __construct(string $loggedInFailureCallback, string $loggedOutFailureCallback): void
+    public function __construct(string $loggedInFailureCallback, string $loggedOutFailureCallback)
     {
         $this->loggedInFailureCallback = $loggedInFailureCallback;
         $this->loggedOutFailureCallback = $loggedOutFailureCallback;

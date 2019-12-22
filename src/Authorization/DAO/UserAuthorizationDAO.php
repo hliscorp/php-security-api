@@ -13,7 +13,7 @@ abstract class UserAuthorizationDAO
      * UserAuthorizationDAO constructor.
      * @param mixed $userID Unique user identifier
      */
-    public function __construct($userID): void
+    public function __construct($userID)
     {
         $this->userID = $userID;
     }

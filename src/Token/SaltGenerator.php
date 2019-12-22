@@ -14,7 +14,7 @@ class SaltGenerator
      * 
      * @param integer $length
      */
-    public function __construct(int $length): void
+    public function __construct(int $length)
     {
         $this->setSalt($length);
     }

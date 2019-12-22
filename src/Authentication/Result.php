@@ -17,7 +17,7 @@ class Result
      *
      * @param ResultStatus $status
      */
-    public function __construct(ResultStatus $status): void
+    public function __construct(ResultStatus $status)
     {
         $this->status = $status;
     }

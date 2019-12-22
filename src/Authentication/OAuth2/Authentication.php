@@ -22,7 +22,7 @@ class Authentication
      * @param PersistenceDriver[] $persistenceDrivers List of drivers to persist user unique identifier into.
      * @throws Exception When persistence drivers are invalid.
      */
-    public function __construct(AuthenticationDAO $dao, array $persistenceDrivers): void
+    public function __construct(AuthenticationDAO $dao, array $persistenceDrivers)
     {
         // check argument that it's instance of PersistenceDriver
         foreach ($persistenceDrivers as $persistentDriver) {

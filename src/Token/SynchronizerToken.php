@@ -16,7 +16,7 @@ class SynchronizerToken
      * @param string $ip Ip address for whom token will be registered.
      * @param string $salt Strong encryption/decryption password.
      */
-    public function __construct(string $ip, string $salt): void
+    public function __construct(string $ip, string $salt)
     {
         $this->ip = $ip;
         $this->salt = $salt;

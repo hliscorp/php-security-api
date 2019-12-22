@@ -15,7 +15,7 @@ class Encryption
      * Creates an encryption instance using a salt password that's going to be used in encryption/decryption.
      * @param string $salt Encryption password.
      */
-    public function __construct(string $salt): void
+    public function __construct(string $salt)
     {
         $this->salt = $salt;
     }

@@ -26,7 +26,7 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
      * @param string $isSecure Whether or not cookie should be using HTTPS-only.
      * @param string $ip Value of REMOTE_ADDR attribute, unless ignored.
      */
-    public function __construct(string $salt, string $parameterName, int $expirationTime, string $isHttpOnly = false, string $isSecure = false, string $ip=""): void
+    public function __construct(string $salt, string $parameterName, int $expirationTime, string $isHttpOnly = false, string $isSecure = false, string $ip="")
     {
         $this->token = new SynchronizerToken($ip, $salt);
         $this->parameterName = $parameterName;

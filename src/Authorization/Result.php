@@ -16,7 +16,7 @@ class Result
      * @param ResultStatus $status
      * @param string $callbackURI
      */
-    public function __construct(ResultStatus $status, string $callbackURI): void
+    public function __construct(ResultStatus $status, string $callbackURI)
     {
         $this->status = $status;
         $this->callbackURI = $callbackURI;

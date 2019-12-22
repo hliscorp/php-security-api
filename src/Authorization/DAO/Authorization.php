@@ -18,7 +18,7 @@ class Authorization
      * @param string $loggedInFailureCallback Callback page to use when authorization fails for logged in users.
      * @param string $loggedOutFailureCallback Callback page to use when authorization fails for logged out (guest) users.
      */
-    public function __construct(string $loggedInFailureCallback, string $loggedOutFailureCallback): void
+    public function __construct(string $loggedInFailureCallback, string $loggedOutFailureCallback)
     {
         $this->loggedInFailureCallback = $loggedInFailureCallback;
         $this->loggedOutFailureCallback = $loggedOutFailureCallback;

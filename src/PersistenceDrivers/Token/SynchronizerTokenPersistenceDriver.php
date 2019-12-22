@@ -22,7 +22,7 @@ class SynchronizerTokenPersistenceDriver extends PersistenceDriver
      * @param string $regenerationTime Time by which token is renewed, in seconds.
      * @param string $ip Value of REMOTE_ADDR attribute, unless ignored.
      */
-    public function __construct(string $salt, int $expirationTime = 3600, string $regenerationTime = 60, string $ip=""): void
+    public function __construct(string $salt, int $expirationTime = 3600, string $regenerationTime = 60, string $ip="")
     {
         $this->tokenDriver = new SynchronizerToken($ip, $salt);
         $this->expirationTime = $expirationTime;

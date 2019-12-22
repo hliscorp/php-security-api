@@ -15,7 +15,7 @@ class JsonWebToken
      *
      * @param string $salt Encryption password
      */
-    public function __construct(string $salt): void
+    public function __construct(string $salt)
     {
         $this->salt = $salt;
     }
