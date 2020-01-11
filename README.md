@@ -197,6 +197,9 @@ Once all above information is compiled, one can finally use this API to authenti
 | getCsrfToken | void | string | Gets anti-CSRF token to send as "csrf" POST parameter on form login and "state" GET parameter in oauth2 authorization code requests |
 | getAccessToken | void | string | Gets access token to sign stateless requests with as Bearer HTTP_AUTHORIZATION header (applies if "synchronizer token" or "json web token" persistence is used) |
 
+
+### Handling SecurityPacket
+
 If authentication/authorization reached a point where request needs to be redirected, constructor throws a [Lucinda\WebSecurity\SecurityPacket](https://github.com/aherne/php-security-api/blob/v3.0.0/src/SecurityPacket.php), which defines following methods relevant to developers:
 
 | Method | Arguments | Returns | Description |
@@ -205,6 +208,17 @@ If authentication/authorization reached a point where request needs to be redire
 | getCallback | void | integer/string | Gets URI inside application to redirect to in case of successful/insuccessful authentication or insuccessful authorization |
 | getStatus | void | string | Gets authentication/authorization status code (see below) |
 | getTimePenalty | void | integer | Sets number of seconds client will be banned from authenticating as anti-throttling measure |
+
+Values of *getStatus* describe authentication/authorization outcome and suggest :
+
+- *login_ok*: login was successful and a redirection to logged in homepage is required
+- *login_failed*: login failed and a redirection to login page is required
+- *logout_ok*: logout was successful and a redirection to login page is required
+- *logout_failed*: logout was unsuccessful and a redirection to login page is required
+- *not_found*: route requested by client not known by any access policy
+- *redirect*: redirection to OAuth2 vendor's authorization request page is required
+- *unauthorized*: route requested by client requires authentication, thus redirection to login page is required
+- *forbidden*: route requested by client is forbidden to current logged in user, thus a redirection to logged in homepage is required
 
 Developers of non-stateless applications are supposed to handle this exception with something like:
 
@@ -232,15 +246,40 @@ try {
 	// front end will handle above code and make a redirection
 }
 ```
+### Handling other exceptions
 
-Apart from [Lucinda\WebSecurity\SecurityPacket](https://github.com/aherne/php-security-api/blob/v3.0.0/src/SecurityPacket.php), [Lucinda\WebSecurity\Wrapper](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Wrapper.php) may throw:
+[Lucinda\WebSecurity\Wrapper](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Wrapper.php) may also throw:
 
-- Lucinda\WebSecurity\Authentication\Form\Exception: when login form is posted with wrong parameters names
-- Lucinda\WebSecurity\Authentication\OAuth2\Exception: when OAuth2 provider answers with an error to authorization code or access token requests
-- Lucinda\WebSecurity\PersistenceDrivers\Session\HijackException: when user id in session is associated to a different IP address
-- Lucinda\WebSecurity\Token\EncryptionException: when token could not be decrypted
-- Lucinda\WebSecurity\Token\Exception: when CSRF token is invalid or missing as "csrf" POST param @ form login or "state" GET param @ oauth2 authorization code response 
-- Lucinda\WebSecurity\ConfigurationException: when XML is misconfigured, referenced classes are not found or not fitting expected pattern
+- [Lucinda\WebSecurity\Authentication\Form\Exception](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/Form/Exception.php): when login form is posted with wrong parameters names
+- [Lucinda\WebSecurity\Authentication\OAuth2\Exception](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/Exception.php): when OAuth2 provider answers with an error to authorization code or access token requests
+- [Lucinda\WebSecurity\PersistenceDrivers\Session\HijackException](https://github.com/aherne/php-security-api/blob/v3.0.0/src/PersistenceDrivers/Session/HijackException.php): when user id in session is associated to a different IP address
+- [Lucinda\WebSecurity\Token\EncryptionException](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Token/EncryptionException.php): when token could not be decrypted
+- [Lucinda\WebSecurity\Token\Exception](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Token/Exception.php): when CSRF token is invalid or missing as "csrf" POST param @ form login or "state" GET param @ oauth2 authorization code response 
+- [Lucinda\WebSecurity\ConfigurationException](https://github.com/aherne/php-security-api/blob/v3.0.0/src/ConfigurationException.php): when XML is misconfigured, referenced classes are not found or not fitting expected pattern
+
+They can be handled as following:
+
+```php
+try {
+	// sets $xml and $request
+	$object = new Lucinda\WebSecurity\Wrapper($xml, $request);
+	// process $object
+} catch (Lucinda\WebSecurity\SecurityPacket $e) {
+	// handle security packet as above
+} catch (Lucinda\WebSecurity\Authentication\Form\Exception $e) {
+	// respond with a 400 Bad Request HTTP status (it's either foul play or misconfiguration)
+} catch (Lucinda\WebSecurity\PersistenceDrivers\Session\HijackException $e) {
+	// respond with a 400 Bad Request HTTP status (it's always foul play)
+} catch (Lucinda\WebSecurity\Token\EncryptionException $e) {
+	// respond with a 400 Bad Request HTTP status (it's always foul play)
+} catch (Lucinda\WebSecurity\Token\Exception $e) {
+	// respond with a 400 Bad Request HTTP status (it's either foul play or misconfiguration)
+} catch (Lucinda\WebSecurity\ConfigurationException $e) {
+	// show stack trace and exit (it's misconfiguration)
+} catch (Lucinda\WebSecurity\Authentication\OAuth2\Exception $e) {
+	// handle as you want (error received from OAuth2 vendor usually from user's decision not to approve your access)
+}
+```
 
 ## Installation
 
@@ -250,19 +289,38 @@ This library is fully PSR-4 compliant and only requires PHP7.1+ interpreter and 
 composer require lucinda/security
 ```
 
-Create a file (eg: index.php) in project root with following code:
+Create a *configuration.xml* file holding configuration settings (see [configuration](#configuration) above) and a *index.php* file (see [getting results](#getting-results) above) in project root with following code:
 
 ```php
 require(__DIR__."/vendor/autoload.php");
 
-$object = new Lucinda\WebSecurity\Wrapper(simplexml_load_file(XML_FILE_NAME), REQUEST, OAUTH2_DRIVERS);
+$request = new Lucinda\WebSecurity\Request();
+$request->setIpAddress($_SERVER["REMOTE_ADDR"]);
+$request->setUri($_SERVER["REQUEST_URI"]!="/"?substr($_SERVER["REQUEST_URI"],1):"index");
+$request->setMethod($_SERVER["REQUEST_METHOD"]);
+$request->setParameters($_POST);
+
+try {
+	// sets $xml and $request
+	$object = new Lucinda\WebSecurity\Wrapper(simplexml_load_file("configuration.xml"), $request);
+	// operate with $object to retrieve information
+} catch (Lucinda\WebSecurity\SecurityPacket $e) {
+	header("Location: ".$e->getCallback()."?status=".$e->getStatus()."&penalty=".((integer) $e->getTimePenalty()));
+	exit();
+}
+
 ```
 
-Where:
+Then make this file a bootstrap:
 
-- **XML_FILE_NAME**: (mandatory) holds path to XML file where web security is configured. See **[configuration](#configuration)** below!
-- **REQUEST**: (mandatory) a [Lucinda\WebSecurity\Request](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Request.php) instance, encapsulating request information
-- **OAUTH2_DRIVERS**: (optional) a list of [Lucinda\WebSecurity\Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/Driver.php) instances, encapsulating oauth2 vendors to login with
+```
+RewriteEngine on
+RewriteRule ^(.*)$ index.php
+SetEnv ENVIRONMENT local
+```
+
+Then start developing MVC pattern on top.
+
 
 ### Unit Tests
 
