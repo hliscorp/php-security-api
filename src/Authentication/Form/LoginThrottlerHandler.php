@@ -5,7 +5,6 @@ use Lucinda\WebSecurity\Authentication\ResultStatus;
 use Lucinda\WebSecurity\Authentication\Result;
 use Lucinda\WebSecurity\Request;
 
-
 /**
  * Encapsulates communication between LoginThrottler and \Lucinda\WebSecurity\AuthenticationResult instances
  */

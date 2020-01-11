@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\PersistenceDrivers\RememberMe;
-    
+
 use Lucinda\WebSecurity\PersistenceDrivers\RememberMe\PersistenceDriver;
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\UnitTest\Result;
@@ -31,6 +31,4 @@ class PersistenceDriverTest
         $this->object->clear();
         return new Result(!$this->object->load());
     }
-        
-
 }

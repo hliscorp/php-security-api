@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authorization;
-    
+
 use Lucinda\WebSecurity\Authorization\DAOWrapper;
 use Lucinda\WebSecurity\Request;
 use Lucinda\UnitTest\Result;
@@ -29,7 +29,7 @@ class DAOWrapperTest
         $request = new Request();
         $request->setMethod("GET");
         
-        $request->setUri("asdf");        
+        $request->setUri("asdf");
         $object = new DAOWrapper($this->xml, $request, null);
         $results[] = new Result($object->getResult()->getStatus()==ResultStatus::NOT_FOUND, "test path not found");
         
@@ -51,6 +51,4 @@ class DAOWrapperTest
         
         return $results;
     }
-        
-
 }

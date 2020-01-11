@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication\OAuth2;
-    
+
 use Lucinda\WebSecurity\Authentication\OAuth2\AuthenticationResult;
 use Lucinda\UnitTest\Result;
 use Lucinda\WebSecurity\Authentication\ResultStatus;
@@ -71,6 +71,4 @@ class AuthenticationResultTest
     {
         return new Result($this->object->getTimePenalty()==1);
     }
-        
-
 }

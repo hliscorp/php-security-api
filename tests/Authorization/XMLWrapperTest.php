@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authorization;
-    
+
 use Lucinda\WebSecurity\Request;
 use Lucinda\UnitTest\Result;
 use Lucinda\WebSecurity\Authorization\ResultStatus;
@@ -81,10 +81,8 @@ class XMLWrapperTest
             $request->setUri("administration");
             $object = new XMLWrapper($xml, $request, 1);
             $results[] = new Result($object->getResult()->getStatus()==ResultStatus::FORBIDDEN, "user forbidden to administration (".$description.")");
-        }        
+        }
         
         return $results;
     }
-        
-
 }

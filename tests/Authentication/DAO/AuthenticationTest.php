@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication\DAO;
-    
+
 use Lucinda\WebSecurity\Authentication\DAO\Authentication;
 use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDriver;
 use Lucinda\WebSecurity\Token\SaltGenerator;
@@ -40,6 +40,4 @@ class AuthenticationTest
         $results[] = new Result($object->logout()->getStatus()==ResultStatus::LOGOUT_FAILED, "tested failed logout");
         return $results;
     }
-        
-
 }

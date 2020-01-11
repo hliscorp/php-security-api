@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authorization\DAO;
-    
+
 use Test\Lucinda\WebSecurity\Authorization\MockPageAuthorizationDAO;
 use Test\Lucinda\WebSecurity\Authorization\MockUserAuthorizationDAO;
 use Lucinda\WebSecurity\Authorization\DAO\Authorization;
@@ -10,7 +10,6 @@ use Lucinda\WebSecurity\Authorization\ResultStatus;
 
 class AuthorizationTest
 {
-    
     public function authorize()
     {
         $authorization = new Authorization("login", "index");
@@ -28,5 +27,4 @@ class AuthorizationTest
     {
         return $authorization->authorize(new MockPageAuthorizationDAO($url), new MockUserAuthorizationDAO($userID), "GET");
     }
-
 }

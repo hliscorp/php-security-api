@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Token;
-    
+
 use Lucinda\WebSecurity\Token\SynchronizerToken;
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\UnitTest\Result;
@@ -26,6 +26,4 @@ class SynchronizerTokenTest
     {
         return new Result($this->object->decode($this->value)==1);
     }
-        
-
 }

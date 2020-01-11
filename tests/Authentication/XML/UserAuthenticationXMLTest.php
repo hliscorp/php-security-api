@@ -1,12 +1,11 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication\XML;
-    
+
 use Lucinda\WebSecurity\Authentication\XML\UserAuthenticationXML;
 use Lucinda\UnitTest\Result;
 
 class UserAuthenticationXMLTest
 {
-
     public function login()
     {
         $xml = simplexml_load_string('
@@ -22,6 +21,4 @@ class UserAuthenticationXMLTest
         $results[] = new Result($object->login("test", "me")==1, "tested successful login");
         return $results;
     }
-        
-
 }

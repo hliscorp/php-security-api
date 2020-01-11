@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication\Form;
-    
+
 use Lucinda\WebSecurity\Authentication\Form\LoginRequest;
 use Lucinda\UnitTest\Result;
 
@@ -76,6 +76,4 @@ class LoginRequestTest
     {
         return new Result($this->object->getDestinationPage() == "index");
     }
-        
-
 }

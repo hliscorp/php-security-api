@@ -32,11 +32,10 @@ class MockVendorAuthenticationDAO implements VendorAuthenticationDAO, UserRoles
     
     public function getRoles($userID): array
     {
-        if($userID) {
+        if ($userID) {
             return ["USER"];
         } else {
             return ["GUEST"];
         }
     }
 }
-

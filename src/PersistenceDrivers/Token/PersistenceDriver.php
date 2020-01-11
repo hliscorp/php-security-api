@@ -11,7 +11,7 @@ abstract class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDriv
     
     /**
      * Sets access token value based on contents of HTTP authorization header of "bearer" type
-     * 
+     *
      * @param string $accessToken
      */
     public function setAccessToken(string $accessToken): void

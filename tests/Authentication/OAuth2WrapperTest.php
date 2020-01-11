@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication;
-    
+
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDriver;
 use Lucinda\WebSecurity\CsrfTokenDetector;
@@ -12,7 +12,10 @@ use Lucinda\WebSecurity\Token\Exception as TokenException;
 
 class OAuth2WrapperTest
 {
-    private $xml, $persistenceDriver, $oauth2Driver, $csrfTokenDetector;
+    private $xml;
+    private $persistenceDriver;
+    private $oauth2Driver;
+    private $csrfTokenDetector;
     
     public function __construct()
     {
@@ -30,8 +33,7 @@ class OAuth2WrapperTest
     }
     
     public function getResult()
-    {   
-        
+    {
         $results = [];
         
         $request = new Request();
@@ -63,5 +65,4 @@ class OAuth2WrapperTest
         
         return $results;
     }
-
 }

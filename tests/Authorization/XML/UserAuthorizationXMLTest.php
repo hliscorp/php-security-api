@@ -1,12 +1,11 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authorization\XML;
-    
+
 use Lucinda\WebSecurity\Authorization\XML\UserAuthorizationXML;
 use Lucinda\UnitTest\Result;
 
 class UserAuthorizationXMLTest
 {
-
     public function getRoles()
     {
         $xml = \simplexml_load_string('
@@ -23,6 +22,4 @@ class UserAuthorizationXMLTest
         $results[] = new Result($object->getRoles(1)==["USER"], "checks user without roles");
         return $results;
     }
-        
-
 }

@@ -13,7 +13,7 @@ class Authorization
 {
     /**
      * Detects authorization methods
-     * 
+     *
      * @param \SimpleXMLElement $xml
      * @param Request $request
      * @param mixed $userID
@@ -26,7 +26,7 @@ class Authorization
     
     /**
      * Detects authorization method and performs request & user authorization
-     * 
+     *
      * @param \SimpleXMLElement $xmlRoot
      * @param Request $request
      * @param mixed $userID
@@ -63,7 +63,7 @@ class Authorization
     
     /**
      * Handles results of failed authorization by throwing a SecurityPacket that matches type of failure
-     * 
+     *
      * @param AuthorizationWrapper $wrapper
      * @param Request $request
      * @throws \Lucinda\WebSecurity\SecurityPacket

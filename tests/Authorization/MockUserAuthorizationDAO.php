@@ -12,7 +12,6 @@ class MockUserAuthorizationDAO extends UserAuthorizationDAO
             return true;
         }
         // user id 1 only has access to page id 2
-        return $this->userID==1 && $page->getID()==2; 
+        return $this->userID==1 && $page->getID()==2;
     }
 }
-

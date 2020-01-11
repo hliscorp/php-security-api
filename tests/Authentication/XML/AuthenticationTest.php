@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication\XML;
-    
+
 use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDriver;
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\UnitTest\Result;
@@ -43,6 +43,4 @@ class AuthenticationTest
         $results[] = new Result($object->logout()->getStatus()==ResultStatus::LOGOUT_FAILED, "tested failed logout");
         return $results;
     }
-        
-
 }

@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication\Form;
-    
+
 use Lucinda\WebSecurity\Request;
 use Lucinda\WebSecurity\Authentication\Form\LoginThrottlerHandler;
 use Lucinda\UnitTest\Result;
@@ -15,7 +15,6 @@ class LoginThrottlerHandlerTest
     
     public function __construct()
     {
-        
         $request = new Request();
         $request->setUri("login");
         $this->request = $request;
@@ -24,7 +23,7 @@ class LoginThrottlerHandlerTest
     }
 
     public function start()
-    {        
+    {
         $handler = new LoginThrottlerHandler($this->throttler);
         $handler->end(new AuthenticationResult(ResultStatus::LOGIN_FAILED));
         return new Result($handler->start($this->request)->getTimePenalty()==1);
@@ -46,6 +45,4 @@ class LoginThrottlerHandlerTest
         
         return $result;
     }
-        
-
 }

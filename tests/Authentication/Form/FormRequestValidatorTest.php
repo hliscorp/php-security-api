@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication\Form;
-    
+
 use Lucinda\WebSecurity\Authentication\Form\FormRequestValidator;
 use Lucinda\WebSecurity\Request;
 use Lucinda\UnitTest\Result;
@@ -10,18 +10,18 @@ class FormRequestValidatorTest
     private $xml;
     
     public function __construct()
-    {        
+    {
         $this->xml = simplexml_load_string('
 <security>
     <authentication>
         <form/>
     </authentication>
-</security>');        
+</security>');
     }
     
 
     public function login()
-    {   
+    {
         $result = [];
         
         $request = new Request();
@@ -30,7 +30,7 @@ class FormRequestValidatorTest
         $request->setMethod("GET");
         $validator = new FormRequestValidator($this->xml, $request);
         $login = $validator->login();
-        $result[] = new Result($login==NULL, "check not login");
+        $result[] = new Result($login==null, "check not login");
         
         $request->setUri("login");
         $request->setMethod("POST");
@@ -52,7 +52,7 @@ class FormRequestValidatorTest
         $request->setUri("asdf");
         $validator = new FormRequestValidator($this->xml, $request);
         $logout = $validator->logout();
-        $result[] = new Result($logout==NULL, "check not logout");
+        $result[] = new Result($logout==null, "check not logout");
         
         $request->setUri("logout");
         $validator = new FormRequestValidator($this->xml, $request);
@@ -60,6 +60,5 @@ class FormRequestValidatorTest
         $result[] = new Result($logout->getDestinationPage()=="login", "check logout");
         
         return $result;
-    }        
-
+    }
 }

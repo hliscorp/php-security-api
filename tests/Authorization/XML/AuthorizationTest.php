@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authorization\XML;
-    
+
 use Lucinda\WebSecurity\Authorization\XML\Authorization;
 use Lucinda\UnitTest\Result;
 use Lucinda\WebSecurity\Authorization\ResultStatus;
@@ -43,6 +43,4 @@ class AuthorizationTest
     {
         return $authorization->authorize($this->xml, $url, $userID, new UserAuthorizationXML($this->xml));
     }
-        
-
 }

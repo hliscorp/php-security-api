@@ -18,7 +18,7 @@ use Lucinda\WebSecurity\ConfigurationException;
  * (eg: google / facebook) driver implementation, then performs login/logout if path requested matches paths @ xml.
  */
 class OAuth2Wrapper extends Wrapper
-{    
+{
     private $xmlParser;
     private $driver;
     
@@ -35,7 +35,7 @@ class OAuth2Wrapper extends Wrapper
      * @throws OAuth2Exception If vendor responds with an error
      */
     public function __construct(\SimpleXMLElement $xml, Request $request, CsrfTokenDetector $csrf, array $persistenceDrivers, array $drivers)
-    {       
+    {
         if (empty($drivers)) {
             throw new ConfigurationException("No oauth2 drivers have been defined");
         }

@@ -30,7 +30,7 @@ class UserIdDetector
     private function setUserID(array $persistenceDrivers, string $accessToken): void
     {
         foreach ($persistenceDrivers as $persistenceDriver) {
-            if($accessToken && $persistenceDriver instanceof TokenPersistenceDriver) {
+            if ($accessToken && $persistenceDriver instanceof TokenPersistenceDriver) {
                 $persistenceDriver->setAccessToken($accessToken);
             }
             $this->userID = $persistenceDriver->load();

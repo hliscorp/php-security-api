@@ -7,7 +7,7 @@ class MockPageAuthorizationDAO extends PageAuthorizationDAO
 {
     protected function detectID(string $pageURL): ?int
     {
-        switch($pageURL) {
+        switch ($pageURL) {
             case "login":
                 return 1;
                 break;
@@ -25,7 +25,7 @@ class MockPageAuthorizationDAO extends PageAuthorizationDAO
     
     public function isPublic(): bool
     {
-        switch($this->pageID) {
+        switch ($this->pageID) {
             case 1:
                 return true;
                 break;
@@ -38,4 +38,3 @@ class MockPageAuthorizationDAO extends PageAuthorizationDAO
         }
     }
 }
-

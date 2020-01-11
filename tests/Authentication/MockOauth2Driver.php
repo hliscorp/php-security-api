@@ -39,4 +39,3 @@ class MockOauth2Driver implements Driver
         return $this->vendorName;
     }
 }
-

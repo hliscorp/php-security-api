@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication\OAuth2;
-    
+
 use Lucinda\WebSecurity\Authentication\OAuth2\XMLParser;
 use Lucinda\UnitTest\Result;
 
@@ -15,7 +15,7 @@ class XMLParserTest
     <authentication>
         <oauth2/>
     </authentication>
-</security>');  
+</security>');
         $this->parser = new XMLParser($xml);
     }
 
@@ -35,6 +35,4 @@ class XMLParserTest
     {
         return new Result($this->parser->getTargetCallback()=="index");
     }
-        
-
 }

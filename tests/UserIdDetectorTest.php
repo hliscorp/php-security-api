@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity;
-    
+
 use Lucinda\WebSecurity\UserIdDetector;
 use Lucinda\WebSecurity\PersistenceDrivers\RememberMe\PersistenceDriver as RememberMePersistenceDriver;
 use Lucinda\WebSecurity\PersistenceDrivers\Session\PersistenceDriver as SessionPersistenceDriver;
@@ -11,7 +11,6 @@ use Lucinda\WebSecurity\Token\SaltGenerator;
 
 class UserIdDetectorTest
 {
-
     public function getUserID()
     {
         $results = [];
@@ -40,6 +39,4 @@ class UserIdDetectorTest
         
         return $results;
     }
-        
-
 }

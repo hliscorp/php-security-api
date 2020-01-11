@@ -17,7 +17,7 @@ class Wrapper
     
     /**
      * Performs class logic by delegating to specialized methods
-     * 
+     *
      * @param \SimpleXMLElement $xml
      * @param Request $request
      * @param OAuth2Driver[] $oauth2Drivers
@@ -42,7 +42,7 @@ class Wrapper
     
     /**
      * Sets drivers where authenticated user unique identifier is persisted based on contents of XML tag 'persistence'
-     * 
+     *
      * @param \SimpleXMLElement $mainXML
      * @param Request $request
      */
@@ -53,8 +53,8 @@ class Wrapper
     }
     
     /**
-     * Sets authenticated user unique identifier based on drivers where it was persisted into  
-     * 
+     * Sets authenticated user unique identifier based on drivers where it was persisted into
+     *
      * @param Request $request
      */
     private function setUserID(Request $request): void
@@ -65,7 +65,7 @@ class Wrapper
     
     /**
      * Gets class where anti-csrf token is generated and verified
-     * 
+     *
      * @param \SimpleXMLElement $mainXML
      * @param Request $request
      */
@@ -76,7 +76,7 @@ class Wrapper
     
     /**
      * Performs user authentication based on mechanism chosen by developmer in XML (eg: from database via login form, from an oauth2 provider, etc)
-     * 
+     *
      * @param \SimpleXMLElement $mainXML
      * @param Request $request
      * @param OAuth2Driver[] $oauth2Drivers
@@ -88,7 +88,7 @@ class Wrapper
     
     /**
      * Performs request authorization based on mechanism chosen by developmer in XML (eg: from database)
-     * 
+     *
      * @param \SimpleXMLElement $mainXML
      * @param Request $request
      */
@@ -108,8 +108,8 @@ class Wrapper
     }
     
     /**
-     * Gets a new anti-csrf token to use as value of input 'csrf' in login form  
-     * 
+     * Gets a new anti-csrf token to use as value of input 'csrf' in login form
+     *
      * @return string
      */
     public function getCsrfToken(): string
@@ -119,7 +119,7 @@ class Wrapper
     
     /**
      * Gets access token for stateless apps
-     * 
+     *
      * @return string|NULL
      */
     public function getAccessToken(): ?string

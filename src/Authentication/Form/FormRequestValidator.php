@@ -20,7 +20,7 @@ class FormRequestValidator
     
     /**
      * Matches POST request to XML tag &lt;form&gt;
-     * 
+     *
      * @param \SimpleXMLElement $xml
      * @param Request $request
      */
@@ -32,12 +32,12 @@ class FormRequestValidator
     
     /**
      * Performs a form login
-     * 
+     *
      * @throws Exception
      * @return LoginRequest|NULL
      */
     public function login(): ?LoginRequest
-    {        
+    {
         $loginRequest = new LoginRequest();
         
         // set source page;
@@ -76,11 +76,11 @@ class FormRequestValidator
         if (empty($requestParameters[$parameterUsername])) {
             throw new Exception("POST parameter missing: ".$parameterUsername);
         }
-        $loginRequest->setUsername($requestParameters[$parameterUsername]);        
+        $loginRequest->setUsername($requestParameters[$parameterUsername]);
         if (empty($requestParameters[$parameterPassword])) {
             throw new Exception("POST parameter missing: ".$parameterPassword);
         }
-        $loginRequest->setPassword($requestParameters[$parameterPassword]);        
+        $loginRequest->setPassword($requestParameters[$parameterPassword]);
         $loginRequest->setRememberMe(!empty($requestParameters[$parameterRememberMe]));
         
         return $loginRequest;
@@ -88,7 +88,7 @@ class FormRequestValidator
     
     /**
      * Performs a form logout
-     * 
+     *
      * @return LogoutRequest|NULL
      */
     public function logout(): ?LogoutRequest

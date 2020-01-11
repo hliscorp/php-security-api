@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authorization;
-    
+
 use Lucinda\WebSecurity\Authorization\Result as AuthorizationResult;
 use Lucinda\WebSecurity\Authorization\ResultStatus;
 use Lucinda\UnitTest\Result;
@@ -24,6 +24,4 @@ class ResultTest
     {
         return new Result($this->object->getCallbackURI()=="index");
     }
-        
-
 }

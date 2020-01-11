@@ -24,7 +24,7 @@ class XMLWrapper extends Wrapper
      * @throws ConfigurationException If resources referenced in XML do not exist or do not extend/implement required blueprint.
      */
     public function __construct(\SimpleXMLElement $xml, Request $request, $userID)
-    {       
+    {
         // move up in xml tree
         $xmlLocal = $xml->authorization->by_xml;
         
@@ -45,7 +45,7 @@ class XMLWrapper extends Wrapper
     
     /**
      * Gets algorithm to check if page roles match that of current user
-     * 
+     *
      * @param \SimpleXMLElement $xml
      * @param mixed $userID
      * @throws ConfigurationException

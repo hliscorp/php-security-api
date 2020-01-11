@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\PersistenceDrivers\Token;
-    
+
 use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDriver;
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\UnitTest\Result;

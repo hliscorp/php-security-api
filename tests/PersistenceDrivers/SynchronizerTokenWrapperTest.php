@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\PersistenceDrivers;
-    
+
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\WebSecurity\PersistenceDrivers\SynchronizerTokenWrapper;
 use Lucinda\UnitTest\Result;
@@ -28,5 +28,4 @@ class SynchronizerTokenWrapperTest
         $results[] = new Result(!$driver->getDriver()->load());
         return $results;
     }
-
 }

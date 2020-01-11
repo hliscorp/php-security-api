@@ -7,4 +7,3 @@ namespace Lucinda\WebSecurity;
 class ConfigurationException extends \Exception
 {
 }
-

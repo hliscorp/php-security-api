@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\PersistenceDrivers;
-    
+
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\WebSecurity\PersistenceDrivers\RememberMeWrapper;
 use Lucinda\UnitTest\Result;

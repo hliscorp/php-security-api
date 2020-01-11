@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\PersistenceDrivers;
-    
+
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\WebSecurity\PersistenceDrivers\JsonWebTokenWrapper;
 use Lucinda\UnitTest\Result;
@@ -28,6 +28,4 @@ class JsonWebTokenWrapperTest
         $results[] = new Result(!$driver->getDriver()->load());
         return $results;
     }
-        
-
 }

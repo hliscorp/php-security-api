@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication;
-    
+
 use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDriver;
 use Lucinda\WebSecurity\CsrfTokenDetector;
 use Lucinda\WebSecurity\Token\SaltGenerator;
@@ -13,7 +13,9 @@ use Lucinda\WebSecurity\Authentication\ResultStatus;
 
 class XMLWrapperTest
 {
-    private $xml, $persistenceDriver, $csrfTokenDetector;
+    private $xml;
+    private $persistenceDriver;
+    private $csrfTokenDetector;
     
     public function __construct()
     {

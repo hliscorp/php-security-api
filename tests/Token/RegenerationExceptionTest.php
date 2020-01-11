@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Token;
-    
+
 use Lucinda\WebSecurity\Token\RegenerationException;
 use Lucinda\UnitTest\Result;
 
@@ -24,6 +24,4 @@ class RegenerationExceptionTest
     {
         return new Result($this->object->getPayload()=="asdfgh");
     }
-        
-
 }

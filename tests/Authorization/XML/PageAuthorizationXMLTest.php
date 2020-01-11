@@ -1,12 +1,11 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authorization\XML;
-    
+
 use Lucinda\WebSecurity\Authorization\XML\PageAuthorizationXML;
 use Lucinda\UnitTest\Result;
 
 class PageAuthorizationXMLTest
 {
-
     public function getRoles()
     {
         $xml = \simplexml_load_string('
@@ -26,6 +25,4 @@ class PageAuthorizationXMLTest
         $results[] = new Result($object->getRoles("login")==["GUEST","USER"], "checks route without roles");
         return $results;
     }
-        
-
 }

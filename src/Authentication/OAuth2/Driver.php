@@ -16,14 +16,14 @@ interface Driver
     
     /**
      * Gets login page relevant to current provider
-     * 
+     *
      * @return string
      */
     public function getCallbackUrl(): string;
     
     /**
      * Produces an authorization code request URL for current provider
-     * 
+     *
      * @param string $state
      * @return string
      */
@@ -31,7 +31,7 @@ interface Driver
     
     /**
      * Asks remote provider to exchange authorization code with an access token
-     * 
+     *
      * @param string $authorizationCode
      * @return string
      */
@@ -39,7 +39,7 @@ interface Driver
     
     /**
      * Gets name of OAuth2 vendor
-     * 
+     *
      * @return string
      */
     public function getVendorName(): string;

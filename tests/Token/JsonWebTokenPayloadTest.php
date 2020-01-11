@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Token;
-    
+
 use Lucinda\WebSecurity\Token\JsonWebTokenPayload;
 use Lucinda\UnitTest\Result;
 
@@ -123,6 +123,4 @@ class JsonWebTokenPayloadTest
         $object = new JsonWebTokenPayload($data);
         return new Result($object->toArray()==$data);
     }
-        
-
 }

@@ -16,7 +16,7 @@ class PersistenceDriversDetector
     
     /**
      * Performs detection process
-     * 
+     *
      * @param \SimpleXMLElement $xml
      * @param string $ipAddress
      */
@@ -27,7 +27,7 @@ class PersistenceDriversDetector
     
     /**
      * Reads &lt;persistence&gt; tag and collects matching persistence drivers
-     * 
+     *
      * @param \SimpleXMLElement $xml
      * @param string $ipAddress
      */

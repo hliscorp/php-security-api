@@ -16,7 +16,7 @@ class Authentication
 {
     /**
      * Detects authentication methods
-     * 
+     *
      * @param \SimpleXMLElement $xml
      * @param Request $request
      * @param CsrfTokenDetector $csrfTokenDetector
@@ -33,7 +33,7 @@ class Authentication
     
     /**
      * Detects authentication methods and performs authentication if needed
-     * 
+     *
      * @param \SimpleXMLElement $xmlRoot
      * @param Request $request
      * @param CsrfTokenDetector $csrfTokenDetector
@@ -84,7 +84,7 @@ class Authentication
     
     /**
      * Handles results of authentication, if any was requested, by throwing a SecurityPacket
-     * 
+     *
      * @param AuthenticationWrapper $wrapper
      * @param Request $request
      * @param PersistenceDriver[] $persistenceDrivers

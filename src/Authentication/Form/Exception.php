@@ -7,4 +7,3 @@ namespace Lucinda\WebSecurity\Authentication\Form;
 class Exception extends \Exception
 {
 }
-

@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication\OAuth2;
-    
+
 use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDriver;
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\WebSecurity\Authentication\OAuth2\Authentication;
@@ -11,7 +11,8 @@ use Lucinda\WebSecurity\Authentication\ResultStatus;
 
 class AuthenticationTest
 {
-    private $dao, $persistenceDriver;
+    private $dao;
+    private $persistenceDriver;
     
     public function __construct()
     {
@@ -40,6 +41,4 @@ class AuthenticationTest
         $results[] = new Result($object->logout()->getStatus()==ResultStatus::LOGOUT_FAILED, "tested failed logout");
         return $results;
     }
-        
-
 }

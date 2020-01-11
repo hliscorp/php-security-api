@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Token;
-    
+
 use Lucinda\WebSecurity\Token\Encryption;
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\UnitTest\Result;
@@ -26,6 +26,4 @@ class EncryptionTest
     {
         return new Result($this->object->decrypt($this->value)=="asdfgh"?true:false);
     }
-        
-
 }

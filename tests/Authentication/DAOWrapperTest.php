@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication;
-    
+
 use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDriver;
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\WebSecurity\CsrfTokenDetector;
@@ -13,7 +13,9 @@ use Lucinda\WebSecurity\Authentication\ResultStatus;
 
 class DAOWrapperTest
 {
-    private $xml, $persistenceDriver, $csrfTokenDetector;
+    private $xml;
+    private $persistenceDriver;
+    private $csrfTokenDetector;
     
     public function __construct()
     {
@@ -30,7 +32,7 @@ class DAOWrapperTest
     }
     
     public function getResult()
-    {   
+    {
         $results = [];
         
         $request = new Request();
@@ -84,6 +86,4 @@ class DAOWrapperTest
         
         return $results;
     }
-        
-
 }

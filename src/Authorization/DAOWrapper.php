@@ -45,7 +45,7 @@ class DAOWrapper extends Wrapper
         $pageDAO = $this->getPageDAO($xml, $request->getUri());
 
         // loads and instances user DAO object
-        $userDAO = $this->getUserDAO($xml, $userID);        
+        $userDAO = $this->getUserDAO($xml, $userID);
 
         // performs authorization
         $authorization = new Authorization($loggedInCallback, $loggedOutCallback);
@@ -54,7 +54,7 @@ class DAOWrapper extends Wrapper
     
     /**
      * Gets DAO where page rights are checked
-     * 
+     *
      * @param \SimpleXMLElement $xml
      * @param string $pageUrl
      * @throws ConfigurationException
@@ -72,8 +72,8 @@ class DAOWrapper extends Wrapper
     }
     
     /**
-     * Gets DAO where user rights are checked 
-     * 
+     * Gets DAO where user rights are checked
+     *
      * @param \SimpleXMLElement $xml
      * @param mixed $userID
      * @throws ConfigurationException

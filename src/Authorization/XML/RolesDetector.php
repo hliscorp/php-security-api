@@ -12,7 +12,7 @@ class RolesDetector
     
     /**
      * Calls for roles detection
-     * 
+     *
      * @param \SimpleXMLElement $xml
      * @param string $parentTag
      * @param string $childTag
@@ -84,7 +84,7 @@ class RolesDetector
     
     /**
      * Gets roles detected
-     * 
+     *
      * @return string[]
      */
     public function getRoles(): array
@@ -92,4 +92,3 @@ class RolesDetector
         return $this->roles;
     }
 }
-

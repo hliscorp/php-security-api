@@ -3,7 +3,8 @@ namespace Test\Lucinda\WebSecurity\Authentication;
 
 use Lucinda\WebSecurity\Authentication\Form\LoginThrottler;
 
-class MockLoginThrottler extends LoginThrottler {
+class MockLoginThrottler extends LoginThrottler
+{
     private $attempts = [];
     
     protected function setCurrentStatus(): void

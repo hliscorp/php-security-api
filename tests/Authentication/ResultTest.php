@@ -1,13 +1,12 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication;
-    
+
 use Lucinda\WebSecurity\Authentication\Result as AuthenticationResult;
 use Lucinda\UnitTest\Result;
 use Lucinda\WebSecurity\Authentication\ResultStatus;
 
 class ResultTest
 {
-    
     private $object;
     
     public function __construct()

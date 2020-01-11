@@ -34,7 +34,7 @@ class XMLWrapper extends Wrapper
      * @throws TokenException If CSRF checks fail
      */
     public function __construct(\SimpleXMLElement $xml, Request $request, CsrfTokenDetector $csrfTokenDetector, array $persistenceDrivers)
-    {        
+    {
         // set driver
         $this->driver = new Authentication($xml->xpath("..")[0], $persistenceDrivers);
         

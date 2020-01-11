@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication\Form;
-    
+
 use Lucinda\WebSecurity\Authentication\Form\LogoutRequest;
 use Lucinda\UnitTest\Result;
 
@@ -37,6 +37,4 @@ class LogoutRequestTest
     {
         return new Result($this->object->getDestinationPage() == "index");
     }
-        
-
 }

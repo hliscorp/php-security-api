@@ -66,7 +66,7 @@ class DAOWrapper extends Wrapper
     
     /**
      * Gets DAO where authentication is performed
-     * 
+     *
      * @param \SimpleXMLElement $xml
      * @throws ConfigurationException
      * @return UserAuthenticationDAO

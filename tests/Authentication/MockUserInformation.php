@@ -5,7 +5,9 @@ use Lucinda\WebSecurity\Authentication\OAuth2\UserInformation;
 
 class MockUserInformation implements UserInformation
 {
-    private $id, $name, $email;
+    private $id;
+    private $name;
+    private $email;
     
     public function __construct(array $info)
     {
@@ -22,7 +24,6 @@ class MockUserInformation implements UserInformation
     public function getName(): string
     {
         return $this->name;
-        
     }
     
     public function getEmail(): string

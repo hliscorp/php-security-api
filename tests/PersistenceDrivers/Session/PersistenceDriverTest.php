@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\PersistenceDrivers\Session;
-    
+
 use Lucinda\WebSecurity\PersistenceDrivers\Session\PersistenceDriver;
 use Lucinda\UnitTest\Result;
 
@@ -19,7 +19,6 @@ class PersistenceDriverTest
         session_start();
         $this->object->save(1);
         return new Result(true);
-        
     }
 
     public function load()
@@ -33,6 +32,4 @@ class PersistenceDriverTest
         $this->object->clear();
         return new Result(!$this->object->load());
     }
-        
-
 }

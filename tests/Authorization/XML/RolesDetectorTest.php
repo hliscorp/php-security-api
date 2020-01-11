@@ -1,12 +1,11 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authorization\XML;
-    
+
 use Lucinda\WebSecurity\Authorization\XML\RolesDetector;
 use Lucinda\UnitTest\Result;
 
 class RolesDetectorTest
 {
-
     public function getRoles()
     {
         $xml = \simplexml_load_string('
@@ -29,6 +28,4 @@ class RolesDetectorTest
         
         return $results;
     }
-        
-
 }

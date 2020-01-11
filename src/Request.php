@@ -75,7 +75,7 @@ class Request
     
     /**
      * Gets relative URI (page) requested by client
-     * 
+     *
      * @return string
      */
     public function getUri(): string
@@ -85,7 +85,7 @@ class Request
     
     /**
      * Gets context path that prefixes page requested by client,
-     * 
+     *
      * @return string
      */
     public function getContextPath(): string
@@ -105,7 +105,7 @@ class Request
     
     /**
      * Gets HTTP request method used by client in request
-     * 
+     *
      * @return string
      */
     public function getMethod(): string
@@ -114,8 +114,8 @@ class Request
     }
     
     /**
-     * Gets request parameters that came along with http method 
-     * 
+     * Gets request parameters that came along with http method
+     *
      * @return array
      */
     public function getParameters(): array
@@ -133,4 +133,3 @@ class Request
         return $this->accessToken;
     }
 }
-

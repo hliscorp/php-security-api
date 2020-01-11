@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\PersistenceDrivers;
-    
+
 use Lucinda\WebSecurity\PersistenceDrivers\SessionWrapper;
 use Lucinda\UnitTest\Result;
 
@@ -21,5 +21,4 @@ class SessionWrapperTest
         $driver->getDriver()->save(1);
         return new Result($driver->getDriver()->load()==1);
     }
-
 }

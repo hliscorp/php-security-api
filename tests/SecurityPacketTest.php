@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity;
-    
+
 use Lucinda\WebSecurity\SecurityPacket;
 use Lucinda\UnitTest\Result;
 use Lucinda\WebSecurity\Authentication\ResultStatus;
@@ -68,6 +68,4 @@ class SecurityPacketTest
     {
         return new Result($this->object->getTimePenalty()==1);
     }
-        
-
 }

@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authentication\OAuth2;
-    
+
 use Lucinda\WebSecurity\Authentication\OAuth2\Exception;
 use Lucinda\UnitTest\Result;
 
@@ -37,6 +37,4 @@ class ExceptionTest
     {
         return new Result($this->object->getErrorDescription()=="some description");
     }
-        
-
 }

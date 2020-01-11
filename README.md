@@ -305,6 +305,7 @@ $request->setIpAddress($_SERVER["REMOTE_ADDR"]);
 $request->setUri($_SERVER["REQUEST_URI"]!="/"?substr($_SERVER["REQUEST_URI"],1):"index");
 $request->setMethod($_SERVER["REQUEST_METHOD"]);
 $request->setParameters($_POST);
+$request->setAccessToken(isset($_SERVER["HTTP_AUTHORIZATION"]) && stripos($_SERVER["HTTP_AUTHORIZATION"], "Bearer ")===0?trim(substr($_SERVER["HTTP_AUTHORIZATION"], 7)):"");
 
 try {
 	// sets $xml and $request

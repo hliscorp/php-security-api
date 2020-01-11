@@ -3,7 +3,7 @@ namespace Lucinda\WebSecurity\Authentication\OAuth2;
 
 /**
  * Exception thrown when authentication fails on provider
- * 
+ *
  * @author aherne
  */
 class Exception extends \Exception
@@ -13,7 +13,7 @@ class Exception extends \Exception
     
     /**
      * Sets error code
-     * 
+     *
      * @param string $errorCode
      */
     public function setErrorCode(string $errorCode): void
@@ -33,7 +33,7 @@ class Exception extends \Exception
     
     /**
      * Sets error description
-     * 
+     *
      * @param string $errorDescription
      */
     public function setErrorDescription(string $errorDescription): void
@@ -43,7 +43,7 @@ class Exception extends \Exception
     
     /**
      * Gets error description
-     * 
+     *
      * @return string
      */
     public function getErrorDescription(): string
@@ -51,4 +51,3 @@ class Exception extends \Exception
         return $this->errorDescription;
     }
 }
-

@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity;
-    
+
 use Lucinda\WebSecurity\Request;
 use Lucinda\UnitTest\Result;
 
@@ -89,6 +89,4 @@ class RequestTest
     {
         return new Result($this->object->getAccessToken()=="qwerty");
     }
-        
-
 }

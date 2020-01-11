@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity;
-    
+
 use Lucinda\WebSecurity\PersistenceDriversDetector;
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\UnitTest\Result;
@@ -39,6 +39,4 @@ class PersistenceDriversDetectorTest
         $results[] = new Result($persistenceDrivers[3] instanceof JsonWebTokenPersistenceDriver, "tested json web token");
         return $results;
     }
-        
-
 }

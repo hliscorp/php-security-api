@@ -28,7 +28,7 @@ class PageAuthorizationXML
      * @return string[]
      */
     public function getRoles(string $routeToAuthorize): array
-    {        
+    {
         $detector = new RolesDetector($this->xml, "routes", "route", "url", $routeToAuthorize);
         return $detector->getRoles();
     }

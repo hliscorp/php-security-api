@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity\PersistenceDrivers\Token;
-    
+
 use Lucinda\WebSecurity\PersistenceDrivers\Token\JsonWebTokenPersistenceDriver;
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\UnitTest\Result;
@@ -44,6 +44,4 @@ class JsonWebTokenPersistenceDriverTest
     {
         return new Result($this->object->getAccessToken()=="qwerty");
     }
-        
-
 }

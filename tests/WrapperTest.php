@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity;
-    
+
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\WebSecurity\Request;
 use Lucinda\WebSecurity\Wrapper;
@@ -171,7 +171,7 @@ class WrapperTest
         try {
             new Wrapper($xml, $this->getRequest("asdf"));
             $results[] = new Result(false, "path not found: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="not_found", "not found: ".$name);
         }
         
@@ -182,7 +182,7 @@ class WrapperTest
         try {
             new Wrapper($xml, $this->getRequest("login", "POST", ["username"=>"test", "password"=>"me1", "csrf"=>$csrfToken]));
             $results[] = new Result(false, "login failed: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="login_failed", "login failed: ".$name);
         }
         
@@ -190,7 +190,7 @@ class WrapperTest
         try {
             new Wrapper($xml, $this->getRequest("login", "POST", ["username"=>"test", "password"=>"me", "csrf"=>$csrfToken]));
             $results[] = new Result(false, "path not found: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $accessToken = $packet->getAccessToken();
             $results[] = new Result($packet->getStatus()=="login_ok", "login ok: ".$name);
         }
@@ -201,28 +201,28 @@ class WrapperTest
         try {
             new Wrapper($xml, $this->getRequest("administration", "GET", [], $accessToken));
             $results[] = new Result(false, "forbidden: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="forbidden", "forbidden: ".$name);
         }
         
         try {
             $wrapper = new Wrapper($xml, $this->getRequest("logout", "GET", [], $accessToken));
             $results[] = new Result(false, "logout: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="logout_ok", "logout ok: ".$name);
         }
         
         try {
             $wrapper = new Wrapper($xml, $this->getRequest("logout"));
             $results[] = new Result(false, "logout failed: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="logout_failed", "logout failed: ".$name);
         }
         
         try {
             $wrapper = new Wrapper($xml, $this->getRequest("index"));
             $results[] = new Result(false, "unauthorized: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="unauthorized", "unauthorized: ".$name);
         }
         
@@ -239,7 +239,7 @@ class WrapperTest
         try {
             new Wrapper($xml, $this->getRequest("asdf"), $drivers);
             $results[] = new Result(false, "path not found: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="not_found", "not found: ".$name);
         }
         
@@ -250,14 +250,14 @@ class WrapperTest
         try {
             $wrapper = new Wrapper($xml, $this->getRequest("login/facebook"), $drivers);
             $results[] = new Result(false, "authorization code: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="redirect" && $packet->getCallback()=="qwerty", "authorization code: ".$name);
         }
                 
         try {
             $wrapper = new Wrapper($xml, $this->getRequest("login/facebook", "GET", ["error"=>"asdfg"]), $drivers);
             $results[] = new Result(false, "bad authorization code: ".$name);
-        } catch(OAuth2Exception $e) {
+        } catch (OAuth2Exception $e) {
             $results[] = new Result(true, "bad authorization code: ".$name);
         }
         
@@ -265,7 +265,7 @@ class WrapperTest
         try {
             $wrapper = new Wrapper($xml, $this->getRequest("login/facebook", "GET", ["code"=>"qwerty", "state"=>$csrfToken]), $drivers);
             $results[] = new Result(false, "access token: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $accessToken = $packet->getAccessToken();
             $results[] = new Result($packet->getStatus()=="login_ok", "access token: ".$name);
         }
@@ -276,27 +276,27 @@ class WrapperTest
         try {
             new Wrapper($xml, $this->getRequest("administration", "GET", [], $accessToken), $drivers);
             $results[] = new Result(false, "forbidden: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="forbidden", "forbidden: ".$name);
         }
         
         try {
             $wrapper = new Wrapper($xml, $this->getRequest("logout", "GET", [], $accessToken), $drivers);
             $results[] = new Result(false, "logout: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="logout_ok", "logout ok: ".$name);
         }
         try {
             $wrapper = new Wrapper($xml, $this->getRequest("logout"), $drivers);
             $results[] = new Result(false, "logout failed: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="logout_failed", "logout failed: ".$name);
         }
         
         try {
             $wrapper = new Wrapper($xml, $this->getRequest("index"), $drivers);
             $results[] = new Result(false, "unauthorized: ".$name);
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $results[] = new Result($packet->getStatus()=="unauthorized", "unauthorized: ".$name);
         }
         
@@ -321,7 +321,7 @@ class WrapperTest
         $accessToken = "";
         try {
             new Wrapper($this->xml_dao_dao, $this->getRequest("login", "POST", ["username"=>"test", "password"=>"me", "csrf"=>$wrapper->getCsrfToken()]));
-        } catch(SecurityPacket $packet) {
+        } catch (SecurityPacket $packet) {
             $accessToken = $packet->getAccessToken();
         }
         

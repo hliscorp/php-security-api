@@ -1,6 +1,6 @@
 <?php
 namespace Test\Lucinda\WebSecurity;
-    
+
 use Lucinda\WebSecurity\CsrfTokenDetector;
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\UnitTest\Result;
@@ -32,6 +32,4 @@ class CsrfTokenDetectorTest
         $token = $this->object->generate($userID);
         return new Result($this->object->isValid($token, $userID));
     }
-        
-
 }
