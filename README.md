@@ -161,7 +161,7 @@ Both authentication and authorization require knowledge of request to be handled
 | getUri | string $value | void | Gets page/resource requested by client without trailing slash (eg: suffix of $_SERVER["REQUEST_URI"])  |
 | getMethod | string $value | void | Gets HTTP method used by client in page request (eg: value of $_SERVER["REQUEST_METHOD"]) |
 | getParameters | array $value | void | Gets parameters sent by client as GET/POST along with request (eg: value of $_REQUEST) |
-| getAccessToken | string $value | void | Gets access token detected from client headers for stateless login (eg:  suffix of $_SERVER["HTTP_AUTHORIZATION"]) |
+| getAccessToken | string $value | void | Gets access token detected from client headers for stateless login (eg:  Bearer value of $_SERVER["HTTP_AUTHORIZATION"]) |
 
 Usage example:
 
@@ -192,11 +192,55 @@ Once all above information is compiled, one can finally use this API to authenti
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
-| __construct | \SimpleXMLElement $xml, Request $request, array $oauth2Drivers = [] | void | Performs authentication and authorization of request based on arguments |
-| getUserID | void | integer|string|null | Gets logged in user id |
-| getCsrfToken | void | string | Gets anti-CSRF token to sign form login or oauth2 authorization code requests with |
-| getAccessToken | void | string|null | Gets login route of current OAuth2 provider (eg: login/facebook) |
+| __construct | \SimpleXMLElement $xml, [Lucinda\WebSecurity\Request](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Request.php) $request, [Lucinda\WebSecurity\Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/Driver.php)[] $oauth2Drivers = [] | void | Performs authentication and authorization of request based on arguments |
+| getUserID | void | mixed | Gets logged in user id (integer or string) |
+| getCsrfToken | void | string | Gets anti-CSRF token to send as "csrf" POST parameter on form login and "state" GET parameter in oauth2 authorization code requests |
+| getAccessToken | void | string | Gets access token to sign stateless requests with as Bearer HTTP_AUTHORIZATION header (applies if "synchronizer token" or "json web token" persistence is used) |
 
+If authentication/authorization reached a point where request needs to be redirected, constructor throws a [Lucinda\WebSecurity\SecurityPacket](https://github.com/aherne/php-security-api/blob/v3.0.0/src/SecurityPacket.php), which defines following methods relevant to developers:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| getAccessToken | void | string | Gets access token to sign stateless requests with as Bearer HTTP_AUTHORIZATION header (applies if "synchronizer token" or "json web token" persistence is used) |
+| getCallback | void | integer/string | Gets URI inside application to redirect to in case of successful/insuccessful authentication or insuccessful authorization |
+| getStatus | void | string | Gets authentication/authorization status code (see below) |
+| getTimePenalty | void | integer | Sets number of seconds client will be banned from authenticating as anti-throttling measure |
+
+Developers of non-stateless applications are supposed to handle this exception with something like:
+
+```php
+try {
+	// sets $xml and $request
+	$object = new Lucinda\WebSecurity\Wrapper($xml, $request);
+	// operate with $object to retrieve information
+} catch (Lucinda\WebSecurity\SecurityPacket $e) {
+	header("Location: ".$e->getCallback()."?status=".$e->getStatus()."&penalty=".((integer) $e->getTimePenalty()));
+	exit();
+}
+```
+
+Developers of stateless web service applications, however, are supposed to handle this exception with something like:
+
+```php
+try {
+	// sets $xml and $request
+	$object = new Lucinda\WebSecurity\Wrapper($xml, $request);
+	// use $object to produce a response
+} catch (Lucinda\WebSecurity\SecurityPacket $e) {
+	echo json_encode(["status"=>$e->getStatus(), "callback"=>$e->getCallback(), "penalty"=>(integer) $e->getTimePenalty(), "access_token"=>$e->getAccessToken()]);
+	exit();
+	// front end will handle above code and make a redirection
+}
+```
+
+Apart from [Lucinda\WebSecurity\SecurityPacket](https://github.com/aherne/php-security-api/blob/v3.0.0/src/SecurityPacket.php), [Lucinda\WebSecurity\Wrapper](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Wrapper.php) may throw:
+
+- Lucinda\WebSecurity\Authentication\Form\Exception: when login form is posted with wrong parameters names
+- Lucinda\WebSecurity\Authentication\OAuth2\Exception: when OAuth2 provider answers with an error to authorization code or access token requests
+- Lucinda\WebSecurity\PersistenceDrivers\Session\HijackException: when user id in session is associated to a different IP address
+- Lucinda\WebSecurity\Token\EncryptionException: when token could not be decrypted
+- Lucinda\WebSecurity\Token\Exception: when CSRF token is invalid or missing as "csrf" POST param @ form login or "state" GET param @ oauth2 authorization code response 
+- Lucinda\WebSecurity\ConfigurationException: when XML is misconfigured, referenced classes are not found or not fitting expected pattern
 
 ## Installation
 
