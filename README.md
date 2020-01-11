@@ -3,38 +3,9 @@
 This API implements common concerns of web security (authentication, authorization, state persistence, csrf prevention) using a mixture of declarative and programmatic approach:
 
 - **[configuration](#configuration)**: setting up an XML file where web security is configured
-- **[request](#setting-request-information)**: setting request information in a [Lucinda\WebSecurity\Request](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Request.php) instance
-- **[getting results](#getting results)**: creating a [Lucinda\WebSecurity\Wrapper](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Wrapper.php) instance based on above and use it to get logged in user id, access token (for stateless apps) or csrf token (for form logins)
-
-## Installation
-
-This library is fully PSR-4 compliant and only requires PHP7.1+ interpreter and SimpleXML extension. For installation run:
-
-```console
-composer require lucinda/security
-```
-
-Create a file (eg: index.php) in project root with following code:
-
-```php
-require(__DIR__."/vendor/autoload.php");
-
-$object = new Lucinda\WebSecurity\Wrapper(simplexml_load_file(XML_FILE_NAME), REQUEST, OAUTH2_DRIVERS);
-```
-
-Where:
-
-- **XML_FILE_NAME**: (mandatory) holds path to XML file where web security is configured. See **[configuration](#configuration)** below!
-- **REQUEST**: (mandatory) a [Lucinda\WebSecurity\Request](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Request.php) instance, encapsulating request information
-- **OAUTH2_DRIVERS**: (optional) a list of [Lucinda\WebSecurity\Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/Driver.php) instances, encapsulating oauth2 vendors to login with
-
-### Unit Tests
-
-API has 100% unit test coverage, but uses [UnitTest API](https://github.com/aherne/unit-testing) instead of PHPUnit for greater flexibility. For tests and examples, check:
-
-- [test.php](https://github.com/aherne/php-security-api/blob/v3.0.0/test.php): runs unit tests in console
-- [unit-tests.xml](https://github.com/aherne/php-security-api/blob/v3.0.0/unit-tests.xml): sets up unit tests
-- [tests](https://github.com/aherne/php-security-api/tree/v3.0.0/tests): unit tests for classes from [src](https://github.com/aherne/php-security-api/tree/v3.0.0/src) folder
+- **[setting request information](#setting-request-information)**: setting request information in a [Lucinda\WebSecurity\Request](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Request.php) instance
+- **[setting oauth2 drivers](#setting-oauth2-drivers)**: (optional) setting oauth2 drivers available for authentication in a list of [Lucinda\WebSecurity\Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/Driver.php) instances
+- **[getting results](#getting-results)**: creating a [Lucinda\WebSecurity\Wrapper](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Wrapper.php) instance based on above and use it to get logged in user id, access token (for stateless apps) or csrf token (for form logins)
 
 ## Configuration
 
@@ -84,7 +55,7 @@ Where:
             - *expiration*: (optional) seconds until session expires. If not set, session will expire as server-default.
             - *is_http_only*: (optional) whether or not to set session cookie as HttpOnly (can be 0 or 1; 0 is default).
             - *is_https_only*: (optional) whether or not to set session cookie as HTTPS only (can be 0 or 1; 0 is default).
-            - *handler*: (optional) name of class (incl. namespace or relative path) extending [SessionHandlerInterface](https://www.php.net/manual/en/class.sessionhandlerinterface.php) to which session handling will be delegated to. 
+            - *handler*: (optional) name of class (incl. namespace or relative path) implementing [SessionHandlerInterface](https://www.php.net/manual/en/class.sessionhandlerinterface.php) to which session handling will be delegated to. 
         - **remember_me**: (optional) configures persistence of logged in state by HTTP remember me cookie
             - *secret*: (mandatory) password to use in encrypting cookie (use: [Lucinda\WebSecurity\Token\SaltGenerator](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Token/SaltGenerator.php))
             - *parameter_name*: (optional) name of $_COOKIE parameter that will store logged in state. If not set, "uid" is assumed.
@@ -101,7 +72,7 @@ Where:
             - *regeneration*: (optional) seconds from the moment token was created until it needs to regenerate on continuous usage. If not set, token will be regenerated in 1 minute.
     - **authentication**: (mandatory) holds one or more mechanisms to authenticate (at least one is mandatory!)
         - **form**: (optional) configures authentication via form. If no *dao* attribute is set, authentication is done via XML and [users](#users) tag is required!
-            - *dao*: (optional) name of class (incl. namespace or subpath) extending [Lucinda\WebSecurity\Authentication\DAO\UserAuthenticationDAO](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/DAO/UserAuthenticationDAO.php) that performs form authentication in database, found in folder set by *dao_path* attribute above. [1]
+            - *dao*: (optional) name of class (incl. namespace or subpath) implementing [Lucinda\WebSecurity\Authentication\DAO\UserAuthenticationDAO](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/DAO/UserAuthenticationDAO.php) that performs form authentication in database, found in folder set by *dao_path* attribute above. [1]
             - *throttler*: (optional) name of class (incl. namespace or subpath) extending [Lucinda\WebSecurity\Authentication\Form\LoginThrottler](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/Form/LoginThrottler.php) that performs login throttling prevention, found in folder set by *dao_path* attribute above
             - **login**: (optional) configures login
                 - *page*: (optional) page that performs login operation (all requests to this page will pass through this filter), also one to redirect back if login is unsuccessful. If none, then "login" is implicitly used.
@@ -113,7 +84,7 @@ Where:
                 - *page*: (optional) page that performs logout operation (all requests to this page will pass through this filter). If none, then "logout" is implicitly used.
                 - *target*: (optional) destination page after successful or unsuccessful logout. If none, then "login" is implicitly used.
         - **oauth2**: (optional) configures authentication via oauth2 provider
-            - *dao*: (mandatory) name of class (incl. namespace or subpath) extending [Lucinda\WebSecurity\Authentication\OAuth2\VendorAuthenticationDAO](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/VendorAuthenticationDAO.php) that saves results of authentication in database, found in folder set by *dao_path* attribute above
+            - *dao*: (mandatory) name of class (incl. namespace or subpath) implementing [Lucinda\WebSecurity\Authentication\OAuth2\VendorAuthenticationDAO](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/VendorAuthenticationDAO.php) that saves results of authentication in database, found in folder set by *dao_path* attribute above
             - *target*: (optional) destination page after successful login. If none, then "index" is implicitly used.
             - *login*: (optional) generic page where login by provider option is available. If none, then "login" is implicitly used. 
             - *logout*: (optional) page that performs logout operation. If none, then "logout" is implicitly used.
@@ -128,7 +99,7 @@ Where:
             - *logged_out_callback*: (optional) callback page for guest users when authorization fails. If none, then "login" is implicitly used.
 
 Notes:
-(1) If authorization is **by_route**, **authentication** is **form** with a *dao* attribute, then class referenced there must also implement [Lucinda\WebSecurity\Authorization\PageRoles](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authorization/PageRoles.php)
+(1) If authorization is **by_route**, **authentication** is **form** with a *dao* attribute, then class referenced there must also implement [Lucinda\WebSecurity\Authorization\UserRoles](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authorization/UserRoles.php)
 
 ### Users
 
@@ -175,14 +146,86 @@ Where:
 
 ## Setting request information
 
-Both authentication and authorization require knowledge of request to be handled. All of this is encapsulated by a a [Lucinda\WebSecurity\Request](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Request.php) instance with following public methods:
-
+Both authentication and authorization require knowledge of request to be handled. All of this is encapsulated by a [Lucinda\WebSecurity\Request](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Request.php) instance with following public methods:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
 | setIpAddress | string $value | void | Sets ip address used by client (eg: value of $_SERVER["REMOTE_ADDR"]) |
 | setContextPath | string $value | void | Sets context path that prefixes page requested by client (eg: prefix of $_SERVER["REQUEST_URI"]) |
-| setUri | string $value | void | Sets page/resource requested by client (eg: suffix of $_SERVER["REQUEST_URI"])  |
+| setUri | string $value | void | Sets page/resource requested by client without trailing slash (eg: suffix of $_SERVER["REQUEST_URI"])  |
 | setMethod | string $value | void | Sets HTTP method used by client in page request (eg: value of $_SERVER["REQUEST_METHOD"]) |
 | setParameters | array $value | void | Sets parameters sent by client as GET/POST along with request (eg: value of $_REQUEST) |
 | setAccessToken | string $value | void | Sets access token detected from client headers for stateless login (eg:  suffix of $_SERVER["HTTP_AUTHORIZATION"]) |
+| getIpAddress | string $value | void | Gets ip address used by client (eg: value of $_SERVER["REMOTE_ADDR"]) |
+| getContextPath | string $value | void | Gets context path that prefixes page requested by client (eg: prefix of $_SERVER["REQUEST_URI"]) |
+| getUri | string $value | void | Gets page/resource requested by client without trailing slash (eg: suffix of $_SERVER["REQUEST_URI"])  |
+| getMethod | string $value | void | Gets HTTP method used by client in page request (eg: value of $_SERVER["REQUEST_METHOD"]) |
+| getParameters | array $value | void | Gets parameters sent by client as GET/POST along with request (eg: value of $_REQUEST) |
+| getAccessToken | string $value | void | Gets access token detected from client headers for stateless login (eg:  suffix of $_SERVER["HTTP_AUTHORIZATION"]) |
+
+Usage example:
+
+```php
+$request = new Lucinda\WebSecurity\Request();
+$request->setIpAddress($_SERVER["REMOTE_ADDR"]);
+$request->setUri($_SERVER["REQUEST_URI"]!="/"?substr($_SERVER["REQUEST_URI"],1):"index");
+$request->setMethod($_SERVER["REQUEST_METHOD"]);
+$request->setParameters($_POST);
+```
+
+## Setting OAuth2 drivers
+
+Authentication by OAuth2 vendors (eg: Facebook) is supported by this API as long as an external source (developer) implements interface [Lucinda\WebSecurity\Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/Driver.php) for each vendor that's going to be used. Interface defines following methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| getAuthorizationCode | string $state | string | Gets URL to redirect to vendor in order for latter to send back an autorization code |
+| getAccessToken | string $authorizationCode | string | Asks vendor to exchange authorization code with an access token and returns it |
+| getUserInformation | string $accessToken | [Lucinda\WebSecurity\Authentication\OAuth2\UserInformation](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/UserInformation.php) | Uses access token to get logged in user information from vendor |
+| getCallbackUrl | void | string | Gets login route of current OAuth2 provider (eg: login/facebook) |
+| getVendorName | void | string | Gets name of current OAuth2 provider (eg: facebook) |
+
+
+## Getting Results
+
+Once all above information is compiled, one can finally use this API to authenticate and authorize by calling [Lucinda\WebSecurity\Wrapper](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Wrapper.php), which defines following public methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| __construct | \SimpleXMLElement $xml, Request $request, array $oauth2Drivers = [] | void | Performs authentication and authorization of request based on arguments |
+| getUserID | void | integer|string|null | Gets logged in user id |
+| getCsrfToken | void | string | Gets anti-CSRF token to sign form login or oauth2 authorization code requests with |
+| getAccessToken | void | string|null | Gets login route of current OAuth2 provider (eg: login/facebook) |
+
+
+## Installation
+
+This library is fully PSR-4 compliant and only requires PHP7.1+ interpreter and SimpleXML extension. For installation run:
+
+```console
+composer require lucinda/security
+```
+
+Create a file (eg: index.php) in project root with following code:
+
+```php
+require(__DIR__."/vendor/autoload.php");
+
+$object = new Lucinda\WebSecurity\Wrapper(simplexml_load_file(XML_FILE_NAME), REQUEST, OAUTH2_DRIVERS);
+```
+
+Where:
+
+- **XML_FILE_NAME**: (mandatory) holds path to XML file where web security is configured. See **[configuration](#configuration)** below!
+- **REQUEST**: (mandatory) a [Lucinda\WebSecurity\Request](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Request.php) instance, encapsulating request information
+- **OAUTH2_DRIVERS**: (optional) a list of [Lucinda\WebSecurity\Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/Driver.php) instances, encapsulating oauth2 vendors to login with
+
+### Unit Tests
+
+API has 100% unit test coverage, but uses [UnitTest API](https://github.com/aherne/unit-testing) instead of PHPUnit for greater flexibility. For tests and examples, check:
+
+- [test.php](https://github.com/aherne/php-security-api/blob/v3.0.0/test.php): runs unit tests in console
+- [unit-tests.xml](https://github.com/aherne/php-security-api/blob/v3.0.0/unit-tests.xml): sets up unit tests
+- [tests](https://github.com/aherne/php-security-api/tree/v3.0.0/tests): unit tests for classes from [src](https://github.com/aherne/php-security-api/tree/v3.0.0/src) folder
+
+

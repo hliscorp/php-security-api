@@ -15,7 +15,7 @@ interface Driver
     public function getUserInformation(string $accessToken): UserInformation;
     
     /**
-     * Gets callback URI client is registered on current provider
+     * Gets login page relevant to current provider
      * 
      * @return string
      */
@@ -24,10 +24,10 @@ interface Driver
     /**
      * Produces an authorization code request URL for current provider
      * 
-     * @param string $scope
+     * @param string $state
      * @return string
      */
-    public function getAuthorizationCode(string $scope): string;
+    public function getAuthorizationCode(string $state): string;
     
     /**
      * Asks remote provider to exchange authorization code with an access token
