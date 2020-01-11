@@ -36,10 +36,10 @@ Maximal syntax of this tag is:
     </persistence>
     <authentication>
         <form dao="..." throttler="...">
-			<login page="..." target="..." parameter_username="..." parameter_password="..."  parameter_rememberMe="..." />
-			<logout page="..." target="..."/>
-		</form>
-		<oauth2 dao="..." target="..." login="..." logout="..."/>
+            <login page="..." target="..." parameter_username="..." parameter_password="..."  parameter_rememberMe="..." />
+            <logout page="..." target="..."/>
+        </form>
+        <oauth2 dao="..." target="..." login="..." logout="..."/>
     </authentication>
     <authorization>
         <by_dao page_dao="..." user_dao="..." logged_in_callback="..." logged_out_callback="..."/>
