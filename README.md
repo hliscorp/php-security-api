@@ -1,11 +1,17 @@
 # Web Security API
 
-This API implements common concerns of web security (authentication, authorization, state persistence, csrf prevention) using a mixture of declarative and programmatic approach:
+This API implements common concerns of web security (authentication, authorization, state persistence, csrf prevention) on OWASP guidelines using this series of steps:
 
 - **[configuration](#configuration)**: setting up an XML file where web security is configured
 - **[setting request information](#setting-request-information)**: setting request information in a [Lucinda\WebSecurity\Request](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Request.php) instance
 - **[setting oauth2 drivers](#setting-oauth2-drivers)**: (optional) setting oauth2 drivers available for authentication in a list of [Lucinda\WebSecurity\Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/Driver.php) instances
 - **[getting results](#getting-results)**: creating a [Lucinda\WebSecurity\Wrapper](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Wrapper.php) instance based on above and use it to get logged in user id, access token (for stateless apps) or csrf token (for form logins)
+
+API is fully PSR-4 compliant, only requiring PHP7.1+ interpreter and SimpleXML extension. To quickly see how it works, check:
+
+- **[installation](#installation)**: describes how to install API on your computer, in light of steps above
+- **[unit tests](#unit-tests)**: API has 100% Unit Test coverage, using [UnitTest API](https://github.com/aherne/unit-testing) instead of PHPUnit for greater flexibility
+- **[example](https://github.com/aherne/php-security-api/blob/v3.0.0/tests/WrapperTest.php)**: shows a deep example of API functionality based on unit test for [Lucinda\WebSecurity\Wrapper](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Wrapper.php)
 
 ## Configuration
 
@@ -283,13 +289,13 @@ try {
 
 ## Installation
 
-This library is fully PSR-4 compliant and only requires PHP7.1+ interpreter and SimpleXML extension. For installation run:
+First choose a folder, associate it to a domain then write this command in its folder using console:
 
 ```console
 composer require lucinda/security
 ```
 
-Create a *configuration.xml* file holding configuration settings (see [configuration](#configuration) above) and a *index.php* file (see [getting results](#getting-results) above) in project root with following code:
+Then create a *configuration.xml* file holding configuration settings (see [configuration](#configuration) above) and a *index.php* file (see [getting results](#getting-results) above) in project root with following code:
 
 ```php
 require(__DIR__."/vendor/autoload.php");
@@ -311,23 +317,18 @@ try {
 
 ```
 
-Then make this file a bootstrap:
+Then make this file a bootstrap and start developing MVC pattern on top:
 
 ```
 RewriteEngine on
 RewriteRule ^(.*)$ index.php
-SetEnv ENVIRONMENT local
 ```
 
-Then start developing MVC pattern on top.
+## Unit Tests
 
-
-### Unit Tests
-
-API has 100% unit test coverage, but uses [UnitTest API](https://github.com/aherne/unit-testing) instead of PHPUnit for greater flexibility. For tests and examples, check:
+For tests and examples, check following files/folders in API sources:
 
 - [test.php](https://github.com/aherne/php-security-api/blob/v3.0.0/test.php): runs unit tests in console
 - [unit-tests.xml](https://github.com/aherne/php-security-api/blob/v3.0.0/unit-tests.xml): sets up unit tests
 - [tests](https://github.com/aherne/php-security-api/tree/v3.0.0/tests): unit tests for classes from [src](https://github.com/aherne/php-security-api/tree/v3.0.0/src) folder
-
 
