@@ -9,14 +9,14 @@ class Result
     private $status;
     private $callbackURI;
     private $userID;
-    private $timePenalty;
+    private $timePenalty = 0;
 
     /**
      * Saves authentication result encapsulated by ResultStatus enum
      *
      * @param ResultStatus $status
      */
-    public function __construct(ResultStatus $status)
+    public function __construct(int $status)
     {
         $this->status = $status;
     }
@@ -26,7 +26,7 @@ class Result
      *
      * @return ResultStatus
      */
-    public function getStatus(): ResultStatus
+    public function getStatus(): int
     {
         return $this->status;
     }

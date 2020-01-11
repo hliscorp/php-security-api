@@ -22,17 +22,29 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
      * @param string $salt Strong password to use for crypting. (Check: http://randomkeygen.com/)
      * @param string $parameterName Name of SESSION parameter that holds cypted unique user identifier.
      * @param integer $expirationTime Time by which cookie expires (cannot be renewed), in seconds.
-     * @param string $isHttpOnly  Whether or not cookie should be using HTTP-only.
-     * @param string $isSecure Whether or not cookie should be using HTTPS-only.
+     * @param bool $isHttpOnly  Whether or not cookie should be using HTTP-only.
+     * @param bool $isSecure Whether or not cookie should be using HTTPS-only.
      * @param string $ip Value of REMOTE_ADDR attribute, unless ignored.
      */
-    public function __construct(string $salt, string $parameterName, int $expirationTime, string $isHttpOnly = false, string $isSecure = false, string $ip="")
+    public function __construct(string $salt, string $parameterName, int $expirationTime, bool $isHttpOnly = false, bool $isSecure = false, string $ip="")
     {
         $this->token = new SynchronizerToken($ip, $salt);
         $this->parameterName = $parameterName;
         $this->expirationTime = $expirationTime;
         $this->isHttpOnly = $isHttpOnly;
         $this->isSecure = $isSecure;
+    }
+    
+    /**
+     * Saves user's unique identifier into driver (eg: on login).
+     *
+     * @param mixed $userID Unique user identifier (usually an integer)
+     */
+    public function save($userID): void
+    {
+        $token = $this->token->encode($userID, $this->expirationTime);
+        setcookie($this->parameterName, $token, time()+$this->expirationTime, "/", "", $this->isSecure, $this->isHttpOnly);
+        $_COOKIE[$this->parameterName] = $token;
     }
     
     /**
@@ -60,18 +72,6 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
                 throw $e;
             }
         }
-    }
-    
-    /**
-     * Saves user's unique identifier into driver (eg: on login).
-     *
-     * @param mixed $userID Unique user identifier (usually an integer)
-     */
-    public function save($userID): void
-    {
-        $token = $this->token->encode($userID, $this->expirationTime);
-        setcookie($this->parameterName, $token, time()+$this->expirationTime, "/", "", $this->isSecure, $this->isHttpOnly);
-        $_COOKIE[$this->parameterName] = $token;
     }
     
     /**

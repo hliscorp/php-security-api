@@ -22,9 +22,8 @@ class SaltGenerator
      * Generates a salt of fixed length to use as salt/password in token generation
      *
      * @param integer $length
-     * @return string
      */
-    private function setSalt(int $length): string
+    private function setSalt(int $length): void
     {
         $this->salt = substr(strtr(base64_encode(random_bytes($length)), '+', '.'), 0, $length);
     }

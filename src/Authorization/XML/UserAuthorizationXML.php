@@ -1,16 +1,14 @@
 <?php
 namespace Lucinda\WebSecurity\Authorization\XML;
 
-use Lucinda\WebSecurity\Authorization\Exception;
 use Lucinda\WebSecurity\Authorization\UserRoles;
+use Lucinda\WebSecurity\ConfigurationException;
 
 /**
  * Encapsulates users authorization via <users> XML tag
  */
 class UserAuthorizationXML implements UserRoles
 {
-    const ROLE_GUEST = "GUEST";
-    
     private $xml;
     
     /**
@@ -27,37 +25,26 @@ class UserAuthorizationXML implements UserRoles
      * Gets user roles from XML
      *
      * @param integer $userID
-     * @throws Exception
+     * @throws ConfigurationException
      * @return string[]
      */
-    public function getRoles(int $userID): array
+    public function getRoles($userID): array
     {
-        $userRoles = array();
-        if ($userID) {
-            $tmp = (array) $this->xml->users;
-            $tmp = $tmp["user"];
-            if (!is_array($tmp)) {
-                $tmp = array($tmp);
-            }
-            foreach ($tmp as $info) {
-                $userIDTemp = (string) $info["id"];
-                $roles = (string) $info["roles"];
-                if (!$userIDTemp || !$roles) {
-                    throw new Exception("XML tag users > user requires parameters: id, roles");
-                }
-                if ($userIDTemp == $userID) {
-                    $tmp = explode(",", $roles);
-                    foreach ($tmp as $role) {
-                        $userRoles[] = trim($role);
-                    }
-                }
-            }
-            if (empty($userRoles)) {
-                throw new Exception("User not found in XML!");
-            }
-        } else {
-            $userRoles[] = self::ROLE_GUEST;
+        // gets default roles
+        $defaultRoles = [];
+        if (empty($this->xml->users['roles'])) {
+            throw new ConfigurationException("XML tag users requires attribute: roles");
         }
-        return $userRoles;
+        $tmp = (string) $this->xml->users["roles"];
+        $tmp= explode(",", $tmp);
+        foreach ($tmp as $role) {
+            $defaultRoles[] = trim($role);
+        }
+        
+        // gets user roles
+        $detector = new RolesDetector($this->xml, "users", "user", "id", $userID);
+        $userRoles = $detector->getRoles();
+        
+        return (!empty($userRoles)?$userRoles:$defaultRoles);
     }
 }

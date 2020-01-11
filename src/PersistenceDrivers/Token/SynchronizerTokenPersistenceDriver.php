@@ -17,16 +17,26 @@ class SynchronizerTokenPersistenceDriver extends PersistenceDriver
     /**
      * Creates a persistence driver object.
      *
-     * @param string $salt Strong password to use for crypting. (Check: http://randomkeygen.com/)
-     * @param integer $expirationTime Time by which token expires (can be renewed), in seconds.
-     * @param string $regenerationTime Time by which token is renewed, in seconds.
+     * @param string $salt Strong password to use for crypting.
      * @param string $ip Value of REMOTE_ADDR attribute, unless ignored.
+     * @param integer $expirationTime Time by which token expires (can be renewed), in seconds.
+     * @param integer $regenerationTime Time by which token is renewed, in seconds.
      */
-    public function __construct(string $salt, int $expirationTime = 3600, string $regenerationTime = 60, string $ip="")
+    public function __construct(string $salt, string $ip, int $expirationTime = 3600, int $regenerationTime = 60)
     {
         $this->tokenDriver = new SynchronizerToken($ip, $salt);
         $this->expirationTime = $expirationTime;
         $this->regenerationTime = $regenerationTime;
+    }
+    
+    /**
+     * Saves user's unique identifier into driver (eg: on login).
+     *
+     * @param mixed $userID Unique user identifier (usually an integer)
+     */
+    public function save($userID): void
+    {
+        $this->accessToken = $this->tokenDriver->encode($userID, $this->expirationTime);
     }
     
     /**
@@ -36,7 +46,6 @@ class SynchronizerTokenPersistenceDriver extends PersistenceDriver
      */
     public function load()
     {
-        $this->setAccessToken();
         if (!$this->accessToken) {
             return;
         }
@@ -52,16 +61,6 @@ class SynchronizerTokenPersistenceDriver extends PersistenceDriver
             return;
         }
         return $userID;
-    }
-    
-    /**
-     * Saves user's unique identifier into driver (eg: on login).
-     *
-     * @param mixed $userID Unique user identifier (usually an integer)
-     */
-    public function save($userID): void
-    {
-        $this->accessToken = $this->tokenDriver->encode($userID, $this->expirationTime);
     }
     
     /**

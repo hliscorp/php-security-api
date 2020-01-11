@@ -2,14 +2,14 @@
 namespace Lucinda\WebSecurity\Authentication\XML;
 
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
-use Lucinda\WebSecurity\Authentication\Exception;
+use Lucinda\WebSecurity\ConfigurationException;
 use Lucinda\WebSecurity\Authentication\Result;
 use Lucinda\WebSecurity\Authentication\ResultStatus;
 
 /**
  * Encapsulates authentication via XML ACL
  */
-class XMLAuthentication
+class Authentication
 {
     private $xml;
     private $persistenceDrivers;
@@ -19,14 +19,14 @@ class XMLAuthentication
      *
      * @param \SimpleXMLElement $xml
      * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that allow authenticated state to persist between requests.
-     * @throws Exception If one of persistenceDrivers entries is not a PersistentDriver
+     * @throws ConfigurationException If one of persistenceDrivers entries is not a PersistentDriver
      */
-    public function __construct(\SimpleXMLElement $xml, array $persistenceDrivers = array()): void
+    public function __construct(\SimpleXMLElement $xml, array $persistenceDrivers = array())
     {
         // check argument that it's instance of PersistenceDriver
         foreach ($persistenceDrivers as $persistentDriver) {
             if (!($persistentDriver instanceof PersistenceDriver)) {
-                throw new Exception("Items must be instanceof PersistenceDriver");
+                throw new ConfigurationException("Items must be instanceof PersistenceDriver");
             }
         }
         
@@ -43,7 +43,7 @@ class XMLAuthentication
      * @param string $username Value of user name
      * @param string $password Value of user password
      * @return Result Encapsulates result of login attempt.
-     * @throws Exception If POST parameters are invalid.
+     * @throws ConfigurationException If POST parameters are invalid.
      */
     public function login(string $username, string $password): Result
     {

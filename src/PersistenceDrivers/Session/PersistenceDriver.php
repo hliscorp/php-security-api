@@ -18,17 +18,29 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
      *
      * @param string $parameterName Name of SESSION parameter that holds unique user identifier.
      * @param integer $expirationTime Time by which session expires no matter what, in seconds.
-     * @param string $isHttpOnly Whether or not session should be using HTTP-only cookies.
-     * @param string $isSecure Whether or not session should be using HTTPS-only cookies.
+     * @param bool $isHttpOnly Whether or not session should be using HTTP-only cookies.
+     * @param bool $isSecure Whether or not session should be using HTTPS-only cookies.
      * @param string $ip Value of REMOTE_ADDR parameter, unless ignored.
      */
-    public function __construct(string $parameterName, int $expirationTime = 0, string $isHttpOnly = false, string $isSecure = false, string $ip="")
+    public function __construct(string $parameterName, int $expirationTime = 0, bool $isHttpOnly = false, bool $isSecure = false, string $ip="")
     {
         $this->current_ip = $ip;
         $this->parameterName = $parameterName;
         $this->expirationTime = $expirationTime;
         $this->isHttpOnly = $isHttpOnly;
         $this->isSecure = $isSecure;
+    }
+    
+    /**
+     * Saves user's unique identifier into driver (eg: on login).
+     *
+     * @param mixed $userID Unique user identifier (usually an integer)
+     */
+    public function save($userID): void
+    {
+        $_SESSION[$this->parameterName] = $userID;
+        $_SESSION["ip"] = $this->current_ip;
+        $_SESSION["time"] = time()+$this->expirationTime;
     }
     
     /**
@@ -76,18 +88,6 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
         $_SESSION["time"] = time()+$this->expirationTime;
         
         return $_SESSION[$this->parameterName];
-    }
-    
-    /**
-     * Saves user's unique identifier into driver (eg: on login).
-     *
-     * @param mixed $userID Unique user identifier (usually an integer)
-     */
-    public function save($userID): void
-    {
-        $_SESSION[$this->parameterName] = $userID;
-        $_SESSION["ip"] = $this->current_ip;
-        $_SESSION["time"] = time()+$this->expirationTime;
     }
     
     /**

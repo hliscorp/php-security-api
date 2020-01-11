@@ -20,13 +20,27 @@ class JsonWebTokenPersistenceDriver extends PersistenceDriver
      *
      * @param string $salt Strong password to use for crypting. (Check: http://randomkeygen.com/)
      * @param integer $expirationTime Time by which token expires (can be renewed), in seconds.
-     * @param string $regenerationTime Time by which token is renewed, in seconds.
+     * @param integer $regenerationTime Time by which token is renewed, in seconds.
      */
-    public function __construct(string $salt, int $expirationTime = 3600, string $regenerationTime = 60)
+    public function __construct(string $salt, int $expirationTime = 3600, int $regenerationTime = 60)
     {
         $this->tokenDriver = new JsonWebToken($salt);
         $this->expirationTime = $expirationTime;
         $this->regenerationTime = $regenerationTime;
+    }
+    
+    /**
+     * Saves user's unique identifier into driver (eg: on login).
+     *
+     * @param mixed $userID Unique user identifier (usually an integer)
+     */
+    public function save($userID): void
+    {
+        $payload = new JsonWebTokenPayload();
+        $payload->setApplicationId($userID);
+        $payload->setStartTime(time());
+        $payload->setEndTime(time()+$this->expirationTime);
+        $this->accessToken = $this->tokenDriver->encode($payload);
     }
     
     /**
@@ -36,7 +50,6 @@ class JsonWebTokenPersistenceDriver extends PersistenceDriver
      */
     public function load()
     {
-        $this->setAccessToken();
         if (!$this->accessToken) {
             return;
         }
@@ -52,20 +65,6 @@ class JsonWebTokenPersistenceDriver extends PersistenceDriver
             $this->accessToken = null;
         }
         return $userID;
-    }
-    
-    /**
-     * Saves user's unique identifier into driver (eg: on login).
-     *
-     * @param mixed $userID Unique user identifier (usually an integer)
-     */
-    public function save($userID): void
-    {
-        $payload = new JsonWebTokenPayload();
-        $payload->setApplicationId($userID);
-        $payload->setStartTime(time());
-        $payload->setEndTime(time()+$this->expirationTime);
-        $this->accessToken = $this->tokenDriver->encode($payload);
     }
     
     /**

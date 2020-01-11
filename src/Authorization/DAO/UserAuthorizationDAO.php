@@ -28,9 +28,9 @@ abstract class UserAuthorizationDAO
     
     /**
      * Gets saved id of logged in user
-     * @return integer
+     * @return mixed
      */
-    public function getID(): int
+    public function getID()
     {
         return $this->userID;
     }

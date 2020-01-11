@@ -2,7 +2,7 @@
 namespace Lucinda\WebSecurity\Authentication\DAO;
 
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
-use Lucinda\WebSecurity\Authentication\Exception;
+use Lucinda\WebSecurity\ConfigurationException;
 use Lucinda\WebSecurity\Authentication\Result;
 use Lucinda\WebSecurity\PersistenceDrivers\RememberMe\PersistenceDriver as RememberMePersistenceDriver;
 use Lucinda\WebSecurity\Authentication\ResultStatus;
@@ -20,14 +20,14 @@ class Authentication
      *
      * @param UserAuthenticationDAO $dao Forwards operations to database via a DAO.
      * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that allow authenticated state to persist between requests.
-     * @throws Exception If one of persistenceDrivers entries is not a PersistentDriver
+     * @throws ConfigurationException If one of persistenceDrivers entries is not a PersistentDriver
      */
-    public function __construct(UserAuthenticationDAO $dao, array $persistenceDrivers = array()): void
+    public function __construct(UserAuthenticationDAO $dao, array $persistenceDrivers = array())
     {
         // check argument that it's instance of PersistenceDriver
         foreach ($persistenceDrivers as $persistentDriver) {
             if (!($persistentDriver instanceof PersistenceDriver)) {
-                throw new Exception("Items must be instanceof PersistenceDriver");
+                throw new ConfigurationException("Items must be instanceof PersistenceDriver");
             }
         }
         
@@ -45,7 +45,7 @@ class Authentication
      * @param string $password Value of user password
      * @param boolean $rememberMe Value of remember me option (if any)
      * @return Result Encapsulates result of login attempt.
-     * @throws Exception If POST parameters are invalid.
+     * @throws ConfigurationException If POST parameters are invalid.
      */
     public function login(string $username, string $password, bool $rememberMe=null): Result
     {

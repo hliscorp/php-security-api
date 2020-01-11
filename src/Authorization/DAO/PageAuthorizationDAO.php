@@ -22,9 +22,9 @@ abstract class PageAuthorizationDAO
      * Detects database ID of page requested.
      *
      * @param string $pageURL URL of page requested
-     * @return integer
+     * @return integer|null
      */
-    abstract protected function detectID(string $pageURL): int;
+    abstract protected function detectID(string $pageURL): ?int;
 
     /**
      * Checks if current page does not require being logged in based on detected ID.
@@ -36,9 +36,9 @@ abstract class PageAuthorizationDAO
     /**
      * Gets detected id of page requested
      *
-     * @return integer
+     * @return mixed
      */
-    public function getID(): int
+    public function getID()
     {
         return $this->pageID;
     }

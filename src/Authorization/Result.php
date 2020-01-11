@@ -15,7 +15,7 @@ class Result
      * @param ResultStatus $status
      * @param string $callbackURI
      */
-    public function __construct(ResultStatus $status, string $callbackURI)
+    public function __construct(int $status, string $callbackURI)
     {
         $this->status = $status;
         $this->callbackURI = $callbackURI;
@@ -26,7 +26,7 @@ class Result
      *
      * @return ResultStatus
      */
-    public function getStatus(): ResultStatus
+    public function getStatus(): int
     {
         return $this->status;
     }

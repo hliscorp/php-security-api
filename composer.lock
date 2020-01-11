@@ -1,0 +1,61 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "4889273269ffaee7cb124be0cc7d1595",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "lucinda/unit-testing",
+            "version": "v1.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aherne/unit-testing.git",
+                "reference": "0a89a61d7089c7a1f382efca9703a1c980ea4725"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aherne/unit-testing/zipball/0a89a61d7089c7a1f382efca9703a1c980ea4725",
+                "reference": "0a89a61d7089c7a1f382efca9703a1c980ea4725",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lucinda\\UnitTest\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lucian Popescu",
+                    "email": "lucian.gabriel.popescu@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Lightweight PHP7.1 library for unit testing with zero dependencies",
+            "keywords": [
+                "unit testing"
+            ],
+            "time": "2019-12-26T11:57:08+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": "^7.1",
+        "ext-openssl": "*"
+    },
+    "platform-dev": []
+}

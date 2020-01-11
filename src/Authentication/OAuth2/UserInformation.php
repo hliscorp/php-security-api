@@ -9,9 +9,9 @@ interface UserInformation
     /**
      * Gets remote user id.
      *
-     * @return integer
+     * @return integer|string
      */
-    public function getId(): int;
+    public function getId();
     
     /**
      * Gets remote user name.

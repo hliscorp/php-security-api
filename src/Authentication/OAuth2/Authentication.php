@@ -2,7 +2,7 @@
 namespace Lucinda\WebSecurity\Authentication\OAuth2;
 
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
-use Lucinda\WebSecurity\Authentication\Exception;
+use Lucinda\WebSecurity\ConfigurationException;
 use Lucinda\WebSecurity\Authentication\ResultStatus;
 
 /**
@@ -18,16 +18,16 @@ class Authentication
     /**
      * Creates an authentication object.
      *
-     * @param AuthenticationDAO $dao Forwards authentication checks to DB.
+     * @param VendorAuthenticationDAO $dao Forwards authentication checks to DB.
      * @param PersistenceDriver[] $persistenceDrivers List of drivers to persist user unique identifier into.
-     * @throws Exception When persistence drivers are invalid.
+     * @throws ConfigurationException When persistence drivers are invalid.
      */
-    public function __construct(AuthenticationDAO $dao, array $persistenceDrivers)
+    public function __construct(VendorAuthenticationDAO $dao, array $persistenceDrivers)
     {
         // check argument that it's instance of PersistenceDriver
         foreach ($persistenceDrivers as $persistentDriver) {
             if (!($persistentDriver instanceof PersistenceDriver)) {
-                throw new Exception("Items must be instanceof PersistenceDriver");
+                throw new ConfigurationException("Items must be instanceof PersistenceDriver");
             }
         }
         
@@ -39,16 +39,16 @@ class Authentication
      * Performs login by delegating to driver-specific OAuth2 implementation.
      *
      * @param Driver $driver Forwards retrieval of user information based on access token.
-     * @param string $accessToken OAuth2 access token.
-     * @param boolean $createUserIfNotExists Whether or not login should automatically creat user in DB if it doesn't exist already.
+     * @param string $authorizationCode Authorization code to use in retrieving access token
      * @return AuthenticationResult Encapsulates result of login attempt.
      */
-    public function login(Driver $driver, string $accessToken, bool $createUserIfNotExists=true): AuthenticationResult
+    public function login(Driver $driver, string $authorizationCode): AuthenticationResult
     {
+        $accessToken = $driver->getAccessToken($authorizationCode);
         // retrieve user information from oauth2 driver
         $userInformation = $driver->getUserInformation($accessToken);
         // query dao for a user id and an authorization code >> redirect to temporary page
-        $userID = $this->dao->login($userInformation, $accessToken, $createUserIfNotExists);
+        $userID = $this->dao->login($userInformation, $driver->getVendorName(), $accessToken);
         // save in persistence drivers
         if (empty($userID)) {
             $result = new AuthenticationResult(ResultStatus::LOGIN_FAILED);

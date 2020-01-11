@@ -11,15 +11,12 @@ abstract class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDriv
     
     /**
      * Sets access token value based on contents of HTTP authorization header of "bearer" type
+     * 
+     * @param string $accessToken
      */
-    public function setAccessToken(): void
+    public function setAccessToken(string $accessToken): void
     {
-        $headers = getallheaders();
-        if (!isset($headers["Authorization"]) || stripos($headers["Authorization"], "Bearer ")!==0) {
-            return;
-        }
-        
-        $this->accessToken = trim(substr($headers["Authorization"], 7));
+        $this->accessToken = $accessToken;
     }
     
     /**
@@ -27,7 +24,7 @@ abstract class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDriv
      *
      * @return string
      */
-    public function getAccessToken(): string
+    public function getAccessToken(): ?string
     {
         return $this->accessToken;
     }

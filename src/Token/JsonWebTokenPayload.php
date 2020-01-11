@@ -21,7 +21,7 @@ class JsonWebTokenPayload
      *
      * @param string[string] $data
      */
-    public function __construct(array $data= array()): void
+    public function __construct(array $data= array())
     {
         if (!empty($data)) {
             foreach ($data as $key=>$value) {
@@ -68,9 +68,9 @@ class JsonWebTokenPayload
     /**
      * Gets security token service (STS) that issued the JWT.
      *
-     * @return string
+     * @return string|null
      */
-    public function getIssuer(): string
+    public function getIssuer(): ?string
     {
         return $this->issuer;
     }
@@ -88,9 +88,9 @@ class JsonWebTokenPayload
     /**
      * Gets user of JWT.
      *
-     * @return string
+     * @return string|null
      */
-    public function getSubject(): string
+    public function getSubject()
     {
         return $this->subject;
     }
@@ -108,9 +108,9 @@ class JsonWebTokenPayload
     /**
      * Gets recipients (site) that the JWT is intended for.
      *
-     * @return string
+     * @return string|null
      */
-    public function getAudience(): string
+    public function getAudience(): ?string
     {
         return $this->audience;
     }
@@ -128,9 +128,9 @@ class JsonWebTokenPayload
     /**
      * Gets time by which token expires.
      *
-     * @return integer
+     * @return integer|null
      */
-    public function getEndTime(): int
+    public function getEndTime(): ?int
     {
         return $this->endTime;
     }
@@ -148,9 +148,9 @@ class JsonWebTokenPayload
     /**
      * Gets time by which token starts.
      *
-     * @return integer
+     * @return integer|null
      */
-    public function getStartTime(): int
+    public function getStartTime(): ?int
     {
         return $this->startTime;
     }
@@ -168,9 +168,9 @@ class JsonWebTokenPayload
     /**
      * Gets time by which token was issued.
      *
-     * @return integer
+     * @return integer|null
      */
-    public function getIssuedTime(): int
+    public function getIssuedTime(): ?int
     {
         return $this->issuedTime;
     }
@@ -188,9 +188,9 @@ class JsonWebTokenPayload
     /**
      * Gets unique token identifier amidst multiple issuers.
      *
-     * @return string
+     * @return string|null
      */
-    public function getApplicationId(): string
+    public function getApplicationId(): ?string
     {
         return $this->id;
     }
@@ -203,16 +203,16 @@ class JsonWebTokenPayload
      */
     public function setCustomClaim(string $name, string $value): void
     {
-        $this->custom[$key] = $value;
+        $this->custom[$name] = $value;
     }
     
     /**
      * Gets value of custom payload parameter or null if not found.
      *
      * @param string $name
-     * @return string
+     * @return string|null
      */
-    public function getCustomClaim(string $name): string
+    public function getCustomClaim(string $name): ?string
     {
         return (isset($this->custom[$name])?$this->custom[$name]:null);
     }

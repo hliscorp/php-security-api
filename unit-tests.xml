@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<xml>
+  <unit_tests>
+    <unit_test>
+      <sources path="src" namespace="Lucinda\WebSecurity\"/>
+      <tests path="tests" namespace="Test\Lucinda\WebSecurity\"/>
+    </unit_test>
+  </unit_tests>
+  <security dao_path="application/models/dao">
+    <csrf secret="YOUR_APP_SECRET"/>
+    <persistence>
+      <session/>
+      <remember_me secret="YOUR_APP_SECRET"/>
+    </persistence>
+    <authentication>
+      <form dao="UsersAuthentication" throttler="SqlLoginThrottler"/>
+      <oauth2 dao="UsersOAuth2Authentication" auto_create="1"/>
+    </authentication>
+    <authorization>
+      <by_route/>
+    </authorization>
+  </security>
+</xml>

@@ -1,7 +1,7 @@
 <?php
 namespace Lucinda\WebSecurity\Authorization\XML;
 
-use Lucinda\WebSecurity\Authorization\Exception;
+use Lucinda\WebSecurity\ConfigurationException;
 
 /**
  * Encapsulates route authorization via <routes> XML tag
@@ -21,35 +21,15 @@ class PageAuthorizationXML
     }
     
     /**
-     * Gets page roles from XML
+     * Gets roles from XML
      *
      * @param string $routeToAuthorize
-     * @throws Exception
+     * @throws ConfigurationException
      * @return string[]
      */
     public function getRoles(string $routeToAuthorize): array
-    {
-        $pageRoles = array();
-        $tmp = (array) $this->xml->routes;
-        $tmp = $tmp["route"];
-        if (!is_array($tmp)) {
-            $tmp = array($tmp);
-        }
-        foreach ($tmp as $info) {
-            $path = (string) $info['url'];
-            if ($path != $routeToAuthorize) {
-                continue;
-            }
-            
-            if (empty($info['roles'])) {
-                throw new Exception("XML tag routes > route requires parameter: roles");
-            }
-            $tmp = (string) $info["roles"];
-            $tmp= explode(",", $tmp);
-            foreach ($tmp as $role) {
-                $pageRoles[] = trim($role);
-            }
-        }
-        return $pageRoles;
+    {        
+        $detector = new RolesDetector($this->xml, "routes", "route", "url", $routeToAuthorize);
+        return $detector->getRoles();
     }
 }

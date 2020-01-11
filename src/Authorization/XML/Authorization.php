@@ -1,7 +1,7 @@
 <?php
 namespace Lucinda\WebSecurity\Authorization\XML;
 
-use Lucinda\WebSecurity\Authorization\Exception;
+use Lucinda\WebSecurity\ConfigurationException;
 use Lucinda\WebSecurity\Authorization\Result;
 use Lucinda\WebSecurity\Authorization\ResultStatus;
 use Lucinda\WebSecurity\Authorization\UserRoles;
@@ -37,16 +37,16 @@ class Authorization
      * @param string $routeToAuthorize
      * @param integer $userID
      * @param UserRoles $userAuthorizationRoles
-     * @throws Exception If route is misconfigured.
+     * @throws ConfigurationException If route is misconfigured.
      * @return Result
      */
-    public function authorize(\SimpleXMLElement $xml, string $routeToAuthorize, int $userID=0, UserRoles $userAuthorizationRoles): Result
+    public function authorize(\SimpleXMLElement $xml, string $routeToAuthorize, $userID=null, UserRoles $userAuthorizationRoles): Result
     {
         $status = 0;
         $callbackURI = "";
         
         // check if user is authenticated
-        $isUserGuest = ($userID==0?true:false);
+        $isUserGuest = ($userID?false:true);
         
         // get user roles
         $userRoles = $userAuthorizationRoles->getRoles($userID);
