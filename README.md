@@ -7,7 +7,7 @@ This API implements common concerns of web security (authentication, authorizati
 - **[setting oauth2 drivers](#setting-oauth2-drivers)**: (optional) setting oauth2 drivers available for authentication in a list of [Lucinda\WebSecurity\Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authentication/OAuth2/Driver.php) instances
 - **[getting results](#getting-results)**: creating a [Lucinda\WebSecurity\Wrapper](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Wrapper.php) instance based on above and use it to get logged in user id, access token (for stateless apps) or csrf token (for form logins)
 
-API is fully PSR-4 compliant, only requiring PHP7.1+ interpreter and SimpleXML + OpenSSL extension. To quickly see how it works, check:
+API is fully PSR-4 compliant, only requiring PHP7.1+ interpreter and SimpleXML + OpenSSL extensions. To quickly see how it works, check:
 
 - **[installation](#installation)**: describes how to install API on your computer, in light of steps above
 - **[unit tests](#unit-tests)**: API has 100% Unit Test coverage, using [UnitTest API](https://github.com/aherne/unit-testing) instead of PHPUnit for greater flexibility
@@ -103,6 +103,8 @@ Where:
         - **by_route**: (optional) configures authorization by XML, in which case [routes](#routes) tag is required. [1]
             - *logged_in_callback*: (optional) callback page for authenticated users when authorization fails. If none, then "index" is implicitly used.
             - *logged_out_callback*: (optional) callback page for guest users when authorization fails. If none, then "login" is implicitly used.
+
+For examples of XMLs, check [WrapperTest](https://github.com/aherne/php-security-api/blob/v3.0.0/tests/WrapperTest.php) @ unit tests!
 
 Notes:
 (1) If authorization is **by_route**, **authentication** is **form** with a *dao* attribute, then class referenced there must also implement [Lucinda\WebSecurity\Authorization\UserRoles](https://github.com/aherne/php-security-api/blob/v3.0.0/src/Authorization/UserRoles.php)
