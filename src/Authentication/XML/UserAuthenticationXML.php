@@ -33,22 +33,17 @@ class UserAuthenticationXML
         $userID = null;
         
         // extract user id
-        $tmp = (array) $this->xml->users;
-        if (empty($tmp)) {
+        if (!$this->xml->users) {
             throw new ConfigurationException("XML tag users not defined!");
         }
-        $tmp = $tmp["user"];
-        if (!is_array($tmp)) {
-            $tmp = array($tmp);
-        }
-        foreach ($tmp as $info) {
-            $currentUserName = (string) $info['username'];
-            $currentPassword = (string) $info['password'];
-            if (!$currentUserName || !$currentPassword) {
+        $info = $this->xml->xpath("//users/user[@username='".$username."']");
+        if (!empty($info[0])) {
+            $currentPassword = (string) $info[0]['password'];
+            if (!$currentPassword) {
                 throw new ConfigurationException("XML tag users > user requires parameters: username, password");
             }
-            if ($username == $currentUserName && password_verify($password, $currentPassword)) {
-                $userID = (string) $info["id"];
+            if (password_verify($password, $currentPassword)) {
+                $userID = (string) $info[0]["id"];
                 if (!$userID) {
                     throw new ConfigurationException("XML tag users / user requires parameter: id");
                 }
