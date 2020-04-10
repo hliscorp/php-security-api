@@ -90,7 +90,7 @@ class XMLWrapper extends Wrapper
     /**
      * Logs user in authentication driver.
      */
-    private function login(LoginRequest $request)
+    private function login(LoginRequest $request): void
     {
         // set result
         $result = $this->driver->login(
@@ -105,7 +105,7 @@ class XMLWrapper extends Wrapper
      *
      * @param LogoutRequest $request Encapsulates logout request data.
      */
-    private function logout(LogoutRequest $request)
+    private function logout(LogoutRequest $request): void
     {
         // set result
         $result = $this->driver->logout();

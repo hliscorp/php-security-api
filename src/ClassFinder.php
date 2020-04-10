@@ -25,14 +25,14 @@ class ClassFinder
      * @throws ConfigurationException
      * @return string
      */
-    public function find(string $className): string
+    public function find($className): string
     {
-        $classPath = $this->folder;
+        $classPath = "";
         
         // get classes loaded in subfolders
         $slashPosition = strrpos($className, "/");
         if ($slashPosition!==false) {
-            $classPath .= "/".substr($className, 0, $slashPosition);
+            $classPath = substr($className, 0, $slashPosition);
             $className = substr($className, $slashPosition+1);
         }
         
@@ -45,7 +45,7 @@ class ClassFinder
         }
         
         // loads class file
-        $filePath = $classPath."/".$simpleClassName.".php";
+        $filePath = ($this->folder?$this->folder."/":"").($classPath?$classPath."/":"").$simpleClassName.".php";
         if (!file_exists($filePath)) {
             throw new ConfigurationException("File not found: ".$simpleClassName);
         }

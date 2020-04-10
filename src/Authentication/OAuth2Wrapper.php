@@ -65,7 +65,7 @@ class OAuth2Wrapper extends Wrapper
      * @param Request $request Encapsulated client request data.
      * @param CsrfTokenDetector $csrf Object that performs CSRF token checks.
      */
-    private function login(OAuth2Driver $driverInfo, Request $request, CsrfTokenDetector $csrf)
+    private function login(OAuth2Driver $driverInfo, Request $request, CsrfTokenDetector $csrf): void
     {
         // detect parameters from xml
         $parameters = $request->getParameters();
@@ -91,7 +91,7 @@ class OAuth2Wrapper extends Wrapper
     /**
      * Logs user out and empties all tokens for that user.
      */
-    private function logout()
+    private function logout(): void
     {
         $result = $this->driver->logout();
         $this->setResult($result, $this->xmlParser->getLoginCallback(), $this->xmlParser->getLoginCallback());

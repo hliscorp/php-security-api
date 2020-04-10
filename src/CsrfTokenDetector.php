@@ -26,7 +26,7 @@ class CsrfTokenDetector
      * @param string $ipAddress Client ip address resolved from headers
      * @throws ConfigurationException If XML is improperly configured.
      */
-    public function __construct(\SimpleXMLElement $xml, $ipAddress)
+    public function __construct(\SimpleXMLElement $xml, string $ipAddress)
     {
         $xml = $xml->csrf;
         if (empty($xml)) {
@@ -56,7 +56,7 @@ class CsrfTokenDetector
      * @return string Value of synchronizer token.
      * @throws EncryptionException If encryption of token fails.
      */
-    public function generate($userID)
+    public function generate($userID): string
     {
         return $this->token->encode($userID, $this->expiration);
     }
@@ -71,7 +71,7 @@ class CsrfTokenDetector
      * @throws TokenException If token fails validations.
      * @throws RegenerationException If token needs to be refreshed
      */
-    public function isValid($token, $userID)
+    public function isValid(string $token, $userID): bool
     {
         try {
             $tokenUserID = $this->token->decode($token);

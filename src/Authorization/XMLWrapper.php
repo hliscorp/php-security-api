@@ -51,7 +51,7 @@ class XMLWrapper extends Wrapper
      * @throws ConfigurationException
      * @return UserRoles
      */
-    private function getDAO(\SimpleXMLElement $xml, $userID)
+    private function getDAO(\SimpleXMLElement $xml, $userID): UserRoles
     {
         $daoClass = (string) $xml->authentication->form["dao"];
         if (!$daoClass) {

@@ -31,7 +31,7 @@ class XMLParser
      *
      * @param \SimpleXMLElement $xml Pointer to <security> tag.
      */
-    private function setLoginCallback($xml)
+    private function setLoginCallback(\SimpleXMLElement $xml): void
     {
         $loginPage = (string) $xml->authentication->oauth2["login"];
         if (!$loginPage) {
@@ -45,7 +45,7 @@ class XMLParser
      *
      * @param \SimpleXMLElement $xml Pointer to <security> tag.
      */
-    private function setLogoutCallback($xml)
+    private function setLogoutCallback(\SimpleXMLElement $xml): void
     {
         $logoutPage = (string) $xml->authentication->oauth2["logout"];
         if (!$logoutPage) {
@@ -59,7 +59,7 @@ class XMLParser
      *
      * @param \SimpleXMLElement $xml Pointer to <security> tag.
      */
-    private function setTargetCallback($xml)
+    private function setTargetCallback(\SimpleXMLElement $xml): void
     {
         $targetPage = (string) $xml->authentication->oauth2["target"];
         if (!$targetPage) {
@@ -73,7 +73,7 @@ class XMLParser
      *
      * @return string
      */
-    public function getLoginCallback()
+    public function getLoginCallback(): string
     {
         return $this->loginCallback;
     }
@@ -83,7 +83,7 @@ class XMLParser
      *
      * @return string
      */
-    public function getLogoutCallback()
+    public function getLogoutCallback(): string
     {
         return $this->logoutCallback;
     }
@@ -93,7 +93,7 @@ class XMLParser
      *
      * @return string
      */
-    public function getTargetCallback()
+    public function getTargetCallback(): string
     {
         return $this->targetCallback;
     }

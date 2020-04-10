@@ -42,11 +42,11 @@ class SessionWrapper extends PersistenceDriverWrapper
     /**
      * Gets instance of handler based on handler name
      *
-     * @param string $handlerName Name of handler class
+     * @param string $handlerClass Name of handler class
      * @throws ConfigurationException If resources referenced in XML do not exist or do not extend/implement required blueprint.
      * @return \SessionHandlerInterface
      */
-    private function getHandlerInstance($handlerClass)
+    private function getHandlerInstance(string $handlerClass): \SessionHandlerInterface
     {
         $classFinder = new ClassFinder("");
         $handlerClass = $classFinder->find($handlerClass);

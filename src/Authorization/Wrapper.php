@@ -13,7 +13,7 @@ abstract class Wrapper
      *
      * @param Result $result
      */
-    protected function setResult(Result $result)
+    protected function setResult(Result $result): void
     {
         $this->result = $result;
     }
@@ -23,7 +23,7 @@ abstract class Wrapper
      *
      * @return Result
      */
-    public function getResult()
+    public function getResult(): Result
     {
         return $this->result;
     }

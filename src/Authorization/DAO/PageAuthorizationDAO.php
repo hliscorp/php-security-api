@@ -36,9 +36,9 @@ abstract class PageAuthorizationDAO
     /**
      * Gets detected id of page requested
      *
-     * @return mixed
+     * @return integer|NULL
      */
-    public function getID()
+    public function getID(): ?int
     {
         return $this->pageID;
     }
