@@ -129,5 +129,6 @@ class Wrapper
                 return $driver->getAccessToken();
             }
         }
+        return null;
     }
 }
