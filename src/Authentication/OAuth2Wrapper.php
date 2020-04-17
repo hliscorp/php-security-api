@@ -37,7 +37,7 @@ class OAuth2Wrapper extends Wrapper
     public function __construct(\SimpleXMLElement $xml, Request $request, CsrfTokenDetector $csrf, array $persistenceDrivers, array $drivers)
     {
         if (empty($drivers)) {
-            throw new ConfigurationException("No oauth2 drivers have been defined");
+            return; // in case no drivers are active (localhost), disable authentication
         }
         
         $this->xmlParser = new XMLParser($xml);
