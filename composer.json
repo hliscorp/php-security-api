@@ -5,6 +5,19 @@
     "keywords": ["security","authentication","authorization","owasp","jwt","oauth2","xml","dao","token"],
     "homepage": "http://www.lucinda-framework.com/web-security",
     "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "ext-SimpleXML": "*",
+        "ext-openssl": "*"
+    },
+    "require-dev": {
+    	"lucinda/unit-testing": "^1.0"
+    },
+    "autoload": {
+    	"psr-4": {
+        	"Lucinda\\WebSecurity\\": "src/"
+    	}
+    },
     "authors": [
         {
             "name": "Lucian Popescu",
