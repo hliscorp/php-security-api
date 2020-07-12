@@ -1,9 +1,9 @@
 {
     "name": "lucinda/security",
     "type": "library",
-    "description": "Encapsulates web security operations on top of OWASP guidelines",
+    "description": "API implementing common web security patterns (eg: authentication, authorization) for PHP applications based on OWASP guidelines",
     "keywords": ["security","authentication","authorization","owasp","jwt","oauth2","xml","dao","token"],
-    "homepage": "http://www.lucinda-framework.com/web-security",
+    "homepage": "https://github.com/aherne/php-security-api",
     "license": "MIT",
     "require": {
         "php": "^7.1",
