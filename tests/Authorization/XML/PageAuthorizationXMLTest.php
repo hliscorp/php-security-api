@@ -11,10 +11,10 @@ class PageAuthorizationXMLTest
         $xml = \simplexml_load_string('
 <xml>
     <routes>
-        <route url="login" roles="GUEST,USER"/>
-        <route url="index" roles="USER"/>
-        <route url="logout" roles="USER,ADMINISTRATOR"/>
-        <route url="admin" roles="ADMINISTRATOR"/>
+        <route id="login" roles="GUEST,USER"/>
+        <route id="index" roles="USER"/>
+        <route id="logout" roles="USER,ADMINISTRATOR"/>
+        <route id="admin" roles="ADMINISTRATOR"/>
     </routes>
 </xml>
 ');

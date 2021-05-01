@@ -19,10 +19,10 @@ class AuthorizationTest
         <user id="1" roles="USER"/>
     </users>
     <routes>
-        <route url="login" roles="GUEST,USER"/>
-        <route url="index" roles="USER"/>
-        <route url="logout" roles="USER,ADMINISTRATOR"/>
-        <route url="administration" roles="ADMINISTRATOR"/>
+        <route id="login" roles="GUEST,USER"/>
+        <route id="index" roles="USER"/>
+        <route id="logout" roles="USER,ADMINISTRATOR"/>
+        <route id="administration" roles="ADMINISTRATOR"/>
     </routes>
 </xml>');
     }

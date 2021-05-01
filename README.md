@@ -153,7 +153,7 @@ This tag is required if XML authorization (**by_route** tag is present) is used.
 
 ```xml
 <routes roles="...">
-    <route url="..." roles="..."/>
+    <route id="..." roles="..."/>
     ...
 </routes>
 ```
@@ -163,7 +163,7 @@ Where:
 - **routes**: (mandatory) holds list of site routes, each identified by a **route** tag
     - *roles*: (mandatory) holds list of roles all pages are assumed to belong by default to, separated by commas (eg: GUEST)
     - **route**: (mandatory) holds policies about a specific route
-        - *url*: (mandatory) page relative url (eg: administration)
+        - *id*: (mandatory) page relative url (eg: administration)
         - *roles*: (mandatory) holds list of roles page is associated to, separated by commas (eg: USERS, ADMINISTRATORS)
 
 ## Execution

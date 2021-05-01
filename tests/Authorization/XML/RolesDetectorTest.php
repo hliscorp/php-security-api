@@ -11,19 +11,19 @@ class RolesDetectorTest
         $xml = \simplexml_load_string('
 <xml>
     <routes roles="USER">
-        <route url="login" roles="GUEST,USER"/>
-        <route url="index" roles="USER"/>
-        <route url="logout" roles="USER,ADMINISTRATOR"/>
-        <route url="admin" roles="ADMINISTRATOR"/>
+        <route id="login" roles="GUEST,USER"/>
+        <route id="index" roles="USER"/>
+        <route id="logout" roles="USER,ADMINISTRATOR"/>
+        <route id="admin" roles="ADMINISTRATOR"/>
     </routes>
 </xml>
 ');
         $results = [];
         
-        $object = new RolesDetector($xml, "routes", "route", "url", "asdf");
+        $object = new RolesDetector($xml, "routes", "route", "id", "asdf");
         $results[] = new Result($object->getRoles()==[], "checks element without roles");
         
-        $object = new RolesDetector($xml, "routes", "route", "url", "login");
+        $object = new RolesDetector($xml, "routes", "route", "id", "login");
         $results[] = new Result($object->getRoles("login")==["GUEST","USER"], "checks element without roles");
         
         return $results;

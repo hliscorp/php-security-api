@@ -53,9 +53,11 @@ class XMLWrapper extends Wrapper
      */
     private function getDAO(\SimpleXMLElement $xml, $userID): UserRoles
     {
-        $daoClass = (string) $xml->authentication->form["dao"];
-        if (!$daoClass) {
-            $daoClass = (string) $xml->authentication->oauth2["dao"];
+        $daoClass = "";
+        if ($tag = $xml->authentication->form) {
+            $daoClass = (string) $tag["dao"];
+        } else if ($tag = $xml->authentication->oauth2) {
+            $daoClass = (string) $tag["dao"];
         }
         if ($daoClass) {
             $classFinder = new ClassFinder((string) $xml["dao_path"]);
