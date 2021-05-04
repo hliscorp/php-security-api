@@ -178,12 +178,12 @@ It offers developers an ability to **bind declaratively** to its prototypes:
 
 | XML Attribute @ Tag | Class Prototype | Ability Gained |
 | --- | --- | --- |
-| [dao @ security.authentication.form](#security) | [Lucinda\WebSecurity\Authentication\DAO\UserAuthenticationDAO](#interface-userauthenticationdao) | Form authentication via database, always |
-| [throttler @ security.authentication.form](#security) | [Lucinda\WebSecurity\Authentication\Form\LoginThrottler](#class-loginthrottler) | Form authentication protection against bruteforce attacks via database |
-| [dao @ security.authentication.oauth2](#security) | [Lucinda\WebSecurity\Authentication\OAuth2\VendorAuthenticationDAO](#interface-oauth2-vendorauthenticationdao) | Authentication via oauth2 provider |
-| [page_dao @ security.authorization.by_dao](#security) | [Lucinda\WebSecurity\Authorization\DAO\PageAuthorizationDAO](#abstract-class-pageauthorizationdao) | Authorization where ACL is checked in database |
-| [user_dao @ security.authorization.by_dao](#security) | [Lucinda\WebSecurity\Authorization\DAO\UserAuthorizationDAO](#abstract-class-UserAuthorizationDAO) | Authorization where USER is checked in database |
-| [dao @ security.authentication.form](#security) | [Lucinda\WebSecurity\Authorization\UserRoles](#interface-user-roles) | Any authorization where user roles are checked in database |
+| [dao @ security.authentication.form](#security) | [Lucinda\WebSecurity\Authentication\<br/>DAO\UserAuthenticationDAO](#interface-userauthenticationdao) | Form authentication via database, always |
+| [throttler @ security.authentication.form](#security) | [Lucinda\WebSecurity\Authentication\<br/>Form\LoginThrottler](#abstract-class-loginthrottler) | Form authentication protection against bruteforce attacks via database |
+| [dao @ security.authentication.oauth2](#security) | [Lucinda\WebSecurity\Authentication\<br/>OAuth2\VendorAuthenticationDAO](#interface-oauth2-vendorauthenticationdao) | Authentication via oauth2 provider |
+| [page_dao @ security.authorization.by_dao](#security) | [Lucinda\WebSecurity\Authorization\<br/>DAO\PageAuthorizationDAO](#abstract-class-pageauthorizationdao) | Authorization where ACL is checked in database |
+| [user_dao @ security.authorization.by_dao](#security) | [Lucinda\WebSecurity\Authorization\<br/>DAO\UserAuthorizationDAO](#abstract-class-UserAuthorizationDAO) | Authorization where USER is checked in database |
+| [dao @ security.authentication.form](#security) | [Lucinda\WebSecurity\Authorization\<br/>UserRoles](#interface-user-roles) | Any authorization where user roles are checked in database |
 
 ### Programmatic Binding
 
