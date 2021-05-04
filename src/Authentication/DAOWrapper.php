@@ -11,7 +11,6 @@ use Lucinda\WebSecurity\Authentication\Form\LoginRequest;
 use Lucinda\WebSecurity\Authentication\Form\LogoutRequest;
 use Lucinda\WebSecurity\Token\Exception as TokenException;
 use Lucinda\WebSecurity\Authentication\Form\LoginThrottlerHandler;
-use Lucinda\WebSecurity\ClassFinder;
 use Lucinda\WebSecurity\Authentication\Form\LoginThrottler;
 use Lucinda\WebSecurity\ConfigurationException;
 
@@ -68,18 +67,15 @@ class DAOWrapper extends Wrapper
      * Gets DAO where authentication is performed
      *
      * @param \SimpleXMLElement $xml
-     * @throws ConfigurationException
      * @return UserAuthenticationDAO
      */
     private function getDAO(\SimpleXMLElement $xml): UserAuthenticationDAO
     {
         $className = (string) $xml->authentication->form["dao"];
-        $classFinder = new ClassFinder((string) $xml["dao_path"]);
-        $className = $classFinder->find($className);
-        $authenticationDaoObject = new $className();
-        if (!($authenticationDaoObject instanceof UserAuthenticationDAO)) {
-            throw new ConfigurationException("Class must be instance of UserAuthenticationDAO: ".$className);
+        if (!$className) {
+            throw new ConfigurationException("Attribute 'dao' is mandatory for 'form' tag");
         }
+        $authenticationDaoObject = new $className();
         return $authenticationDaoObject;
     }
     
@@ -89,18 +85,15 @@ class DAOWrapper extends Wrapper
      * @param \SimpleXMLElement $xml
      * @param Request $request
      * @param LoginRequest $loginRequest
-     * @throws ConfigurationException
      * @return LoginThrottler
      */
     private function getThrottler(\SimpleXMLElement $xml, Request $request, LoginRequest $loginRequest): LoginThrottler
     {
         $throttlerClassName = (string) $xml->authentication->form["throttler"];
-        $classFinder = new ClassFinder((string) $xml["dao_path"]);
-        $throttlerClassName = $classFinder->find($throttlerClassName);
-        $throttlerObject = new $throttlerClassName($request, $loginRequest->getUsername());
-        if (!($throttlerObject instanceof LoginThrottler)) {
-            throw new ConfigurationException("Class must be instance of LoginThrottler: ".$throttlerClassName);
+        if (!$throttlerClassName) {
+            throw new ConfigurationException("Attribute 'throttler' is mandatory for 'form' tag");
         }
+        $throttlerObject = new $throttlerClassName($request, $loginRequest->getUsername());
         return $throttlerObject;
     }
 
@@ -118,7 +111,7 @@ class DAOWrapper extends Wrapper
             $request->getUsername(),
             $request->getPassword(),
             $request->getRememberMe()
-            );
+        );
                 
         $this->setResult($result, $request->getSourcePage(), $request->getDestinationPage());
     }

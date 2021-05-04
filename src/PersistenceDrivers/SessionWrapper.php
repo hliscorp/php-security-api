@@ -2,8 +2,6 @@
 namespace Lucinda\WebSecurity\PersistenceDrivers;
 
 use Lucinda\WebSecurity\PersistenceDrivers\Session\PersistenceDriver as SessionPersistenceDriver;
-use Lucinda\WebSecurity\ClassFinder;
-use Lucinda\WebSecurity\ConfigurationException;
 
 /**
  * Binds SessionPersistenceDriver @ SECURITY API with settings from configuration.xml @ SERVLETS-API and sets up an object on which one can
@@ -18,7 +16,6 @@ class SessionWrapper extends PersistenceDriverWrapper
      *
      * @param \SimpleXMLElement $xml Contents of XML tag that sets up persistence driver.
      * @param string $ipAddress Detected client IP address
-     * @throws ConfigurationException If resources referenced in XML do not exist or do not extend/implement required blueprint.
      */
     protected function setDriver(\SimpleXMLElement $xml, string $ipAddress): void
     {
@@ -33,27 +30,9 @@ class SessionWrapper extends PersistenceDriverWrapper
         
         $handler = (string) $xml["handler"];
         if ($handler) {
-            session_set_save_handler($this->getHandlerInstance($handler), true);
+            session_set_save_handler(new $handler(), true);
         }
         
         $this->driver = new SessionPersistenceDriver($parameterName, $expirationTime, $isHttpOnly, $isHttpsOnly, $ipAddress);
-    }
-    
-    /**
-     * Gets instance of handler based on handler name
-     *
-     * @param string $handlerClass Name of handler class
-     * @throws ConfigurationException If resources referenced in XML do not exist or do not extend/implement required blueprint.
-     * @return \SessionHandlerInterface
-     */
-    private function getHandlerInstance(string $handlerClass): \SessionHandlerInterface
-    {
-        $classFinder = new ClassFinder("");
-        $handlerClass = $classFinder->find($handlerClass);
-        $object = new $handlerClass();
-        if (!($object instanceof \SessionHandlerInterface)) {
-            throw new ConfigurationException("Handler must be instance of SessionHandlerInterface!");
-        }
-        return $object;
     }
 }

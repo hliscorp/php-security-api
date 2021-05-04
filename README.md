@@ -2,6 +2,7 @@
 
 - [About](#about)
 - [Configuration](#configuration)
+- [Binding Points](#binding-points)
 - [Execution](#execution)
 - [Installation](#installation)
 - [Unit Tests](#unit-tests)
@@ -11,13 +12,15 @@
 
 ## About
 
-This API implements common concerns of web security (authentication, authorization, state persistence, csrf prevention) on OWASP guidelines.
+This API is a skeleton that implements common concerns of web security (authentication, authorization, state persistence, csrf prevention) based on OWASP guidelines, 
+offering multiple binding points where developers MUST plugin components using its prototypes in order to gain one or more abilities (eg: DB authentication). 
 
 ![diagram](https://www.lucinda-framework.com/web-security-api.svg)
 
 It does so using this series of steps:
 
 - **[configuration](#configuration)**: setting up an XML file where web security is configured
+- **[binding points](#binding-points)**: binding user-defined components defined in XML/code to API prototypes
 - **[execution](#execution)**: creating a [Lucinda\WebSecurity\Wrapper](https://github.com/aherne/php-security-api/blob/master/src/Wrapper.php) instance to authenticate & authorize then use it to get logged in user id, access token (for stateless apps) or csrf token (for form logins)
 
 API is fully PSR-4 compliant, only requiring PHP7.1+ interpreter and SimpleXML + OpenSSL extensions. To quickly see how it works, check:
@@ -39,7 +42,7 @@ To configure this API you must have a XML with following tags inside:
 Maximal syntax of this tag is:
 
 ```xml
-<security dao_path="...">
+<security>
     <csrf secret="..." expiration="..."/>
     <persistence>
         <session parameter_name="..." expiration="..." is_http_only="..." is_https_only="..." ignore_ip="..." handler="..."/>
@@ -64,7 +67,6 @@ Maximal syntax of this tag is:
 Where:
 
 - **security**: (mandatory) holds global web security policies. 
-    - *dao_path*: location to DAO classes (required if authentication/authorization use database)    
     - **csrf**: (mandatory) holds settings necessary to produce an anti-CSRF token (useful to sign authentication with)
         - *secret*: (mandatory) password to use in encrypting csrf token (use: [Lucinda\WebSecurity\Token\SaltGenerator](https://github.com/aherne/php-security-api/blob/master/src/Token/SaltGenerator.php))
         - *expiration*: (optional) seconds until token expires. If not set, token will expire in 10 minutes.
@@ -91,8 +93,8 @@ Where:
             - *regeneration*: (optional) seconds from the moment token was created until it needs to regenerate on continuous usage. If not set, token will be regenerated in 1 minute.
     - **authentication**: (mandatory) holds one or more mechanisms to authenticate (at least one is mandatory!)
         - **form**: (optional) configures authentication via form. If no *dao* attribute is set, authentication is done via XML and [users](#users) tag is required!
-            - *dao*: (optional) name of class (incl. namespace or subpath) implementing [Lucinda\WebSecurity\Authentication\DAO\UserAuthenticationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authentication/DAO/UserAuthenticationDAO.php) that performs form authentication in database, found in folder set by *dao_path* attribute above. [1]
-            - *throttler*: (optional) name of class (incl. namespace or subpath) extending [Lucinda\WebSecurity\Authentication\Form\LoginThrottler](https://github.com/aherne/php-security-api/blob/master/src/Authentication/Form/LoginThrottler.php) that performs login throttling prevention, found in folder set by *dao_path* attribute above
+            - *dao*: (optional) name of PSR-4 autoload-compliant class (incl. namespace) implementing [Lucinda\WebSecurity\Authentication\DAO\UserAuthenticationDAO](#interface-userauthenticationdao) that performs form authentication in database. [1]
+            - *throttler*: (optional) name of PSR-4 autoload-compliant class (incl. namespace) extending [Lucinda\WebSecurity\Authentication\Form\LoginThrottler](#abstract-class-loginthrottler) that performs login throttling prevention
             - **login**: (optional) configures login
                 - *page*: (optional) page that performs login operation (all requests to this page will pass through this filter), also one to redirect back if login is unsuccessful. If none, then "login" is implicitly used.
                 - *target*: (optional) destination page after successful login. If none, then "index" is implicitly used.
@@ -103,14 +105,14 @@ Where:
                 - *page*: (optional) page that performs logout operation (all requests to this page will pass through this filter). If none, then "logout" is implicitly used.
                 - *target*: (optional) destination page after successful or unsuccessful logout. If none, then "login" is implicitly used.
         - **oauth2**: (optional) configures authentication via oauth2 provider
-            - *dao*: (mandatory) name of class (incl. namespace or subpath) implementing [Lucinda\WebSecurity\Authentication\OAuth2\VendorAuthenticationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authentication/OAuth2/VendorAuthenticationDAO.php) that saves results of authentication in database, found in folder set by *dao_path* attribute above
+            - *dao*: (mandatory) name of PSR-4 autoload-compliant class (incl. namespace) implementing [Lucinda\WebSecurity\Authentication\OAuth2\VendorAuthenticationDAO](#interface-oauth2-vendorauthenticationdao) that saves results of authentication in database
             - *target*: (optional) destination page after successful login. If none, then "index" is implicitly used.
             - *login*: (optional) generic page where login by provider option is available. If none, then "login" is implicitly used. 
             - *logout*: (optional) page that performs logout operation. If none, then "logout" is implicitly used.
     - **authorization**: (mandatory) holds a single mechanism to authorize requests (at least one is mandatory!)
         - **by_dao**: (optional) configures authorization by database
-            - *page_dao*: (mandatory) name of class (incl. namespace or subpath) extending [Lucinda\WebSecurity\Authorization\DAO\UserAuthorizationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authorization/DAO/UserAuthorizationDAO.php) that checks user rights in database, found in folder set by *dao_path* attribute above
-            - *user_dao*: (mandatory) name of class (incl. namespace or subpath) extending [Lucinda\WebSecurity\Authorization\DAO\PageAuthorizationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authorization/DAO/PageAuthorizationDAO.php) that checks page rights in database, found in folder set by *dao_path* attribute above
+            - *page_dao*: (mandatory) name of PSR-4 autoload-compliant class (incl. namespace) extending [Lucinda\WebSecurity\Authorization\DAO\PageAuthorizationDAO](#abstract-class-pageauthorizationdao) that checks user rights in database
+            - *user_dao*: (mandatory) name of PSR-4 autoload-compliant class (incl. namespace) extending [Lucinda\WebSecurity\Authorization\DAO\UserAuthorizationDAO](#abstract-class-UserAuthorizationDAO) that checks page rights in database
             - *logged_in_callback*: (optional) callback page for authenticated users when authorization fails. If none, then "index" is implicitly used.
             - *logged_out_callback*: (optional) callback page for guest users when authorization fails. If none, then "login" is implicitly used.
         - **by_route**: (optional) configures authorization by XML, in which case [routes](#routes) tag is required. [1]
@@ -120,7 +122,7 @@ Where:
 For examples of XMLs, check [WrapperTest](https://github.com/aherne/php-security-api/blob/master/tests/WrapperTest.php) @ unit tests!
 
 Notes:
-(1) If authorization is **by_route**, **authentication** is **form** with a *dao* attribute, then class referenced there must also implement [Lucinda\WebSecurity\Authorization\UserRoles](https://github.com/aherne/php-security-api/blob/master/src/Authorization/UserRoles.php)
+(1) If authorization is **by_route**, **authentication** is **form** with a *dao* attribute, then class referenced there must also implement [Lucinda\WebSecurity\Authorization\UserRoles](#interface-user-roles)!
 
 ### Users
 
@@ -165,6 +167,32 @@ Where:
     - **route**: (mandatory) holds policies about a specific route
         - *id*: (mandatory) page relative url (eg: administration)
         - *roles*: (mandatory) holds list of roles page is associated to, separated by commas (eg: USERS, ADMINISTRATORS)
+
+## Binding Points
+
+In order to remain flexible and achieve highest performance, API takes no more assumptions than those absolutely required! It offers developers instead an ability to bind to its prototypes in order to gain certain functionality.
+
+### Declarative Binding
+
+It offers developers an ability to **bind declaratively** to its prototypes:
+
+| XML Attribute @ Tag | Class Prototype | Ability Gained |
+| --- | --- | --- |
+| [dao @ security.authentication.form](#security) | [Lucinda\WebSecurity\Authentication\DAO\UserAuthenticationDAO](#interface-userauthenticationdao) | Form authentication via database, always |
+| [throttler @ security.authentication.form](#security) | [Lucinda\WebSecurity\Authentication\Form\LoginThrottler](#class-loginthrottler) | Form authentication protection against bruteforce attacks via database |
+| [dao @ security.authentication.oauth2](#security) | [Lucinda\WebSecurity\Authentication\OAuth2\VendorAuthenticationDAO](#interface-oauth2-vendorauthenticationdao) | Authentication via oauth2 provider |
+| [page_dao @ security.authorization.by_dao](#security) | [Lucinda\WebSecurity\Authorization\DAO\PageAuthorizationDAO](#abstract-class-pageauthorizationdao) | Authorization where ACL is checked in database |
+| [user_dao @ security.authorization.by_dao](#security) | [Lucinda\WebSecurity\Authorization\DAO\UserAuthorizationDAO](#abstract-class-UserAuthorizationDAO) | Authorization where USER is checked in database |
+| [dao @ security.authentication.form](#security) | [Lucinda\WebSecurity\Authorization\UserRoles](#interface-user-roles) | Any authorization where user roles are checked in database |
+
+### Programmatic Binding
+
+It offers developers an ability to **bind programmatically** to its prototypes via [Lucinda\WebSecurity\Wrapper](#execution) constructor:
+
+| Class Prototype | Ability Gained |
+| --- | --- |
+| [Lucinda\WebSecurity\Request](#class-request) | (mandatory) Collects information about request to be authenticated/authorized. |
+| [Lucinda\WebSecurity\Authentication\OAuth2\Driver](#interface-oauth2-driver)[] | (optional) Contains information about OAuth2 vendors to use in OAuth2 authentication later on |
 
 ## Execution
 
@@ -294,49 +322,6 @@ For tests and examples, check following files/folders in API sources:
 
 ## Reference Guide
 
-### Class Request
-
-[Lucinda\WebSecurity\Request](https://github.com/aherne/php-security-api/blob/master/src/Request.php) encapsulates information about request necessary for authentication and authorization via following public methods:
-
-| Method | Arguments | Returns | Description |
-| --- | --- | --- | --- |
-| setIpAddress | string $value | void | Sets ip address used by client (eg: value of $_SERVER["REMOTE_ADDR"]) |
-| setContextPath | string $value | void | Sets context path that prefixes page requested by client (eg: prefix of $_SERVER["REQUEST_URI"]) |
-| setUri | string $value | void | Sets page/resource requested by client without trailing slash (eg: suffix of $_SERVER["REQUEST_URI"])  |
-| setMethod | string $value | void | Sets HTTP method used by client in page request (eg: value of $_SERVER["REQUEST_METHOD"]) |
-| setParameters | array $value | void | Sets parameters sent by client as GET/POST along with request (eg: value of $_REQUEST) |
-| setAccessToken | string $value | void | Sets access token detected from client headers for stateless login (eg:  suffix of $_SERVER["HTTP_AUTHORIZATION"]) |
-| getIpAddress | string $value | void | Gets ip address used by client (eg: value of $_SERVER["REMOTE_ADDR"]) |
-| getContextPath | string $value | void | Gets context path that prefixes page requested by client (eg: prefix of $_SERVER["REQUEST_URI"]) |
-| getUri | string $value | void | Gets page/resource requested by client without trailing slash (eg: suffix of $_SERVER["REQUEST_URI"])  |
-| getMethod | string $value | void | Gets HTTP method used by client in page request (eg: value of $_SERVER["REQUEST_METHOD"]) |
-| getParameters | array $value | void | Gets parameters sent by client as GET/POST along with request (eg: value of $_REQUEST) |
-| getAccessToken | string $value | void | Gets access token detected from client headers for stateless login (eg:  Bearer value of $_SERVER["HTTP_AUTHORIZATION"]) |
-
-
-Usage example:
-
-```php
-$request = new Lucinda\WebSecurity\Request();
-$request->setIpAddress($_SERVER["REMOTE_ADDR"]);
-$request->setUri($_SERVER["REQUEST_URI"]!="/"?substr($_SERVER["REQUEST_URI"],1):"index");
-$request->setMethod($_SERVER["REQUEST_METHOD"]);
-$request->setParameters($_POST);
-$request->setAccessToken(isset($_SERVER["HTTP_AUTHORIZATION"]) && stripos($_SERVER["HTTP_AUTHORIZATION"], "Bearer ")===0?trim(substr($_SERVER["HTTP_AUTHORIZATION"], 7)):"");
-```
-
-### Interface Authentication OAuth2 Driver
-
-[Lucinda\WebSecurity\Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/master/src/Authentication/OAuth2/Driver.php) interface encapsulates an oauth2 vendor to authenticate with and defines following methods:
-
-| Method | Arguments | Returns | Description |
-| --- | --- | --- | --- |
-| getAuthorizationCode | string $state | string | Gets URL to redirect to vendor in order for latter to send back an autorization code |
-| getAccessToken | string $authorizationCode | string | Asks vendor to exchange authorization code with an access token and returns it |
-| getUserInformation | string $accessToken | [Lucinda\WebSecurity\Authentication\OAuth2\UserInformation](https://github.com/aherne/php-security-api/blob/master/src/Authentication/OAuth2/UserInformation.php) | Uses access token to get logged in user information from vendor |
-| getCallbackUrl | void | string | Gets login route of current OAuth2 provider (eg: login/facebook) |
-| getVendorName | void | string | Gets name of current OAuth2 provider (eg: facebook) |
-
 ### Class SecurityPacket
 
 [Lucinda\WebSecurity\SecurityPacket](https://github.com/aherne/php-security-api/blob/master/src/SecurityPacket.php) class encapsulates an response to an authentication/authorization event that typically requires redirection and defines following methods relevant to developers:
@@ -358,3 +343,159 @@ Values of *getStatus* describe authentication/authorization outcome:
 - *redirect*: redirection to OAuth2 vendor's authorization request page is required
 - *unauthorized*: route requested by client requires authentication, thus redirection to login page is required
 - *forbidden*: route requested by client is forbidden to current logged in user, thus a redirection to logged in homepage is required
+
+Example usage:
+
+https://github.com/aherne/lucinda-framework/blob/master/src/Controllers/SecurityPacket.php
+
+### Class Request
+
+[Lucinda\WebSecurity\Request](https://github.com/aherne/php-security-api/blob/master/src/Request.php) encapsulates information about request necessary for authentication and authorization via following public methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| setIpAddress | string $value | void | Sets ip address used by client (eg: value of $_SERVER["REMOTE_ADDR"]) |
+| setContextPath | string $value | void | Sets context path that prefixes page requested by client (eg: prefix of $_SERVER["REQUEST_URI"]) |
+| setUri | string $value | void | Sets page/resource requested by client without trailing slash (eg: suffix of $_SERVER["REQUEST_URI"])  |
+| setMethod | string $value | void | Sets HTTP method used by client in page request (eg: value of $_SERVER["REQUEST_METHOD"]) |
+| setParameters | array $value | void | Sets parameters sent by client as GET/POST along with request (eg: value of $_REQUEST) |
+| setAccessToken | string $value | void | Sets access token detected from client headers for stateless login (eg:  suffix of $_SERVER["HTTP_AUTHORIZATION"]) |
+| getIpAddress | string $value | void | Gets ip address used by client (eg: value of $_SERVER["REMOTE_ADDR"]) |
+| getContextPath | string $value | void | Gets context path that prefixes page requested by client (eg: prefix of $_SERVER["REQUEST_URI"]) |
+| getUri | string $value | void | Gets page/resource requested by client without trailing slash (eg: suffix of $_SERVER["REQUEST_URI"])  |
+| getMethod | string $value | void | Gets HTTP method used by client in page request (eg: value of $_SERVER["REQUEST_METHOD"]) |
+| getParameters | array $value | void | Gets parameters sent by client as GET/POST along with request (eg: value of $_REQUEST) |
+| getAccessToken | string $value | void | Gets access token detected from client headers for stateless login (eg:  Bearer value of $_SERVER["HTTP_AUTHORIZATION"]) |
+
+Example usage:
+
+https://github.com/aherne/lucinda-framework-engine/blob/master/src/RequestBinder.php
+
+### Interface OAuth2 Driver
+
+[Lucinda\WebSecurity\Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/master/src/Authentication/OAuth2/Driver.php) interface encapsulates an oauth2 vendor to authenticate with and defines following methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| getAuthorizationCode | string $state | string | Gets URL to redirect to vendor in order for latter to send back an autorization code |
+| getAccessToken | string $authorizationCode | string | Asks vendor to exchange authorization code with an access token and returns it |
+| getUserInformation | string $accessToken | [Lucinda\WebSecurity\Authentication\OAuth2\UserInformation](#interface-oauth2-userinformation) | Uses access token to get logged in user information from vendor |
+| getCallbackUrl | void | string | Gets login route of current OAuth2 provider (eg: login/facebook) |
+| getVendorName | void | string | Gets name of current OAuth2 provider (eg: facebook) |
+
+Example usage:
+
+https://github.com/aherne/lucinda-framework-engine/blob/master/src/OAuth2/AbstractSecurityDriver.php
+
+### Interface OAuth2 UserInformation
+
+[Lucinda\WebSecurity\Authentication\OAuth2\UserInformation](https://github.com/aherne/php-security-api/blob/master/src/Authentication/OAuth2/UserInformation.php) interface contains blueprints for retrieving information about logged in user on OAuth2 provider via following methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| getEmail | void | string | Gets remote user email |
+| getId | void | integer<br/>string | Gets remote user id |
+| getName | void | string | Gets remote user name |
+
+Example usage:
+
+https://github.com/aherne/lucinda-framework-engine/blob/master/src/OAuth2/AbstractUserInformation.php
+
+### Interface OAuth2 VendorAuthenticationDAO
+
+[Lucinda\WebSecurity\Authentication\OAuth2\VendorAuthenticationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authentication/OAuth2/VendorAuthenticationDAO.php) interface contains blueprints for saving info about logged in user on OAuth2 provider via following methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| login | [Lucinda\WebSecurity\Authentication\OAuth2\UserInformation](#interface-oauth2-userinformation) $userInfo,<br/>string $vendorName,<br/>string $accessToken | string\|NULL | Logs in OAuth2 user into current application. Exchanges authenticated OAuth2 user information for a local user ID. |
+| logout | mixed $userID | void | Logs out local user and removes saved access token |
+
+Example usage:
+
+https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/UsersOAuth2Authentication.php
+
+### Interface UserAuthenticationDAO
+
+[Lucinda\WebSecurity\Authentication\DAO\UserAuthenticationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authentication/DAO/UserAuthenticationDAO.php) interface contains blueprints for form-based database authentication via following methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| login | string $userName,<br/>string $password | mixed | Logs in user in database, returning local user ID or NULL if none found. |
+| logout | mixed $userID | void | Logs out local user |
+
+Example usage:
+
+https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/UsersFormAuthentication1.php
+
+### Abstract Class LoginThrottler
+
+[Lucinda\WebSecurity\Authentication\Form\LoginThrottler](https://github.com/aherne/php-security-api/blob/master/src/Authentication/Form/LoginThrottler.php) abstract class encapsulates form login throttling algorithm (against brute-force attacks) on a datasource (sql or nosql) via following public methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| __construct | [Lucinda\WebSecurity\Request](#class-request) $request,<br/>string $userName | void | Sets request environment and user about to login, checking throttle status. |
+| getTimePenalty | void | int | Gets time penalty (in seconds) to apply for found attacker |
+| setFailure | void | void | Sets current request as failed (attacker detected) |
+| setSuccess | void | void | Sets current request as normal (no attacker detected) |
+
+Class must be extended in order to implement following abstract protected method:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| setCurrentStatus | void | int | Detects current throttling status based on user and request in a database |
+
+Example usage:
+
+https://github.com/aherne/lucinda-framework-engine/blob/master/src/AbstractLoginThrottler.php
+https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/SqlLoginThrottler.php
+
+### Abstract Class UserAuthorizationDAO
+
+[Lucinda\WebSecurity\Authorization\DAO\UserAuthorizationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authorization/DAO/UserAuthorizationDAO.php) abstract class encapsulates database authorization where user accounts are checked in database via following public methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| __construct | mixed $userID | void | Sets user id to authorize |
+| getID | void | mixed | Gets user id to authorize |
+
+Class must be extended in order to implement following abstract method:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| isAllowed | [Lucinda\WebSecurity\Authorization\DAO\PageAuthorizationDAO](#abstract-class-pageauthorizationdao) $dao,<br/>string $httpMethod | bool | Checks if current user is allowed access to requested page |
+
+Example usage:
+
+https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/UsersAuthorization1.php
+
+### Abstract Class PageAuthorizationDAO
+
+[Lucinda\WebSecurity\Authorization\DAO\PageAuthorizationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authorization/DAO/PageAuthorizationDAO.php) abstract class encapsulates database authorization where access control list is checked in database via following public methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| __construct | string $pageURL | void | Sets requested page to check ACL for |
+| getID | void | int\|NULL | Gets database ID of page requested or null if not found |
+
+Class must be extended in order to implement following abstract methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| isPublic | void | bool | Checks in database if page is accessible by non-logged in users |
+| detectID | string $pageURL  | int\|NULL | Detects and returns database ID of page requested and returns its value |
+
+Example usage:
+
+https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/PagesAuthorization.php
+
+### Interface UserRoles
+
+[Lucinda\WebSecurity\Authorization\UserRoles](https://github.com/aherne/php-security-api/blob/master/src/Authorization/UserRoles.php) interface defines blueprints for any authorization where user roles are checked in database via following public methods:
+
+| Method | Arguments | Returns | Description |
+| --- | --- | --- | --- |
+| getRoles | mixed $userID | array | Gets list of roles user belongs to |
+
+Example usage:
+
+https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/UsersFormAuthentication3.php
