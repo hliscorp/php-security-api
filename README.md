@@ -12,8 +12,8 @@
 
 ## About
 
-This API is a skeleton that implements common concerns of web security (authentication, authorization, state persistence, csrf prevention) based on OWASP guidelines, 
-offering multiple binding points where developers MUST plugin components using its prototypes in order to gain one or more abilities (eg: DB authentication). 
+This API is a **skeleton** that implements common concerns of web security (authentication, authorization, state persistence, csrf prevention) based on OWASP guidelines, 
+offering multiple binding points where developers MUST plugin components using its prototypes in order to complete the process (eg: DB authentication). 
 
 ![diagram](https://www.lucinda-framework.com/web-security-api.svg)
 
