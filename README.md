@@ -346,7 +346,7 @@ Values of *getStatus* describe authentication/authorization outcome:
 - *unauthorized*: route requested by client requires authentication, thus redirection to login page is required
 - *forbidden*: route requested by client is forbidden to current logged in user, thus a redirection to logged in homepage is required
 
-Example usage:
+Usage example:
 
 https://github.com/aherne/lucinda-framework/blob/master/src/Controllers/SecurityPacket.php
 
@@ -369,7 +369,7 @@ https://github.com/aherne/lucinda-framework/blob/master/src/Controllers/Security
 | getParameters | array $value | void | Gets parameters sent by client as GET/POST along with request (eg: value of $_REQUEST) |
 | getAccessToken | string $value | void | Gets access token detected from client headers for stateless login (eg:  Bearer value of $_SERVER["HTTP_AUTHORIZATION"]) |
 
-Example usage:
+Usage example:
 
 https://github.com/aherne/lucinda-framework-engine/blob/master/src/RequestBinder.php
 
@@ -385,7 +385,7 @@ https://github.com/aherne/lucinda-framework-engine/blob/master/src/RequestBinder
 | getCallbackUrl | void | string | Gets login route of current OAuth2 provider (eg: login/facebook) |
 | getVendorName | void | string | Gets name of current OAuth2 provider (eg: facebook) |
 
-Example usage:
+Usage example:
 
 https://github.com/aherne/lucinda-framework-engine/blob/master/src/OAuth2/AbstractSecurityDriver.php
 
@@ -399,7 +399,7 @@ https://github.com/aherne/lucinda-framework-engine/blob/master/src/OAuth2/Abstra
 | getId | void | integer<br/>string | Gets remote user id |
 | getName | void | string | Gets remote user name |
 
-Example usage:
+Usage example:
 
 https://github.com/aherne/lucinda-framework-engine/blob/master/src/OAuth2/AbstractUserInformation.php
 
@@ -412,7 +412,7 @@ https://github.com/aherne/lucinda-framework-engine/blob/master/src/OAuth2/Abstra
 | login | [Authentication\OAuth2\UserInformation](#interface-oauth2-userinformation) $userInfo,<br/>string $vendorName,<br/>string $accessToken | string\|NULL | Logs in OAuth2 user into current application. Exchanges authenticated OAuth2 user information for a local user ID. |
 | logout | mixed $userID | void | Logs out local user and removes saved access token |
 
-Example usage:
+Usage example:
 
 https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/UsersOAuth2Authentication.php
 
@@ -425,7 +425,7 @@ https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/
 | login | string $userName,<br/>string $password | mixed | Logs in user in database, returning local user ID or NULL if none found. |
 | logout | mixed $userID | void | Logs out local user |
 
-Example usage:
+Usage example:
 
 https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/UsersFormAuthentication1.php
 
@@ -446,7 +446,7 @@ Class must be extended in order to implement following abstract protected method
 | --- | --- | --- | --- |
 | setCurrentStatus | void | int | Detects current throttling status based on user and request in a database |
 
-Example usage:
+Usage example:
 
 https://github.com/aherne/lucinda-framework-engine/blob/master/src/AbstractLoginThrottler.php
 https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/SqlLoginThrottler.php
@@ -466,7 +466,7 @@ Class must be extended in order to implement following abstract method:
 | --- | --- | --- | --- |
 | isAllowed | [Authorization\DAO\PageAuthorizationDAO](#abstract-class-pageauthorizationdao) $dao,<br/>string $httpMethod | bool | Checks if current user is allowed access to requested page |
 
-Example usage:
+Usage example:
 
 https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/UsersAuthorization1.php
 
@@ -486,7 +486,7 @@ Class must be extended in order to implement following abstract methods:
 | isPublic | void | bool | Checks in database if page is accessible by non-logged in users |
 | detectID | string $pageURL  | int\|NULL | Detects and returns database ID of page requested and returns its value |
 
-Example usage:
+Usage example:
 
 https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/PagesAuthorization.php
 
@@ -498,6 +498,6 @@ https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/
 | --- | --- | --- | --- |
 | getRoles | mixed $userID | array | Gets list of roles user belongs to |
 
-Example usage:
+Usage example:
 
 https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/dao/UsersFormAuthentication3.php
