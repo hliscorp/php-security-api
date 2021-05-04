@@ -259,7 +259,7 @@ try {
 They can be handled as following:
 
 ```php
-use Lucinda\WebSecurity\*;
+use Lucinda\WebSecurity;
 
 try {
 	// sets $xml and $request
@@ -294,7 +294,8 @@ Then create a *configuration.xml* file holding configuration settings (see [conf
 
 ```php
 require(__DIR__."/vendor/autoload.php");
-use Lucinda\WebSecurity\*;
+
+use Lucinda\WebSecurity;
 
 $request = new Request();
 $request->setIpAddress($_SERVER["REMOTE_ADDR"]);
