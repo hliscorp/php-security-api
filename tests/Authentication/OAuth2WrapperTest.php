@@ -9,6 +9,7 @@ use Lucinda\WebSecurity\Authentication\OAuth2Wrapper;
 use Lucinda\UnitTest\Result;
 use Lucinda\WebSecurity\Authentication\ResultStatus;
 use Lucinda\WebSecurity\Token\Exception as TokenException;
+use Test\Lucinda\WebSecurity\mocks\Authentication\MockOauth2Driver;
 
 class OAuth2WrapperTest
 {
@@ -21,10 +22,10 @@ class OAuth2WrapperTest
     {
         $secret = (new SaltGenerator(10))->getSalt();
         $this->xml = simplexml_load_string('
-<security dao_path="'.__DIR__.'">
+<security>
     <csrf secret="'.$secret.'"/>
     <authentication>
-        <oauth2 dao="'.__NAMESPACE__.'\\MockVendorAuthenticationDAO"/>
+        <oauth2 dao="Test\Lucinda\WebSecurity\mocks\Authentication\MockVendorAuthenticationDAO"/>
     </authentication>
 </security>');
         $this->persistenceDriver = new SynchronizerTokenPersistenceDriver($secret, "127.0.0.1");

@@ -21,10 +21,10 @@ class DAOWrapperTest
     {
         $secret = (new SaltGenerator(10))->getSalt();
         $this->xml = simplexml_load_string('
-<security dao_path="'.__DIR__.'">
+<security>
     <csrf secret="'.$secret.'"/>
     <authentication>
-        <form dao="'.__NAMESPACE__.'\\MockUsersAuthentication" throttler="'.__NAMESPACE__.'\\MockLoginThrottler"/>
+        <form dao="Test\Lucinda\WebSecurity\mocks\Authentication\MockUsersAuthentication" throttler="Test\Lucinda\WebSecurity\mocks\Authentication\MockLoginThrottler"/>
     </authentication>
 </security>');
         $this->persistenceDriver = new SynchronizerTokenPersistenceDriver($secret, "127.0.0.1");

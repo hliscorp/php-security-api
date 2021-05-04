@@ -22,10 +22,10 @@ class XMLWrapperTest
         $secret = (new SaltGenerator(10))->getSalt();
         $xml = simplexml_load_string('
 <xml>
-    <security dao_path="'.__DIR__.'">
+    <security>
         <csrf secret="'.$secret.'"/>
         <authentication>
-            <form throttler="'.__NAMESPACE__.'\\MockLoginThrottler"/>
+            <form throttler="Test\Lucinda\WebSecurity\mocks\Authentication\MockLoginThrottler"/>
         </authentication>
     </security>
     <users>

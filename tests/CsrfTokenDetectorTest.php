@@ -12,7 +12,7 @@ class CsrfTokenDetectorTest
     public function __construct()
     {
         $this->xml = \simplexml_load_string('
-<security dao_path="'.__DIR__.'">
+<security>
     <csrf secret="'.(new SaltGenerator(10))->getSalt().'"/>
 </security>
 ');

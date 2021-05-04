@@ -13,9 +13,9 @@ class DAOWrapperTest
     public function __construct()
     {
         $this->xml = \simplexml_load_string('
-<security dao_path="'.__DIR__.'">
+<security>
     <authorization>
-        <by_dao page_dao="'.__NAMESPACE__.'\\MockPageAuthorizationDAO" user_dao="'.__NAMESPACE__.'\\MockUserAuthorizationDAO"/>
+        <by_dao page_dao="Test\Lucinda\WebSecurity\mocks\Authorization\MockPageAuthorizationDAO" user_dao="Test\Lucinda\WebSecurity\mocks\Authorization\MockUserAuthorizationDAO"/>
     </authorization>
 </security>
 ');

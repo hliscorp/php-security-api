@@ -6,7 +6,7 @@ use Lucinda\WebSecurity\Authentication\Form\LoginThrottlerHandler;
 use Lucinda\UnitTest\Result;
 use Lucinda\WebSecurity\Authentication\OAuth2\AuthenticationResult;
 use Lucinda\WebSecurity\Authentication\ResultStatus;
-use Test\Lucinda\WebSecurity\Authentication\MockLoginThrottler;
+use Test\Lucinda\WebSecurity\mocks\Authentication\MockLoginThrottler;
 
 class LoginThrottlerHandlerTest
 {

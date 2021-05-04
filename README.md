@@ -180,12 +180,12 @@ It offers developers an ability to **bind declaratively** to its prototypes belo
 
 | XML Attribute @ Tag | Class Prototype | Ability Gained |
 | --- | --- | --- |
-| [dao @ security.authentication.form](#security) | [Authentication\DAO\UserAuthenticationDAO](#interface-userauthenticationdao) | Form authentication via database, always |
-| [throttler @ security.authentication.form](#security) | [Authentication\Form\LoginThrottler](#abstract-class-loginthrottler) | Form authentication protection against bruteforce attacks via database |
-| [dao @ security.authentication.oauth2](#security) | [Authentication\OAuth2\VendorAuthenticationDAO](#interface-oauth2-vendorauthenticationdao) | Authentication via oauth2 provider |
-| [page_dao @ security.authorization.by_dao](#security) | [Authorization\DAO\PageAuthorizationDAO](#abstract-class-pageauthorizationdao) | Authorization where ACL is checked in database |
-| [user_dao @ security.authorization.by_dao](#security) | [Authorization\DAO\UserAuthorizationDAO](#abstract-class-UserAuthorizationDAO) | Authorization where USER is checked in database |
-| [dao @ security.authentication.form](#security) | [Authorization\UserRoles](#interface-user-roles) | Any authorization where user roles are checked in database |
+| [dao @ form](#security) | [Authentication\DAO\UserAuthenticationDAO](#interface-userauthenticationdao) | Form authentication via database, always |
+| [throttler @ form](#security) | [Authentication\Form\LoginThrottler](#abstract-class-loginthrottler) | Form authentication protection against bruteforce attacks via database |
+| [dao @ oauth2](#security) | [Authentication\OAuth2\VendorAuthenticationDAO](#interface-oauth2-vendorauthenticationdao) | Authentication via oauth2 provider |
+| [page_dao @ by_dao](#security) | [Authorization\DAO\PageAuthorizationDAO](#abstract-class-pageauthorizationdao) | Authorization where ACL is checked in database |
+| [user_dao @ by_dao](#security) | [Authorization\DAO\UserAuthorizationDAO](#abstract-class-UserAuthorizationDAO) | Authorization where USER is checked in database |
+| [dao @ form](#security) | [Authorization\UserRoles](#interface-user-roles) | Any authorization where user roles are checked in database |
 
 ### Programmatic Binding
 
@@ -226,9 +226,11 @@ If authentication/authorization reached a point where request needs to be redire
 Developers of non-stateless applications are supposed to handle this exception with something like:
 
 ```php
+use Lucinda\WebSecurity\Wrapper;
+
 try {
 	// sets $xml and $request
-	$object = new Wrapper($xml, $request);
+	$object = new Lucinda\WebSecurity\Wrapper($xml, $request);
 	// operate with $object to retrieve information
 } catch (SecurityPacket $e) {
 	header("Location: ".$e->getCallback()."?status=".$e->getStatus()."&penalty=".((integer) $e->getTimePenalty()));
@@ -239,6 +241,8 @@ try {
 Developers of stateless web service applications, however, are supposed to handle this exception with something like:
 
 ```php
+use Lucinda\WebSecurity\Wrapper;
+
 try {
 	// sets $xml and $request
 	$object = new Wrapper($xml, $request);
@@ -255,6 +259,8 @@ try {
 They can be handled as following:
 
 ```php
+use Lucinda\WebSecurity\*;
+
 try {
 	// sets $xml and $request
 	$object = new Wrapper($xml, $request);
@@ -288,6 +294,7 @@ Then create a *configuration.xml* file holding configuration settings (see [conf
 
 ```php
 require(__DIR__."/vendor/autoload.php");
+use Lucinda\WebSecurity\*;
 
 $request = new Request();
 $request->setIpAddress($_SERVER["REMOTE_ADDR"]);

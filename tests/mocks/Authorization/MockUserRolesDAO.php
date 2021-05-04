@@ -1,5 +1,5 @@
 <?php
-namespace Test\Lucinda\WebSecurity\Authorization;
+namespace Test\Lucinda\WebSecurity\mocks\Authorization;
 
 use Lucinda\WebSecurity\Authorization\UserRoles;
 
