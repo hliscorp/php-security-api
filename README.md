@@ -176,7 +176,7 @@ In order to remain flexible and achieve highest performance, API takes no more a
 
 ### Declarative Binding
 
-It offers developers an ability to **bind declaratively** to its prototypes belonging to Lucinda\WebSecurity namespace:
+It offers developers an ability to **bind declaratively** to its prototype classes/interfaces via XML:
 
 | XML Attribute @ Tag | Class Prototype | Ability Gained |
 | --- | --- | --- |
