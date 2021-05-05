@@ -12,7 +12,7 @@
 
 ## About
 
-This API is a **skeleton** that implements common concerns of web security (authentication, authorization, state persistence, csrf prevention) based on OWASP guidelines, 
+This API is a **skeleton** (requires [binding](#binding-points) by developers) that implements common concerns of web security (authentication, authorization, state persistence, csrf prevention) based on OWASP guidelines, 
 offering multiple binding points where developers MUST plugin components using its prototypes in order to complete the process (eg: DB authentication). 
 
 ![diagram](https://www.lucinda-framework.com/web-security-api.svg)
@@ -226,8 +226,6 @@ If authentication/authorization reached a point where request needs to be redire
 Developers of non-stateless applications are supposed to handle this exception with something like:
 
 ```php
-use Lucinda\WebSecurity\Wrapper;
-
 try {
 	// sets $xml and $request
 	$object = new Lucinda\WebSecurity\Wrapper($xml, $request);
@@ -241,11 +239,9 @@ try {
 Developers of stateless web service applications, however, are supposed to handle this exception with something like:
 
 ```php
-use Lucinda\WebSecurity\Wrapper;
-
 try {
 	// sets $xml and $request
-	$object = new Wrapper($xml, $request);
+	$object = new Lucinda\WebSecurity\Wrapper($xml, $request);
 	// use $object to produce a response
 } catch (SecurityPacket $e) {
 	echo json_encode(["status"=>$e->getStatus(), "callback"=>$e->getCallback(), "penalty"=>(integer) $e->getTimePenalty(), "access_token"=>$e->getAccessToken()]);
@@ -293,11 +289,7 @@ composer require lucinda/security
 Then create a *configuration.xml* file holding configuration settings (see [configuration](#configuration) above) and a *index.php* file (see [getting results](#getting-results) above) in project root with following code:
 
 ```php
-require(__DIR__."/vendor/autoload.php");
-
-use Lucinda\WebSecurity;
-
-$request = new Request();
+$request = new Lucinda\WebSecurity\Request();
 $request->setIpAddress($_SERVER["REMOTE_ADDR"]);
 $request->setUri($_SERVER["REQUEST_URI"]!="/"?substr($_SERVER["REQUEST_URI"],1):"index");
 $request->setMethod($_SERVER["REQUEST_METHOD"]);
@@ -306,9 +298,9 @@ $request->setAccessToken(isset($_SERVER["HTTP_AUTHORIZATION"]) && stripos($_SERV
 
 try {
 	// sets $xml and $request
-	$object = new Wrapper(simplexml_load_file("configuration.xml"), $request);
+	$object = new Lucinda\WebSecurity\Wrapper(simplexml_load_file("configuration.xml"), $request);
 	// operate with $object to retrieve information
-} catch (SecurityPacket $e) {
+} catch (Lucinda\WebSecurity\SecurityPacket $e) {
 	header("Location: ".$e->getCallback()."?status=".$e->getStatus()."&penalty=".((integer) $e->getTimePenalty()));
 	exit();
 }
