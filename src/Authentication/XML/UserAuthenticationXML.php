@@ -40,12 +40,12 @@ class UserAuthenticationXML
         if (!empty($info[0])) {
             $currentPassword = (string) $info[0]['password'];
             if (!$currentPassword) {
-                throw new ConfigurationException("XML tag users > user requires parameters: username, password");
+                throw new ConfigurationException("Attribute 'password' is mandatory for 'user' tag");
             }
             if (password_verify($password, $currentPassword)) {
                 $userID = (string) $info[0]["id"];
                 if (!$userID) {
-                    throw new ConfigurationException("XML tag users / user requires parameter: id");
+                    throw new ConfigurationException("Attribute 'id' is mandatory for 'user' tag");
                 }
             }
         }

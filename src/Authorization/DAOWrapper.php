@@ -2,7 +2,6 @@
 namespace Lucinda\WebSecurity\Authorization;
 
 use Lucinda\WebSecurity\Request;
-use Lucinda\WebSecurity\ClassFinder;
 use Lucinda\WebSecurity\ConfigurationException;
 use Lucinda\WebSecurity\Authorization\DAO\UserAuthorizationDAO;
 use Lucinda\WebSecurity\Authorization\DAO\PageAuthorizationDAO;
@@ -57,17 +56,15 @@ class DAOWrapper extends Wrapper
      *
      * @param \SimpleXMLElement $xml
      * @param string $pageUrl
-     * @throws ConfigurationException
      * @return PageAuthorizationDAO
      */
     private function getPageDAO(\SimpleXMLElement $xml, string $pageUrl): PageAuthorizationDAO
     {
-        $classFinder = new ClassFinder((string) $xml["dao_path"]);
-        $className = $classFinder->find((string) $xml->authorization->by_dao["page_dao"]);
-        $pageDAO = new $className($pageUrl);
-        if (!($pageDAO instanceof PageAuthorizationDAO)) {
-            throw new  ConfigurationException("Class must be instance of PageAuthorizationDAO!");
+        $className = (string) $xml->authorization->by_dao["page_dao"];
+        if (!$className) {
+            throw new ConfigurationException("Attribute 'page_dao' is mandatory for 'by_dao' tag");
         }
+        $pageDAO = new $className($pageUrl);
         return $pageDAO;
     }
     
@@ -76,17 +73,15 @@ class DAOWrapper extends Wrapper
      *
      * @param \SimpleXMLElement $xml
      * @param mixed $userID
-     * @throws ConfigurationException
      * @return UserAuthorizationDAO
      */
     private function getUserDAO(\SimpleXMLElement $xml, $userID): UserAuthorizationDAO
     {
-        $classFinder = new ClassFinder((string) $xml["dao_path"]);
-        $className = $classFinder->find((string) $xml->authorization->by_dao["user_dao"]);
-        $userDAO = new $className($userID);
-        if (!($userDAO instanceof UserAuthorizationDAO)) {
-            throw new  ConfigurationException("Class must be instance of UserAuthorizationDAO!");
+        $className = (string) $xml->authorization->by_dao["user_dao"];
+        if (!$className) {
+            throw new ConfigurationException("Attribute 'user_dao' is mandatory for 'by_dao' tag");
         }
+        $userDAO = new $className($userID);
         return $userDAO;
     }
 }

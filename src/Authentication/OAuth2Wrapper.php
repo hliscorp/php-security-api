@@ -7,7 +7,6 @@ use Lucinda\WebSecurity\Token\Exception as TokenException;
 use Lucinda\WebSecurity\Request;
 use Lucinda\WebSecurity\CsrfTokenDetector;
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
-use Lucinda\WebSecurity\ClassFinder;
 use Lucinda\WebSecurity\Authentication\OAuth2\Driver as OAuth2Driver;
 use Lucinda\WebSecurity\Authentication\OAuth2\Exception as OAuth2Exception;
 use Lucinda\WebSecurity\Authentication\OAuth2\XMLParser;
@@ -103,16 +102,15 @@ class OAuth2Wrapper extends Wrapper
      * @param \SimpleXMLElement $xml
      * @throws ConfigurationException
      * @return VendorAuthenticationDAO
+     * @throws ConfigurationException
      */
     private function getDAO(\SimpleXMLElement $xml): VendorAuthenticationDAO
     {
         $className = (string) $xml->authentication->oauth2["dao"];
-        $classFinder = new ClassFinder((string) $xml["dao_path"]);
-        $className = $classFinder->find($className);
-        $authenticationDaoObject = new $className();
-        if (!($authenticationDaoObject instanceof VendorAuthenticationDAO)) {
-            throw new ConfigurationException("Class must be instance of VendorAuthenticationDAO: ".$className);
+        if (!$className) {
+            throw new ConfigurationException("Attribute 'dao' is mandatory for 'oauth2' tag");
         }
+        $authenticationDaoObject = new $className();
         return $authenticationDaoObject;
     }
 }

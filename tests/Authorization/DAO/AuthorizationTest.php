@@ -1,8 +1,8 @@
 <?php
 namespace Test\Lucinda\WebSecurity\Authorization\DAO;
 
-use Test\Lucinda\WebSecurity\Authorization\MockPageAuthorizationDAO;
-use Test\Lucinda\WebSecurity\Authorization\MockUserAuthorizationDAO;
+use Test\Lucinda\WebSecurity\mocks\Authorization\MockPageAuthorizationDAO;
+use Test\Lucinda\WebSecurity\mocks\Authorization\MockUserAuthorizationDAO;
 use Lucinda\WebSecurity\Authorization\DAO\Authorization;
 use Lucinda\WebSecurity\Authorization\Result as AuthorizationResult;
 use Lucinda\UnitTest\Result;

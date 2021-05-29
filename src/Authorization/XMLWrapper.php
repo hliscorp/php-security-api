@@ -4,7 +4,6 @@ namespace Lucinda\WebSecurity\Authorization;
 use Lucinda\WebSecurity\Request;
 use Lucinda\WebSecurity\Authorization\XML\Authorization;
 use Lucinda\WebSecurity\Authorization\XML\UserAuthorizationXML;
-use Lucinda\WebSecurity\ClassFinder;
 use Lucinda\WebSecurity\ConfigurationException;
 
 /**
@@ -48,7 +47,6 @@ class XMLWrapper extends Wrapper
      *
      * @param \SimpleXMLElement $xml
      * @param mixed $userID
-     * @throws ConfigurationException
      * @return UserRoles
      */
     private function getDAO(\SimpleXMLElement $xml, $userID): UserRoles
@@ -56,17 +54,11 @@ class XMLWrapper extends Wrapper
         $daoClass = "";
         if ($tag = $xml->authentication->form) {
             $daoClass = (string) $tag["dao"];
-        } else if ($tag = $xml->authentication->oauth2) {
+        } elseif ($tag = $xml->authentication->oauth2) {
             $daoClass = (string) $tag["dao"];
         }
         if ($daoClass) {
-            $classFinder = new ClassFinder((string) $xml["dao_path"]);
-            $className = $classFinder->find($daoClass);
-            $dao = new $className($userID);
-            if (!($dao instanceof UserRoles)) {
-                throw new ConfigurationException("Class must be instanceof UserRoles!");
-            }
-            return $dao;
+            return new $daoClass($userID);
         } else {
             return new UserAuthorizationXML($xml->xpath("..")[0]);
         }

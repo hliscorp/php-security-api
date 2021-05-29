@@ -6,7 +6,7 @@ use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDri
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\UnitTest\Result;
 use Lucinda\WebSecurity\Authentication\ResultStatus;
-use Test\Lucinda\WebSecurity\Authentication\MockUsersAuthentication;
+use Test\Lucinda\WebSecurity\mocks\Authentication\MockUsersAuthentication;
 
 class AuthenticationTest
 {

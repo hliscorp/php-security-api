@@ -4,8 +4,8 @@ namespace Test\Lucinda\WebSecurity\Authentication\OAuth2;
 use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDriver;
 use Lucinda\WebSecurity\Token\SaltGenerator;
 use Lucinda\WebSecurity\Authentication\OAuth2\Authentication;
-use Test\Lucinda\WebSecurity\Authentication\MockVendorAuthenticationDAO;
-use Test\Lucinda\WebSecurity\Authentication\MockOauth2Driver;
+use Test\Lucinda\WebSecurity\mocks\Authentication\MockVendorAuthenticationDAO;
+use Test\Lucinda\WebSecurity\mocks\Authentication\MockOauth2Driver;
 use Lucinda\UnitTest\Result;
 use Lucinda\WebSecurity\Authentication\ResultStatus;
 

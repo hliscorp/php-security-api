@@ -57,14 +57,14 @@ class Authentication
                     $request,
                     $csrfTokenDetector,
                     $persistenceDrivers
-                    );
+                );
             } else {
                 $wrappers[] = new XMLWrapper(
                     $xmlRoot,
                     $request,
                     $csrfTokenDetector,
                     $persistenceDrivers
-                    );
+                );
             }
         }
         if ($xml->oauth2) {
@@ -74,7 +74,7 @@ class Authentication
                 $csrfTokenDetector,
                 $persistenceDrivers,
                 $oauth2Drivers
-                );
+            );
         }
         if (empty($wrappers)) {
             throw new ConfigurationException("No authentication method chosen!");

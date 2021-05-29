@@ -7,7 +7,7 @@ use Lucinda\WebSecurity\Wrapper;
 use Lucinda\WebSecurity\SecurityPacket;
 use Lucinda\UnitTest\Result;
 use Lucinda\WebSecurity\Authentication\OAuth2\Exception as OAuth2Exception;
-use Test\Lucinda\WebSecurity\Authentication\MockOauth2Driver;
+use Test\Lucinda\WebSecurity\mocks\Authentication\MockOauth2Driver;
 
 class WrapperTest
 {
@@ -25,29 +25,29 @@ class WrapperTest
         $secret = (new SaltGenerator(10))->getSalt();
         $this->xml_dao_dao = \simplexml_load_string('
 <xml>
-    <security dao_path="'.__DIR__.'">
+    <security>
         <csrf secret="'.$secret.'"/>
         <persistence>
             <synchronizer_token secret="'.$secret.'"/>
         </persistence>
         <authentication>
-            <form dao="Authentication/'.__NAMESPACE__.'\\Authentication\\MockUsersAuthentication" throttler="Authentication/'.__NAMESPACE__.'\\Authentication\\MockLoginThrottler"/>
+            <form dao="Test\Lucinda\WebSecurity\mocks\Authentication\MockUsersAuthentication" throttler="Test\Lucinda\WebSecurity\mocks\Authentication\MockLoginThrottler"/>
         </authentication>
         <authorization>
-            <by_dao page_dao="Authorization/'.__NAMESPACE__.'\\Authorization\\MockPageAuthorizationDAO" user_dao="Authorization/'.__NAMESPACE__.'\\Authorization\\MockUserAuthorizationDAO"/>
+            <by_dao page_dao="Test\Lucinda\WebSecurity\mocks\Authorization\MockPageAuthorizationDAO" user_dao="Test\Lucinda\WebSecurity\mocks\Authorization\MockUserAuthorizationDAO"/>
         </authorization>
     </security>
 </xml>
 ');
         $this->xml_dao_xml = \simplexml_load_string('
 <xml>
-    <security dao_path="'.__DIR__.'">
+    <security>
         <csrf secret="'.$secret.'"/>
         <persistence>
             <synchronizer_token secret="'.$secret.'"/>
         </persistence>
         <authentication>
-            <form dao="Authentication/'.__NAMESPACE__.'\\Authentication\\MockUsersAuthentication" throttler="Authentication/'.__NAMESPACE__.'\\Authentication\\MockLoginThrottler"/>
+            <form dao="Test\Lucinda\WebSecurity\mocks\Authentication\MockUsersAuthentication" throttler="Test\Lucinda\WebSecurity\mocks\Authentication\MockLoginThrottler"/>
         </authentication>
         <authorization>
             <by_route/>
@@ -63,16 +63,16 @@ class WrapperTest
 ');
         $this->xml_xml_dao = \simplexml_load_string('
 <xml>
-    <security dao_path="'.__DIR__.'">
+    <security>
         <csrf secret="'.$secret.'"/>
         <persistence>
             <synchronizer_token secret="'.$secret.'"/>
         </persistence>
         <authentication>
-            <form throttler="Authentication/'.__NAMESPACE__.'\\Authentication\\MockLoginThrottler"/>
+            <form throttler="Test\Lucinda\WebSecurity\mocks\Authentication\MockLoginThrottler"/>
         </authentication>
         <authorization>
-            <by_dao page_dao="Authorization/'.__NAMESPACE__.'\\Authorization\\MockPageAuthorizationDAO" user_dao="Authorization/'.__NAMESPACE__.'\\Authorization\\MockUserAuthorizationDAO"/>
+            <by_dao page_dao="Test\Lucinda\WebSecurity\mocks\Authorization\MockPageAuthorizationDAO" user_dao="Test\Lucinda\WebSecurity\mocks\Authorization\MockUserAuthorizationDAO"/>
         </authorization>
     </security>
     <users roles="GUEST">
@@ -82,13 +82,13 @@ class WrapperTest
 ');
         $this->xml_xml_xml = \simplexml_load_string('
 <xml>
-    <security dao_path="'.__DIR__.'">
+    <security>
         <csrf secret="'.$secret.'"/>
         <persistence>
             <synchronizer_token secret="'.$secret.'"/>
         </persistence>
         <authentication>
-            <form throttler="Authentication/'.__NAMESPACE__.'\\Authentication\\MockLoginThrottler"/>
+            <form throttler="Test\Lucinda\WebSecurity\mocks\Authentication\MockLoginThrottler"/>
         </authentication>
         <authorization>
             <by_route/>
@@ -107,29 +107,29 @@ class WrapperTest
 ');
         $this->xml_oauth2_dao = \simplexml_load_string('
 <xml>
-    <security dao_path="'.__DIR__.'">
+    <security>
         <csrf secret="'.$secret.'"/>
         <persistence>
             <synchronizer_token secret="'.$secret.'"/>
         </persistence>
         <authentication>
-            <oauth2 dao="Authentication/'.__NAMESPACE__.'\\Authentication\\MockVendorAuthenticationDAO"/>
+            <oauth2 dao="Test\Lucinda\WebSecurity\mocks\Authentication\MockVendorAuthenticationDAO"/>
         </authentication>
         <authorization>
-            <by_dao page_dao="Authorization/'.__NAMESPACE__.'\\Authorization\\MockPageAuthorizationDAO" user_dao="Authorization/'.__NAMESPACE__.'\\Authorization\\MockUserAuthorizationDAO"/>
+            <by_dao page_dao="Test\Lucinda\WebSecurity\mocks\Authorization\MockPageAuthorizationDAO" user_dao="Test\Lucinda\WebSecurity\mocks\Authorization\MockUserAuthorizationDAO"/>
         </authorization>
     </security>
 </xml>
 ');
         $this->xml_oauth2_xml = \simplexml_load_string('
 <xml>
-    <security dao_path="'.__DIR__.'">
+    <security>
         <csrf secret="'.$secret.'"/>
         <persistence>
             <synchronizer_token secret="'.$secret.'"/>
         </persistence>
         <authentication>
-            <oauth2 dao="Authentication/'.__NAMESPACE__.'\\Authentication\\MockVendorAuthenticationDAO"/>
+            <oauth2 dao="Test\Lucinda\WebSecurity\mocks\Authentication\MockVendorAuthenticationDAO"/>
         </authentication>
         <authorization>
             <by_route/>

@@ -11,7 +11,6 @@ use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
 use Lucinda\WebSecurity\Authentication\XML\Authentication;
 use Lucinda\WebSecurity\Token\Exception as TokenException;
 use Lucinda\WebSecurity\Authentication\Form\LoginThrottlerHandler;
-use Lucinda\WebSecurity\ClassFinder;
 use Lucinda\WebSecurity\ConfigurationException;
 
 /**
@@ -78,12 +77,10 @@ class XMLWrapper extends Wrapper
     private function getThrottler(\SimpleXMLElement $xml, Request $request, LoginRequest $loginRequest): LoginThrottler
     {
         $throttlerClassName = (string) $xml->authentication->form["throttler"];
-        $classFinder = new ClassFinder((string) $xml["dao_path"]);
-        $throttlerClassName = $classFinder->find($throttlerClassName);
-        $throttlerObject = new $throttlerClassName($request, $loginRequest->getUsername());
-        if (!($throttlerObject instanceof LoginThrottler)) {
-            throw new ConfigurationException("Class must be instance of LoginThrottler: ".$throttlerClassName);
+        if (!$throttlerClassName) {
+            throw new ConfigurationException("Attribute 'throttler' is mandatory for 'form' tag");
         }
+        $throttlerObject = new $throttlerClassName($request, $loginRequest->getUsername());
         return $throttlerObject;
     }
     
@@ -96,7 +93,7 @@ class XMLWrapper extends Wrapper
         $result = $this->driver->login(
             $request->getUsername(),
             $request->getPassword()
-            );
+        );
         $this->setResult($result, $request->getSourcePage(), $request->getDestinationPage());
     }
     

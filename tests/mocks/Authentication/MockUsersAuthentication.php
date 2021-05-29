@@ -1,5 +1,5 @@
 <?php
-namespace Test\Lucinda\WebSecurity\Authentication;
+namespace Test\Lucinda\WebSecurity\mocks\Authentication;
 
 use Lucinda\WebSecurity\Authentication\DAO\UserAuthenticationDAO;
 use Lucinda\WebSecurity\Authorization\UserRoles;

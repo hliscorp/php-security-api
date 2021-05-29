@@ -33,9 +33,9 @@ class XMLWrapperTest
         $this->xml1 = $xml1->security;
         $xml2 = \simplexml_load_string('
 <xml>
-    <security dao_path="'.__DIR__.'">
+    <security>
         <authentication>
-            <form dao="'.__NAMESPACE__.'\\MockUserRolesDAO"/>
+            <form dao="Test\Lucinda\WebSecurity\mocks\Authorization\MockUserRolesDAO"/>
         </authentication>
         <authorization>
             <by_route/>
