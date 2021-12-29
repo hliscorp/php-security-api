@@ -22,6 +22,7 @@ class Authentication
      * @param CsrfTokenDetector $csrfTokenDetector
      * @param PersistenceDriver[] $persistenceDrivers
      * @param OAuth2Driver[] $oauth2Drivers
+     * @throws \Exception
      */
     public function __construct(\SimpleXMLElement $xml, Request $request, CsrfTokenDetector $csrfTokenDetector, array $persistenceDrivers, array $oauth2Drivers)
     {
@@ -39,8 +40,8 @@ class Authentication
      * @param CsrfTokenDetector $csrfTokenDetector
      * @param PersistenceDriver[] $persistenceDrivers
      * @param OAuth2Driver[] $oauth2Drivers
-     * @throws ConfigurationException
      * @return AuthenticationWrapper[]
+     * @throws \Exception
      */
     private function getWrappers(\SimpleXMLElement $xmlRoot, Request $request, CsrfTokenDetector $csrfTokenDetector, array $persistenceDrivers, array $oauth2Drivers): array
     {
@@ -88,9 +89,9 @@ class Authentication
      * @param AuthenticationWrapper $wrapper
      * @param Request $request
      * @param PersistenceDriver[] $persistenceDrivers
-     * @throws \Lucinda\WebSecurity\SecurityPacket
+     * @throws SecurityPacket
      */
-    private function authenticate(AuthenticationWrapper $wrapper, Request $request, $persistenceDrivers): void
+    private function authenticate(AuthenticationWrapper $wrapper, Request $request, array $persistenceDrivers): void
     {
         if ($wrapper->getResult()) {
             // authentication was requested

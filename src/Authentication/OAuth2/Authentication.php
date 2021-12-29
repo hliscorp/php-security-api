@@ -12,8 +12,8 @@ use Lucinda\WebSecurity\Authentication\ResultStatus;
  */
 class Authentication
 {
-    private $dao;
-    private $persistenceDrivers;
+    private VendorAuthenticationDAO $dao;
+    private array $persistenceDrivers;
     
     /**
      * Creates an authentication object.
@@ -51,8 +51,7 @@ class Authentication
         $userID = $this->dao->login($userInformation, $driver->getVendorName(), $accessToken);
         // save in persistence drivers
         if (empty($userID)) {
-            $result = new AuthenticationResult(ResultStatus::LOGIN_FAILED);
-            return $result;
+            return new AuthenticationResult(ResultStatus::LOGIN_FAILED);
         } else {
             // saves in persistence drivers
             foreach ($this->persistenceDrivers as $persistenceDriver) {
@@ -83,20 +82,18 @@ class Authentication
             }
         }
         if (!$userID) {
-            $result = new AuthenticationResult(ResultStatus::LOGOUT_FAILED);
-            return $result;
+            return new AuthenticationResult(ResultStatus::LOGOUT_FAILED);
         } else {
             // should throw an exception if user is not already logged in, empty access token
             $this->dao->logout($userID);
             
             // clears data from persistence drivers
             foreach ($this->persistenceDrivers as $persistentDriver) {
-                $persistentDriver->clear($userID);
+                $persistentDriver->clear();
             }
             
             // returns result
-            $result = new AuthenticationResult(ResultStatus::LOGOUT_OK);
-            return $result;
+            return new AuthenticationResult(ResultStatus::LOGOUT_OK);
         }
     }
 }

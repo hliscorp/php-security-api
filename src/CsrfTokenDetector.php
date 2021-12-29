@@ -14,10 +14,8 @@ class CsrfTokenDetector
 {
     const DEFAULT_EXPIRATION = 10*60;
     
-    private $secret;
-    private $expiration;
-    
-    private $token;
+    private int $expiration;
+    private SynchronizerToken $token;
     
     /**
      * Creates an object
@@ -52,11 +50,11 @@ class CsrfTokenDetector
     
     /**
      * Encodes a token based on unique user identifier
-     * @param mixed $userID Unique user identifier (usually an integer)
+     * @param int|string|null $userID Unique user identifier (usually an integer)
      * @return string Value of synchronizer token.
      * @throws EncryptionException If encryption of token fails.
      */
-    public function generate($userID): string
+    public function generate(int|string|null $userID): string
     {
         return $this->token->encode($userID, $this->expiration);
     }
@@ -65,13 +63,10 @@ class CsrfTokenDetector
      * Checks if a token is valid for specific uuid.
      *
      * @param string $token Value of synchronizer token
-     * @param mixed $userID Unique user identifier (usually an integer)
+     * @param int|string|null $userID Unique user identifier (usually an integer)
      * @return boolean
-     * @throws EncryptionException If decryption of token fails.
-     * @throws TokenException If token fails validations.
-     * @throws RegenerationException If token needs to be refreshed
      */
-    public function isValid(string $token, $userID): bool
+    public function isValid(string $token, int|string|null $userID): bool
     {
         try {
             $tokenUserID = $this->token->decode($token);

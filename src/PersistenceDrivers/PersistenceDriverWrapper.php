@@ -8,13 +8,14 @@ use Lucinda\WebSecurity\ConfigurationException;
  */
 abstract class PersistenceDriverWrapper
 {
-    protected $driver;
-    
+    protected PersistenceDriver $driver;
+
     /**
      * Creates an object.
      *
      * @param \SimpleXMLElement $xml Contents of XML tag that sets up persistence driver.
      * @param string $ipAddress Client ip address resolved from headers
+     * @throws ConfigurationException
      */
     public function __construct(\SimpleXMLElement $xml, string $ipAddress)
     {

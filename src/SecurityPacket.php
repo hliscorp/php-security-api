@@ -11,10 +11,10 @@ use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
  */
 class SecurityPacket extends \Exception
 {
-    private $callback;
-    private $status;
-    private $accessToken;
-    private $timePenalty;
+    private string $callback;
+    private string $status;
+    private ?string $accessToken;
+    private ?int $timePenalty;
     
     /**
      * Sets path to redirect to.
@@ -39,9 +39,9 @@ class SecurityPacket extends \Exception
     /**
      * Sets redirection reason.
      *
-     * @param integer $status
+     * @param AuthenticationResultStatus|AuthorizationResultStatus $status
      */
-    public function setStatus(int $status): void
+    public function setStatus(AuthenticationResultStatus|AuthorizationResultStatus $status): void
     {
         $result = "";
         switch ($status) {
@@ -88,10 +88,10 @@ class SecurityPacket extends \Exception
     /**
      * Sets access token (useful for stateless applications).
      *
-     * @param mixed $userID Authenticated user id.
+     * @param int|string|null $userID Authenticated user id.
      * @param PersistenceDriver[] $persistenceDrivers List of persistence drivers registered.
      */
-    public function setAccessToken($userID, array $persistenceDrivers): void
+    public function setAccessToken(int|string|null $userID, array $persistenceDrivers): void
     {
         $token = "";
         if ($userID) {

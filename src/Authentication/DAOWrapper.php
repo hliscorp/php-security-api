@@ -6,20 +6,20 @@ use Lucinda\WebSecurity\CsrfTokenDetector;
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
 use Lucinda\WebSecurity\Authentication\DAO\UserAuthenticationDAO;
 use Lucinda\WebSecurity\Authentication\DAO\Authentication;
-use Lucinda\WebSecurity\Authentication\Form\FormRequestValidator;
 use Lucinda\WebSecurity\Authentication\Form\LoginRequest;
 use Lucinda\WebSecurity\Authentication\Form\LogoutRequest;
+use Lucinda\WebSecurity\Token\EncryptionException;
 use Lucinda\WebSecurity\Token\Exception as TokenException;
-use Lucinda\WebSecurity\Authentication\Form\LoginThrottlerHandler;
 use Lucinda\WebSecurity\Authentication\Form\LoginThrottler;
 use Lucinda\WebSecurity\ConfigurationException;
+use Lucinda\WebSecurity\Token\RegenerationException;
 
 /**
  * Binds DAOAuthentication @ SECURITY-API to settings from configuration.xml @ SERVLETS-API then performs login/logout if it matches paths @ xml via database.
  */
-class DAOWrapper extends Wrapper
+class DAOWrapper extends FormWrapper
 {
-    private $driver;
+    private Authentication $driver;
 
     /**
      * Creates an object.
@@ -28,46 +28,24 @@ class DAOWrapper extends Wrapper
      * @param Request $request Encapsulated client request data.
      * @param CsrfTokenDetector $csrfTokenDetector Driver performing CSRF validation
      * @param PersistenceDriver[] $persistenceDrivers Drivers where authenticated state is persisted (eg: session, remember me cookie).
-     * @throws ConfigurationException If POST parameters are not provided when logging in or DAO classes are misconfigured.
-     * @throws TokenException If CSRF checks fail
+     * @throws ConfigurationException
+     * @throws Form\Exception
+     * @throws TokenException
+     * @throws EncryptionException
+     * @throws RegenerationException
      */
     public function __construct(\SimpleXMLElement $xml, Request $request, CsrfTokenDetector $csrfTokenDetector, array $persistenceDrivers)
     {
-        // starts dao-based form authentication
         $this->driver = new Authentication($this->getDAO($xml), $persistenceDrivers);
-
-        // setup class properties
-        $validator = new FormRequestValidator($xml, $request);
-        
-        // checks if a login action was requested, in which case it forwards object to driver
-        if ($loginRequest = $validator->login()) {
-            // check csrf token
-            $parameters = $request->getParameters();
-            if (empty($parameters["csrf"]) || !$csrfTokenDetector->isValid($parameters["csrf"], 0)) {
-                throw new TokenException("CSRF token is invalid or missing!");
-            }
-            
-            // performs login, using throttler if defined
-            $loginThrottlerHandler = new LoginThrottlerHandler($this->getThrottler($xml, $request, $loginRequest));
-            $this->result = $loginThrottlerHandler->start($request);
-            if ($this->result) {
-                return;
-            }
-            $this->login($loginRequest);
-            $loginThrottlerHandler->end($this->result);
-        }
-        
-        // checks if a logout action was requested, in which case it forwards object to driver
-        if ($logoutRequest = $validator->logout()) {
-            $this->logout($logoutRequest);
-        }
+        $this->process($xml, $request, $csrfTokenDetector);
     }
-    
+
     /**
      * Gets DAO where authentication is performed
      *
      * @param \SimpleXMLElement $xml
      * @return UserAuthenticationDAO
+     * @throws ConfigurationException
      */
     private function getDAO(\SimpleXMLElement $xml): UserAuthenticationDAO
     {
@@ -75,10 +53,9 @@ class DAOWrapper extends Wrapper
         if (!$className) {
             throw new ConfigurationException("Attribute 'dao' is mandatory for 'form' tag");
         }
-        $authenticationDaoObject = new $className();
-        return $authenticationDaoObject;
+        return new $className();
     }
-    
+
     /**
      * Gets DAO where login attempts are counted and throttled, if necessary
      *
@@ -86,6 +63,7 @@ class DAOWrapper extends Wrapper
      * @param Request $request
      * @param LoginRequest $loginRequest
      * @return LoginThrottler
+     * @throws ConfigurationException
      */
     private function getThrottler(\SimpleXMLElement $xml, Request $request, LoginRequest $loginRequest): LoginThrottler
     {
@@ -93,8 +71,7 @@ class DAOWrapper extends Wrapper
         if (!$throttlerClassName) {
             throw new ConfigurationException("Attribute 'throttler' is mandatory for 'form' tag");
         }
-        $throttlerObject = new $throttlerClassName($request, $loginRequest->getUsername());
-        return $throttlerObject;
+        return new $throttlerClassName($request, $loginRequest->getUsername());
     }
 
     /**
@@ -102,10 +79,8 @@ class DAOWrapper extends Wrapper
      *
      * @param LoginRequest $request Encapsulates login request data.
      */
-    private function login(LoginRequest $request): void
+    protected function login(LoginRequest $request): void
     {
-        $result = null;
-        
         // set result
         $result = $this->driver->login(
             $request->getUsername(),
@@ -121,7 +96,7 @@ class DAOWrapper extends Wrapper
      *
      * @param LogoutRequest $request Encapsulates logout request data.
      */
-    private function logout(LogoutRequest $request): void
+    protected function logout(LogoutRequest $request): void
     {
         // set result
         $result = $this->driver->logout();

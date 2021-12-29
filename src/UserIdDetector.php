@@ -9,7 +9,7 @@ use Lucinda\WebSecurity\PersistenceDrivers\Token\PersistenceDriver as TokenPersi
  */
 class UserIdDetector
 {
-    private $userID;
+    private int|string|null $userID;
     
     /**
      * Sets logged in user id based on persistence drivers
@@ -43,9 +43,9 @@ class UserIdDetector
     /**
      * Gets detected unique user identifier
      *
-     * @return integer|string
+     * @return int|string|null
      */
-    public function getUserID()
+    public function getUserID(): int|string|null
     {
         return $this->userID;
     }

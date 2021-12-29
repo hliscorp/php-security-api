@@ -20,10 +20,10 @@ class DAOWrapper extends Wrapper
      *
      * @param \SimpleXMLElement $xml Contents of security.authorization.by_dao tag @ configuration.xml
      * @param Request $request Encapsulated request made by client
-     * @param mixed $userID Unique user identifier (usually an integer)
+     * @param int|string|null $userID Unique user identifier (usually an integer)
      * @throws ConfigurationException If resources referenced in XML do not exist or do not extend/implement required blueprint.
      */
-    public function __construct(\SimpleXMLElement $xml, Request $request, $userID)
+    public function __construct(\SimpleXMLElement $xml, Request $request, int|string|null $userID)
     {
         // create dao object
         $xmlTag = $xml->authorization->by_dao;
@@ -50,13 +50,14 @@ class DAOWrapper extends Wrapper
         $authorization = new Authorization($loggedInCallback, $loggedOutCallback);
         $this->setResult($authorization->authorize($pageDAO, $userDAO, $request->getMethod()));
     }
-    
+
     /**
      * Gets DAO where page rights are checked
      *
      * @param \SimpleXMLElement $xml
      * @param string $pageUrl
      * @return PageAuthorizationDAO
+     * @throws ConfigurationException
      */
     private function getPageDAO(\SimpleXMLElement $xml, string $pageUrl): PageAuthorizationDAO
     {
@@ -64,24 +65,23 @@ class DAOWrapper extends Wrapper
         if (!$className) {
             throw new ConfigurationException("Attribute 'page_dao' is mandatory for 'by_dao' tag");
         }
-        $pageDAO = new $className($pageUrl);
-        return $pageDAO;
+        return new $className($pageUrl);
     }
-    
+
     /**
      * Gets DAO where user rights are checked
      *
      * @param \SimpleXMLElement $xml
-     * @param mixed $userID
+     * @param int|string|null $userID
      * @return UserAuthorizationDAO
+     * @throws ConfigurationException
      */
-    private function getUserDAO(\SimpleXMLElement $xml, $userID): UserAuthorizationDAO
+    private function getUserDAO(\SimpleXMLElement $xml, int|string|null $userID): UserAuthorizationDAO
     {
         $className = (string) $xml->authorization->by_dao["user_dao"];
         if (!$className) {
             throw new ConfigurationException("Attribute 'user_dao' is mandatory for 'by_dao' tag");
         }
-        $userDAO = new $className($userID);
-        return $userDAO;
+        return new $className($userID);
     }
 }

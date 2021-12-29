@@ -15,8 +15,8 @@ class FormRequestValidator
     const DEFAULT_LOGIN_PAGE = "login";
     const DEFAULT_LOGOUT_PAGE = "logout";
     
-    private $xml;
-    private $request;
+    private \SimpleXMLElement $xml;
+    private Request $request;
     
     /**
      * Matches POST request to XML tag &lt;form&gt;

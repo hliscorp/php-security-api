@@ -6,7 +6,7 @@ namespace Lucinda\WebSecurity\Authorization\DAO;
  */
 abstract class PageAuthorizationDAO
 {
-    protected $pageID;
+    protected ?int $pageID;
 
     /**
      * Saves detected database ID of page requested

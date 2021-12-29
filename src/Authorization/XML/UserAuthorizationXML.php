@@ -9,7 +9,7 @@ use Lucinda\WebSecurity\ConfigurationException;
  */
 class UserAuthorizationXML implements UserRoles
 {
-    private $xml;
+    private \SimpleXMLElement $xml;
     
     /**
      * Sets XML to authorize into
@@ -24,11 +24,11 @@ class UserAuthorizationXML implements UserRoles
     /**
      * Gets user roles from XML
      *
-     * @param integer $userID
+     * @param int|string|null $userID
      * @throws ConfigurationException
      * @return string[]
      */
-    public function getRoles($userID): array
+    public function getRoles(int|string|null $userID): array
     {
         // gets default roles
         $defaultRoles = [];

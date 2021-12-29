@@ -16,7 +16,7 @@ class MockUserInformation implements UserInformation
         $this->email = $info["email"];
     }
     
-    public function getId()
+    public function getId(): int|string
     {
         return $this->id;
     }

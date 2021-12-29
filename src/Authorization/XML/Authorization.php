@@ -15,8 +15,8 @@ use Lucinda\WebSecurity\Authorization\UserRoles;
  */
 class Authorization
 {
-    private $loggedInFailureCallback;
-    private $loggedOutFailureCallback;
+    private string $loggedInFailureCallback;
+    private string $loggedOutFailureCallback;
     
     /**
      * Creates an object
@@ -35,18 +35,17 @@ class Authorization
      *
      * @param \SimpleXMLElement $xml
      * @param string $routeToAuthorize
-     * @param integer $userID
+     * @param int|string|null $userID
      * @param UserRoles $userAuthorizationRoles
-     * @throws ConfigurationException If route is misconfigured.
      * @return Result
      */
-    public function authorize(\SimpleXMLElement $xml, string $routeToAuthorize, $userID=null, UserRoles $userAuthorizationRoles): Result
+    public function authorize(\SimpleXMLElement $xml, string $routeToAuthorize, int|string|null $userID, UserRoles $userAuthorizationRoles): Result
     {
         $status = 0;
         $callbackURI = "";
         
         // check if user is authenticated
-        $isUserGuest = ($userID?false:true);
+        $isUserGuest = !$userID;
         
         // get user roles
         $userRoles = $userAuthorizationRoles->getRoles($userID);

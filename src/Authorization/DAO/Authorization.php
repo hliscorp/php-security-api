@@ -9,8 +9,8 @@ use Lucinda\WebSecurity\Authorization\ResultStatus;
  */
 class Authorization
 {
-    private $loggedInFailureCallback;
-    private $loggedOutFailureCallback;
+    private string $loggedInFailureCallback;
+    private string $loggedOutFailureCallback;
     
     /**
      * Creates an object
@@ -34,7 +34,6 @@ class Authorization
      */
     public function authorize(PageAuthorizationDAO $page, UserAuthorizationDAO $user, string $httpRequestMethod): Result
     {
-        $status = 0;
         $callbackURI = "";
         if ($page->getID()) {
             if (!$page->isPublic()) {

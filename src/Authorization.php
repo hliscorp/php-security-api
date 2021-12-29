@@ -16,9 +16,11 @@ class Authorization
      *
      * @param \SimpleXMLElement $xml
      * @param Request $request
-     * @param mixed $userID
+     * @param int|string|null $userID
+     * @throws SecurityPacket
+     * @throws ConfigurationException
      */
-    public function __construct(\SimpleXMLElement $xml, Request $request, $userID)
+    public function __construct(\SimpleXMLElement $xml, Request $request, int|string|null $userID)
     {
         $wrapper = $this->getWrapper($xml, $request, $userID);
         $this->authorize($wrapper, $request);
@@ -29,11 +31,11 @@ class Authorization
      *
      * @param \SimpleXMLElement $xmlRoot
      * @param Request $request
-     * @param mixed $userID
+     * @param int|string|null $userID
      * @throws ConfigurationException
      * @return AuthorizationWrapper
      */
-    private function getWrapper(\SimpleXMLElement $xmlRoot, Request $request, $userID): AuthorizationWrapper
+    private function getWrapper(\SimpleXMLElement $xmlRoot, Request $request, int|string|null $userID): AuthorizationWrapper
     {
         $xml = $xmlRoot->authorization;
         if (empty($xml)) {
@@ -66,7 +68,7 @@ class Authorization
      *
      * @param AuthorizationWrapper $wrapper
      * @param Request $request
-     * @throws \Lucinda\WebSecurity\SecurityPacket
+     * @throws SecurityPacket
      */
     private function authorize(AuthorizationWrapper $wrapper, Request $request): void
     {

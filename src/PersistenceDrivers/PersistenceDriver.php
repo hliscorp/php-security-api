@@ -9,16 +9,16 @@ interface PersistenceDriver
     /**
      * Loads logged in user's unique identifier from driver.
      *
-     * @return mixed Unique user identifier (usually an integer) or NULL if none exists.
+     * @return int|string|null Unique user identifier (usually an integer) or NULL if none exists.
      */
-    public function load();
+    public function load(): int|string|null;
     
     /**
      * Saves user's unique identifier into driver (eg: on login).
      *
-     * @param mixed $userID Unique user identifier (usually an integer)
+     * @param int|string $userID Unique user identifier (usually an integer)
      */
-    public function save($userID): void;
+    public function save(int|string $userID): void;
     
     /**
      * Removes user's unique identifier from driver (eg: on logout).

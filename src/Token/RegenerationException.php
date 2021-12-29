@@ -6,14 +6,14 @@ namespace Lucinda\WebSecurity\Token;
  */
 class RegenerationException extends \Exception
 {
-    private $payload;
+    private mixed $payload;
     
     /**
      * Sets payload to use in regeneration.
      *
      * @param mixed $payload
      */
-    public function setPayload($payload): void
+    public function setPayload(mixed $payload): void
     {
         $this->payload= $payload;
     }
@@ -23,7 +23,7 @@ class RegenerationException extends \Exception
      *
      * @return mixed
      */
-    public function getPayload()
+    public function getPayload(): mixed
     {
         return $this->payload;
     }

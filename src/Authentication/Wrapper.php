@@ -6,7 +6,7 @@ namespace Lucinda\WebSecurity\Authentication;
  */
 abstract class Wrapper
 {
-    protected $result;
+    protected ?Result $result = null;
 
     /**
      * Sets authentication result.
@@ -28,7 +28,7 @@ abstract class Wrapper
     /**
      * Gets authentication result.
      *
-     * @return Result|null
+     * @return ?Result
      */
     public function getResult(): ?Result
     {

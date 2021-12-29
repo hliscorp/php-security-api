@@ -6,22 +6,24 @@ namespace Lucinda\WebSecurity\Token;
  */
 class SaltGenerator
 {
-    private $salt;
-    
+    private string $salt;
+
     /**
      * Performs generation process.
      *
      * @param integer $length
+     * @throws \Exception
      */
     public function __construct(int $length)
     {
         $this->setSalt($length);
     }
-    
+
     /**
      * Generates a salt of fixed length to use as salt/password in token generation
      *
      * @param integer $length
+     * @throws \Exception
      */
     private function setSalt(int $length): void
     {

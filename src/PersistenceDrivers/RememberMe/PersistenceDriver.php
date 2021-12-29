@@ -9,12 +9,12 @@ use Lucinda\WebSecurity\Token\ExpiredException;
  */
 class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver
 {
-    private $token;
+    private SynchronizerToken $token;
     
-    private $parameterName;
-    private $expirationTime;
-    private $isHttpOnly;
-    private $isSecure;
+    private string $parameterName;
+    private int $expirationTime;
+    private bool $isHttpOnly;
+    private bool $isSecure;
     
     /**
      * Creates a persistence driver object.
@@ -34,13 +34,14 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
         $this->isHttpOnly = $isHttpOnly;
         $this->isSecure = $isSecure;
     }
-    
+
     /**
      * Saves user's unique identifier into driver (eg: on login).
      *
-     * @param mixed $userID Unique user identifier (usually an integer)
+     * @param int|string $userID Unique user identifier (usually an integer)
+     * @throws \Lucinda\WebSecurity\Token\EncryptionException
      */
-    public function save($userID): void
+    public function save(int|string $userID): void
     {
         $token = $this->token->encode($userID, $this->expirationTime);
         setcookie($this->parameterName, $token, time()+$this->expirationTime, "/", "", $this->isSecure, $this->isHttpOnly);
@@ -50,12 +51,13 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
     /**
      * Loads logged in user's unique identifier from driver.
      *
-     * @return mixed Unique user identifier (usually an integer) or NULL if none exists.
+     * @return int|string|null Unique user identifier (usually an integer) or NULL if none exists.
+     * @throws \Exception
      */
-    public function load()
+    public function load(): int|string|null
     {
         if (empty($_COOKIE[$this->parameterName])) {
-            return;
+            return null;
         }
         
         try {
@@ -67,7 +69,7 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
             unset($_COOKIE[$this->parameterName]);
             // rethrow exception, unless it's token expired
             if ($e instanceof ExpiredException) {
-                return;
+                return null;
             } else {
                 throw $e;
             }

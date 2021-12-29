@@ -20,7 +20,7 @@ class RememberMeWrapper extends PersistenceDriverWrapper
      * @param string $ipAddress Detected client IP address
      * @throws ConfigurationException If resources referenced in XML do not exist or do not extend/implement required blueprint.
      */
-    protected function setDriver(\SimpleXMLElement $xml, $ipAddress): void
+    protected function setDriver(\SimpleXMLElement $xml, string $ipAddress): void
     {
         $secret = (string) $xml["secret"];
         if (!$secret) {

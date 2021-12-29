@@ -11,8 +11,8 @@ use Lucinda\WebSecurity\Authentication\ResultStatus;
  */
 class Authentication
 {
-    private $xml;
-    private $persistenceDrivers;
+    private \SimpleXMLElement $xml;
+    private array $persistenceDrivers;
     
     /**
      * Creates a form authentication object.
@@ -81,17 +81,15 @@ class Authentication
             }
         }
         if (!$userID) {
-            $result = new Result(ResultStatus::LOGOUT_FAILED);
-            return $result;
+            return new Result(ResultStatus::LOGOUT_FAILED);
         } else {
             // clears data from persistence drivers
             foreach ($this->persistenceDrivers as $persistentDriver) {
-                $persistentDriver->clear($userID);
+                $persistentDriver->clear();
             }
             
             // returns result
-            $result = new Result(ResultStatus::LOGOUT_OK);
-            return $result;
+            return new Result(ResultStatus::LOGOUT_OK);
         }
     }
 }

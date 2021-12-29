@@ -6,12 +6,12 @@ namespace Lucinda\WebSecurity;
  */
 class Request
 {
-    private $uri;
-    private $contextPath;
-    private $ipAddress;
-    private $method;
-    private $accessToken;
-    private $parameters=[];
+    private string $uri;
+    private string $contextPath;
+    private string $ipAddress;
+    private string $method;
+    private string $accessToken;
+    private array $parameters=[];
     
     /**
      * Sets relative URI (page) requested by client

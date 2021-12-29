@@ -10,7 +10,7 @@ use Lucinda\WebSecurity\Request;
  */
 class LoginThrottlerHandler
 {
-    private $instance;
+    private LoginThrottler $instance;
    
     /**
      * Sets login throttler to run validations on

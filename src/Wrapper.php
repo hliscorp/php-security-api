@@ -9,12 +9,10 @@ use Lucinda\WebSecurity\Authentication\OAuth2\Driver as OAuth2Driver;
  */
 class Wrapper
 {
-    private $persistenceDrivers = array();
-    private $oauth2Driver;
-    private $userID;
-    private $csrfToken;
-    private $accessToken;
-    
+    private array $persistenceDrivers = array();
+    private string|int|null $userID;
+    private CsrfTokenDetector $csrfToken;
+
     /**
      * Performs class logic by delegating to specialized methods
      *
@@ -39,12 +37,13 @@ class Wrapper
         $this->authenticate($xml, $request, $oauth2Drivers);
         $this->authorize($xml, $request);
     }
-    
+
     /**
      * Sets drivers where authenticated user unique identifier is persisted based on contents of XML tag 'persistence'
      *
      * @param \SimpleXMLElement $mainXML
      * @param Request $request
+     * @throws ConfigurationException
      */
     private function setPersistenceDrivers(\SimpleXMLElement $mainXML, Request $request): void
     {
@@ -62,24 +61,26 @@ class Wrapper
         $udd = new UserIdDetector($this->persistenceDrivers, $request->getAccessToken());
         $this->userID = $udd->getUserID();
     }
-    
+
     /**
      * Gets class where anti-csrf token is generated and verified
      *
      * @param \SimpleXMLElement $mainXML
      * @param Request $request
+     * @throws ConfigurationException
      */
     private function setCsrfToken(\SimpleXMLElement $mainXML, Request $request): void
     {
         $this->csrfToken = new CsrfTokenDetector($mainXML, $request->getIpAddress());
     }
-    
+
     /**
      * Performs user authentication based on mechanism chosen by developmer in XML (eg: from database via login form, from an oauth2 provider, etc)
      *
      * @param \SimpleXMLElement $mainXML
      * @param Request $request
      * @param OAuth2Driver[] $oauth2Drivers
+     * @throws \Exception
      */
     private function authenticate(\SimpleXMLElement $mainXML, Request $request, array $oauth2Drivers): void
     {
@@ -91,6 +92,7 @@ class Wrapper
      *
      * @param \SimpleXMLElement $mainXML
      * @param Request $request
+     * @throws \Exception
      */
     private function authorize(\SimpleXMLElement $mainXML, Request $request): void
     {
@@ -100,17 +102,18 @@ class Wrapper
     /**
      * Gets detected logged in unique user identifier
      *
-     * @return integer|string
+     * @return int|string|null
      */
-    public function getUserID()
+    public function getUserID(): int|string|null
     {
         return $this->userID;
     }
-    
+
     /**
      * Gets a new anti-csrf token to use as value of input 'csrf' in login form
      *
      * @return string
+     * @throws Token\EncryptionException
      */
     public function getCsrfToken(): string
     {

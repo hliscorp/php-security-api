@@ -6,11 +6,11 @@ namespace Lucinda\WebSecurity\Authentication\Form;
  */
 class LoginRequest
 {
-    private $sourcePage;
-    private $targetPage;
-    private $username;
-    private $password;
-    private $rememberMe;
+    private string $sourcePage;
+    private string $targetPage;
+    private string $username;
+    private string $password;
+    private bool $rememberMe;
     
     /**
      * Sets value of user name sent in login attempt.
@@ -35,7 +35,7 @@ class LoginRequest
     /**
      * Sets value of remember me option sent in login attempt (or null, if application doesn't support remember me)
      *
-     * @param boolean $rememberMe
+     * @param bool $rememberMe
      */
     public function setRememberMe(bool $rememberMe): void
     {

@@ -6,7 +6,7 @@ namespace Lucinda\WebSecurity\Authorization;
  */
 abstract class Wrapper
 {
-    private $result;
+    private Result $result;
     
     /**
      * Sets result of authorization attempt.

@@ -6,8 +6,8 @@ namespace Lucinda\WebSecurity\Token;
  */
 class JsonWebToken
 {
-    private $headers = array("typ"=>"JWT","alg"=>"HS256");
-    private $salt;
+    private array $headers = array("typ"=>"JWT","alg"=>"HS256");
+    private string $salt;
     
     /**
      * Saves encryption password for later encoding or decoding

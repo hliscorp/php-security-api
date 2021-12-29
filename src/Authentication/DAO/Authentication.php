@@ -12,8 +12,8 @@ use Lucinda\WebSecurity\Authentication\ResultStatus;
  */
 class Authentication
 {
-    private $dao;
-    private $persistenceDrivers;
+    private UserAuthenticationDAO $dao;
+    private array $persistenceDrivers;
     
     /**
      * Creates a form authentication object.
@@ -45,7 +45,6 @@ class Authentication
      * @param string $password Value of user password
      * @param boolean $rememberMe Value of remember me option (if any)
      * @return Result Encapsulates result of login attempt.
-     * @throws ConfigurationException If POST parameters are invalid.
      */
     public function login(string $username, string $password, bool $rememberMe=null): Result
     {
@@ -62,8 +61,7 @@ class Authentication
         // perform login
         $userID = $this->dao->login($username, $password);
         if (empty($userID)) {
-            $result = new Result(ResultStatus::LOGIN_FAILED);
-            return $result;
+            return new Result(ResultStatus::LOGIN_FAILED);
         } else {
             // saves in persistence drivers
             foreach ($this->persistenceDrivers as $persistenceDriver) {
@@ -94,20 +92,18 @@ class Authentication
             }
         }
         if (!$userID) {
-            $result = new Result(ResultStatus::LOGOUT_FAILED);
-            return $result;
+            return new Result(ResultStatus::LOGOUT_FAILED);
         } else {
             // should throw an exception if user is not already logged in
             $this->dao->logout($userID);
             
             // clears data from persistence drivers
             foreach ($this->persistenceDrivers as $persistentDriver) {
-                $persistentDriver->clear($userID);
+                $persistentDriver->clear();
             }
             
             // returns result
-            $result = new Result(ResultStatus::LOGOUT_OK);
-            return $result;
+            return new Result(ResultStatus::LOGOUT_OK);
         }
     }
 }

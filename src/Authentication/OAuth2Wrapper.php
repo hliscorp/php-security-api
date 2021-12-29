@@ -18,8 +18,8 @@ use Lucinda\WebSecurity\ConfigurationException;
  */
 class OAuth2Wrapper extends Wrapper
 {
-    private $xmlParser;
-    private $driver;
+    private XMLParser $xmlParser;
+    private Authentication $driver;
     
     /**
      * Creates an object
@@ -63,6 +63,7 @@ class OAuth2Wrapper extends Wrapper
      * @param OAuth2Driver $driverInfo Name of oauth2 driver (eg: facebook, google) that must exist as security.authentication.oauth2.{DRIVER} tag @ configuration.xml.
      * @param Request $request Encapsulated client request data.
      * @param CsrfTokenDetector $csrf Object that performs CSRF token checks.
+     * @throws TokenException|OAuth2Exception
      */
     private function login(OAuth2Driver $driverInfo, Request $request, CsrfTokenDetector $csrf): void
     {
@@ -110,7 +111,6 @@ class OAuth2Wrapper extends Wrapper
         if (!$className) {
             throw new ConfigurationException("Attribute 'dao' is mandatory for 'oauth2' tag");
         }
-        $authenticationDaoObject = new $className();
-        return $authenticationDaoObject;
+        return new $className();
     }
 }

@@ -8,7 +8,7 @@ class Encryption
 {
     const CYPHER_METHOD = "AES-256-CBC";
     
-    private $salt;
+    private string $salt;
     
     /**
      * Creates an encryption instance using a salt password that's going to be used in encryption/decryption.

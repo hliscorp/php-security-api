@@ -1,6 +1,8 @@
 <?php
 namespace Lucinda\WebSecurity\PersistenceDrivers\Token;
 
+use Lucinda\WebSecurity\Token\EncryptionException;
+use Lucinda\WebSecurity\Token\Exception;
 use Lucinda\WebSecurity\Token\SynchronizerToken;
 use Lucinda\WebSecurity\Token\RegenerationException;
 use Lucinda\WebSecurity\Token\ExpiredException;
@@ -10,9 +12,9 @@ use Lucinda\WebSecurity\Token\ExpiredException;
  */
 class SynchronizerTokenPersistenceDriver extends PersistenceDriver
 {
-    private $expirationTime;
-    private $regenerationTime;
-    private $tokenDriver;
+    private int $expirationTime;
+    private int $regenerationTime;
+    private SynchronizerToken $tokenDriver;
     
     /**
      * Creates a persistence driver object.
@@ -28,13 +30,14 @@ class SynchronizerTokenPersistenceDriver extends PersistenceDriver
         $this->expirationTime = $expirationTime;
         $this->regenerationTime = $regenerationTime;
     }
-    
+
     /**
      * Saves user's unique identifier into driver (eg: on login).
      *
-     * @param mixed $userID Unique user identifier (usually an integer)
+     * @param int|string $userID Unique user identifier (usually an integer)
+     * @throws EncryptionException
      */
-    public function save($userID): void
+    public function save(int|string $userID): void
     {
         $this->accessToken = $this->tokenDriver->encode($userID, $this->expirationTime);
     }
@@ -42,15 +45,17 @@ class SynchronizerTokenPersistenceDriver extends PersistenceDriver
     /**
      * Loads logged in user's unique identifier from driver.
      *
-     * @return mixed Unique user identifier (usually an integer) or NULL if none exists.
+     * @return int|string|null Unique user identifier (usually an integer) or NULL if none exists.
+     * @throws EncryptionException
+     * @throws Exception
      */
-    public function load()
+    public function load(): int|string|null
     {
         if (!$this->accessToken) {
-            return;
+            return null;
         }
-        $userID = null;
         // decode token
+        $userID = null;
         try {
             $userID = $this->tokenDriver->decode($this->accessToken, $this->regenerationTime);
         } catch (RegenerationException $e) {
@@ -58,7 +63,7 @@ class SynchronizerTokenPersistenceDriver extends PersistenceDriver
             $this->accessToken = $this->tokenDriver->encode($userID, $this->expirationTime);
         } catch (ExpiredException $e) {
             $this->accessToken = null;
-            return;
+            return null;
         }
         return $userID;
     }

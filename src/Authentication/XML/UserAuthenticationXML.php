@@ -8,7 +8,7 @@ use Lucinda\WebSecurity\ConfigurationException;
  */
 class UserAuthenticationXML
 {
-    private $xml;
+    private \SimpleXMLElement $xml;
     
     /**
      * Sets XML to authorize user into.
@@ -26,9 +26,9 @@ class UserAuthenticationXML
      * @param string $username
      * @param string $password
      * @throws ConfigurationException
-     * @return mixed
+     * @return string|null
      */
-    public function login(string $username, string $password)
+    public function login(string $username, string $password): string|null
     {
         $userID = null;
         

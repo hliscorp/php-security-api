@@ -8,8 +8,8 @@ use Lucinda\WebSecurity\Request;
  */
 abstract class LoginThrottler
 {
-    protected $request;
-    protected $userName;
+    protected Request $request;
+    protected string $userName;
     
     /**
      * Detects client throttling state based on arguments provided.
@@ -33,7 +33,7 @@ abstract class LoginThrottler
     /**
      * Gets number of seconds client will be banned from authenticating
      *
-     * @return integer
+     * @return int
      */
     abstract public function getTimePenalty(): int;
     

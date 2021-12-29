@@ -11,9 +11,9 @@ use Lucinda\WebSecurity\Token\JsonWebTokenPayload;
  */
 class JsonWebTokenPersistenceDriver extends PersistenceDriver
 {
-    private $expirationTime;
-    private $regenerationTime;
-    private $tokenDriver;
+    private int $expirationTime;
+    private int $regenerationTime;
+    private JsonWebToken $tokenDriver;
     
     /**
      * Creates a persistence driver object.
@@ -32,9 +32,9 @@ class JsonWebTokenPersistenceDriver extends PersistenceDriver
     /**
      * Saves user's unique identifier into driver (eg: on login).
      *
-     * @param mixed $userID Unique user identifier (usually an integer)
+     * @param int|string $userID Unique user identifier (usually an integer)
      */
-    public function save($userID): void
+    public function save(int|string $userID): void
     {
         $payload = new JsonWebTokenPayload();
         $payload->setApplicationId($userID);
@@ -46,15 +46,15 @@ class JsonWebTokenPersistenceDriver extends PersistenceDriver
     /**
      * Loads logged in user's unique identifier from driver.
      *
-     * @return mixed Unique user identifier (usually an integer) or NULL if none exists.
+     * @return int|string|null Unique user identifier (usually an integer) or NULL if none exists.
      */
-    public function load()
+    public function load(): int|string|null
     {
         if (!$this->accessToken) {
-            return;
+            return null;
         }
-        $userID = null;
         // decode token
+        $userID = null;
         try {
             $payload = $this->tokenDriver->decode($this->accessToken, $this->regenerationTime);
             $userID = $payload->getApplicationId();

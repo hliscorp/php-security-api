@@ -6,8 +6,8 @@ namespace Lucinda\WebSecurity\Authorization;
  */
 class Result
 {
-    private $status;
-    private $callbackURI;
+    private ResultStatus $status;
+    private string $callbackURI;
 
     /**
      * Saves authorization result encapsulated by ResultStatus enum along with callback URI
@@ -15,7 +15,7 @@ class Result
      * @param ResultStatus $status
      * @param string $callbackURI
      */
-    public function __construct(int $status, string $callbackURI)
+    public function __construct(ResultStatus $status, string $callbackURI)
     {
         $this->status = $status;
         $this->callbackURI = $callbackURI;
@@ -26,7 +26,7 @@ class Result
      *
      * @return ResultStatus
      */
-    public function getStatus(): int
+    public function getStatus(): ResultStatus
     {
         return $this->status;
     }

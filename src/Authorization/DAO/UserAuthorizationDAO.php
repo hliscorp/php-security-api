@@ -6,13 +6,13 @@ namespace Lucinda\WebSecurity\Authorization\DAO;
  */
 abstract class UserAuthorizationDAO
 {
-    protected $userID;
+    protected int|string|null $userID;
 
     /**
      * UserAuthorizationDAO constructor.
-     * @param mixed $userID Unique user identifier
+     * @param int|string|null $userID Unique user identifier
      */
-    public function __construct($userID)
+    public function __construct(int|string|null $userID)
     {
         $this->userID = $userID;
     }
@@ -28,9 +28,9 @@ abstract class UserAuthorizationDAO
     
     /**
      * Gets saved id of logged in user
-     * @return mixed
+     * @return  int|string|null
      */
-    public function getID()
+    public function getID():  int|string|null
     {
         return $this->userID;
     }

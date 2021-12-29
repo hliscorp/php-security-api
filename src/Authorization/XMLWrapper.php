@@ -19,10 +19,9 @@ class XMLWrapper extends Wrapper
      *
      * @param \SimpleXMLElement $xml Contents of root @ configuration.xml
      * @param Request $request Encapsulated request made by client
-     * @param mixed $userID Unique user identifier
-     * @throws ConfigurationException If resources referenced in XML do not exist or do not extend/implement required blueprint.
+     * @param int|string|null $userID Unique user identifier
      */
-    public function __construct(\SimpleXMLElement $xml, Request $request, $userID)
+    public function __construct(\SimpleXMLElement $xml, Request $request, int|string|null $userID)
     {
         // move up in xml tree
         $xmlLocal = $xml->authorization->by_xml;
@@ -46,10 +45,10 @@ class XMLWrapper extends Wrapper
      * Gets algorithm to check if page roles match that of current user
      *
      * @param \SimpleXMLElement $xml
-     * @param mixed $userID
+     * @param int|string|null $userID
      * @return UserRoles
      */
-    private function getDAO(\SimpleXMLElement $xml, $userID): UserRoles
+    private function getDAO(\SimpleXMLElement $xml, int|string|null $userID): UserRoles
     {
         $daoClass = "";
         if ($tag = $xml->authentication->form) {

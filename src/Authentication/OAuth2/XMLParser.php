@@ -10,9 +10,9 @@ class XMLParser
     const DEFAULT_LOGOUT_PAGE = "logout";
     const DEFAULT_TARGET_PAGE = "index";
     
-    private $loginCallback;
-    private $logoutCallback;
-    private $targetCallback;
+    private string $loginCallback;
+    private string $logoutCallback;
+    private string $targetCallback;
     
     /**
      * Kick-starts detection process.

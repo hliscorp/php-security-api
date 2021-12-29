@@ -21,13 +21,13 @@ It does so using this series of steps:
 
 - **[configuration](#configuration)**: setting up an XML file where web security is configured
 - **[binding points](#binding-points)**: binding user-defined components defined in XML/code to API prototypes
-- **[execution](#execution)**: creating a [Wrapper](https://github.com/aherne/php-security-api/blob/master/src/Wrapper.php) instance to authenticate & authorize then use it to get logged in user id, access token (for stateless apps) or csrf token (for form logins)
+- **[execution](#execution)**: creating a [Wrapper](https://github.com/aherne/php-security-api/blob/v4.0/src/Wrapper.php) instance to authenticate & authorize then use it to get logged in user id, access token (for stateless apps) or csrf token (for form logins)
 
-API is fully PSR-4 compliant, only requiring PHP7.1+ interpreter and SimpleXML + OpenSSL extensions. To quickly see how it works, check:
+API is fully PSR-4 compliant, only requiring PHP 8.1+ interpreter and SimpleXML + OpenSSL extensions. To quickly see how it works, check:
 
 - **[installation](#installation)**: describes how to install API on your computer, in light of steps above
 - **[unit tests](#unit-tests)**: API has 100% Unit Test coverage, using [UnitTest API](https://github.com/aherne/unit-testing) instead of PHPUnit for greater flexibility
-- **[example](https://github.com/aherne/php-security-api/blob/master/tests/WrapperTest.php)**: shows a deep example of API functionality based on unit test for [Wrapper](https://github.com/aherne/php-security-api/blob/master/src/Wrapper.php)
+- **[example](https://github.com/aherne/php-security-api/blob/v4.0/tests/WrapperTest.php)**: shows a deep example of API functionality based on unit test for [Wrapper](https://github.com/aherne/php-security-api/blob/v4.0/src/Wrapper.php)
 
 All classes inside belong to **Lucinda\WebSecurity** namespace!
 
@@ -70,7 +70,7 @@ Where:
 
 - **security**: (mandatory) holds global web security policies. 
     - **csrf**: (mandatory) holds settings necessary to produce an anti-CSRF token (useful to sign authentication with)
-        - *secret*: (mandatory) password to use in encrypting csrf token (use: [Token\SaltGenerator](https://github.com/aherne/php-security-api/blob/master/src/Token/SaltGenerator.php))
+        - *secret*: (mandatory) password to use in encrypting csrf token (use: [Token\SaltGenerator](https://github.com/aherne/php-security-api/blob/v4.0/src/Token/SaltGenerator.php))
         - *expiration*: (optional) seconds until token expires. If not set, token will expire in 10 minutes.
     - **persistence** (mandatory) holds one or more mechanisms useful to preserve logged in state across requests (at least one is mandatory!)
         - **session**: (optional) configures persistence of logged in state by HTTP session
@@ -80,17 +80,17 @@ Where:
             - *is_https_only*: (optional) whether or not to set session cookie as HTTPS only (can be 0 or 1; 0 is default).
             - *handler*: (optional) name of class (incl. namespace or relative path) implementing [SessionHandlerInterface](https://www.php.net/manual/en/class.sessionhandlerinterface.php) to which session handling will be delegated to. 
         - **remember_me**: (optional) configures persistence of logged in state by HTTP remember me cookie
-            - *secret*: (mandatory) password to use in encrypting cookie (use: [Token\SaltGenerator](https://github.com/aherne/php-security-api/blob/master/src/Token/SaltGenerator.php))
+            - *secret*: (mandatory) password to use in encrypting cookie (use: [Token\SaltGenerator](https://github.com/aherne/php-security-api/blob/v4.0/src/Token/SaltGenerator.php))
             - *parameter_name*: (optional) name of $_COOKIE parameter that will store logged in state. If not set, "uid" is assumed.
             - *expiration*: (optional) seconds until cookie expires. If not set, cookie will expire in one day.
             - *is_http_only*: (optional) whether or not to set cookie as HttpOnly (can be 0 or 1; 0 is default).
             - *is_https_only*: (optional) whether or not to set cookie as HTTPS only (can be 0 or 1; 0 is default).
         - **synchronizer_token**: (optional) configures persistence of logged in state by signing every request with a synchronizer token
-            - *secret*: (mandatory) password to use in encrypting token (use: [Token\SaltGenerator](https://github.com/aherne/php-security-api/blob/master/src/Token/SaltGenerator.php))
+            - *secret*: (mandatory) password to use in encrypting token (use: [Token\SaltGenerator](https://github.com/aherne/php-security-api/blob/v4.0/src/Token/SaltGenerator.php))
             - *expiration*: (optional) seconds until token expires. If not set, token will expire in 1 hour.
             - *regeneration*: (optional) seconds from the moment token was created until it needs to regenerate on continuous usage. If not set, token will be regenerated in 1 minute.
         - **json_web_token**: (optional) configures persistence of logged in state by signing every request with a json web token
-            - *secret*: (mandatory) password to use in encrypting token (use: [Token\SaltGenerator](https://github.com/aherne/php-security-api/blob/master/src/Token/SaltGenerator.php))
+            - *secret*: (mandatory) password to use in encrypting token (use: [Token\SaltGenerator](https://github.com/aherne/php-security-api/blob/v4.0/src/Token/SaltGenerator.php))
             - *expiration*: (optional) seconds until token expires. If not set, token will expire in 1 hour.
             - *regeneration*: (optional) seconds from the moment token was created until it needs to regenerate on continuous usage. If not set, token will be regenerated in 1 minute.
     - **authentication**: (mandatory) holds one or more mechanisms to authenticate (at least one is mandatory!)
@@ -121,7 +121,7 @@ Where:
             - *logged_in_callback*: (optional) callback page for authenticated users when authorization fails. If none, then "index" is implicitly used.
             - *logged_out_callback*: (optional) callback page for guest users when authorization fails. If none, then "login" is implicitly used.
 
-For examples of XMLs, check [WrapperTest](https://github.com/aherne/php-security-api/blob/master/tests/WrapperTest.php) @ unit tests!
+For examples of XMLs, check [WrapperTest](https://github.com/aherne/php-security-api/blob/v4.0/tests/WrapperTest.php) @ unit tests!
 
 Notes:
 (1) If authorization is **by_route**, **authentication** is **form** with a *dao* attribute, then class referenced there must also implement [Authorization\UserRoles](#interface-user-roles)!
@@ -198,11 +198,11 @@ It offers developers an ability to **bind programmatically** to its prototypes v
 
 ## Execution
 
-Once [configuration](#configuration) is finished, one can finally use this API to authenticate and authorize by calling [Wrapper](https://github.com/aherne/php-security-api/blob/master/src/Wrapper.php), which defines following public methods:
+Once [configuration](#configuration) is finished, one can finally use this API to authenticate and authorize by calling [Wrapper](https://github.com/aherne/php-security-api/blob/v4.0/src/Wrapper.php), which defines following public methods:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
-| __construct | \SimpleXMLElement $xml, [Request](https://github.com/aherne/php-security-api/blob/master/src/Request.php) $request, [Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/master/src/Authentication/OAuth2/Driver.php)[] $oauth2Drivers = [] | void | Performs authentication and authorization of request based on arguments |
+| __construct | \SimpleXMLElement $xml, [Request](https://github.com/aherne/php-security-api/blob/v4.0/src/Request.php) $request, [Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/OAuth2/Driver.php)[] $oauth2Drivers = [] | void | Performs authentication and authorization of request based on arguments |
 | getUserID | void | mixed | Gets logged in user id (integer or string) |
 | getCsrfToken | void | string | Gets anti-CSRF token to send as "csrf" POST parameter on form login and "state" GET parameter in oauth2 authorization code requests |
 | getAccessToken | void | string | Gets access token to sign stateless requests with as Bearer HTTP_AUTHORIZATION header (applies if "synchronizer token" or "json web token" persistence is used) |
@@ -214,12 +214,12 @@ Both authentication and authorization require following objects to be set before
 
 If authentication/authorization reached a point where request needs to be redirected, constructor throws a [SecurityPacket](#class-securitypacket). It may also throw:
 
-- [Authentication\Form\Exception](https://github.com/aherne/php-security-api/blob/master/src/Authentication/Form/Exception.php): when login form is posted with wrong parameters names
-- [Authentication\OAuth2\Exception](https://github.com/aherne/php-security-api/blob/master/src/Authentication/OAuth2/Exception.php): when OAuth2 provider answers with an error to authorization code or access token requests
-- [PersistenceDrivers\Session\HijackException](https://github.com/aherne/php-security-api/blob/master/src/PersistenceDrivers/Session/HijackException.php): when user id in session is associated to a different IP address
-- [Token\EncryptionException](https://github.com/aherne/php-security-api/blob/master/src/Token/EncryptionException.php): when token could not be decrypted
-- [Token\Exception](https://github.com/aherne/php-security-api/blob/master/src/Token/Exception.php): when CSRF token is invalid or missing as "csrf" POST param @ form login or "state" GET param @ oauth2 authorization code response 
-- [ConfigurationException](https://github.com/aherne/php-security-api/blob/master/src/ConfigurationException.php): when XML is misconfigured, referenced classes are not found or not fitting expected pattern
+- [Authentication\Form\Exception](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/Form/Exception.php): when login form is posted with wrong parameters names
+- [Authentication\OAuth2\Exception](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/OAuth2/Exception.php): when OAuth2 provider answers with an error to authorization code or access token requests
+- [PersistenceDrivers\Session\HijackException](https://github.com/aherne/php-security-api/blob/v4.0/src/PersistenceDrivers/Session/HijackException.php): when user id in session is associated to a different IP address
+- [Token\EncryptionException](https://github.com/aherne/php-security-api/blob/v4.0/src/Token/EncryptionException.php): when token could not be decrypted
+- [Token\Exception](https://github.com/aherne/php-security-api/blob/v4.0/src/Token/Exception.php): when CSRF token is invalid or missing as "csrf" POST param @ form login or "state" GET param @ oauth2 authorization code response 
+- [ConfigurationException](https://github.com/aherne/php-security-api/blob/v4.0/src/ConfigurationException.php): when XML is misconfigured, referenced classes are not found or not fitting expected pattern
 
 ### Handling SecurityPacket
 
@@ -318,33 +318,35 @@ RewriteRule ^(.*)$ index.php
 
 For tests and examples, check following files/folders in API sources:
 
-- [test.php](https://github.com/aherne/php-security-api/blob/master/test.php): runs unit tests in console
-- [unit-tests.xml](https://github.com/aherne/php-security-api/blob/master/unit-tests.xml): sets up unit tests
+- [test.php](https://github.com/aherne/php-security-api/blob/v4.0/test.php): runs unit tests in console
+- [unit-tests.xml](https://github.com/aherne/php-security-api/blob/v4.0/unit-tests.xml): sets up unit tests
 - [tests](https://github.com/aherne/php-security-api/tree/v3.0.0/tests): unit tests for classes from [src](https://github.com/aherne/php-security-api/tree/v3.0.0/src) folder
 
 ## Reference Guide
 
 ### Class SecurityPacket
 
-[SecurityPacket](https://github.com/aherne/php-security-api/blob/master/src/SecurityPacket.php) class encapsulates an response to an authentication/authorization event that typically requires redirection and defines following methods relevant to developers:
+[SecurityPacket](https://github.com/aherne/php-security-api/blob/v4.0/src/SecurityPacket.php) class encapsulates an response to an authentication/authorization event that typically requires redirection and defines following methods relevant to developers:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
 | getAccessToken | void | string | Gets access token to sign stateless requests with as Bearer HTTP_AUTHORIZATION header (applies if "synchronizer token" or "json web token" persistence is used) |
 | getCallback | void | integer/string | Gets URI inside application to redirect to in case of successful/insuccessful authentication or insuccessful authorization |
-| getStatus | void | string | Gets authentication/authorization status code (see below) |
+| getStatus | void | [Authentication\ResultStatus](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/ResultStatus.php) / [Authorization\ResultStatus](https://github.com/aherne/php-security-api/blob/v4.0/src/Authorization/ResultStatus.php) | Gets authentication/authorization status (see below) |
 | getTimePenalty | void | integer | Sets number of seconds client will be banned from authenticating as anti-throttling measure |
 
-Values of *getStatus* describe authentication/authorization outcome:
+Values of *getStatus* depend on argument enum case:
 
-- *login_ok*: login was successful and a redirection to logged in homepage is required
-- *login_failed*: login failed and a redirection to login page is required
-- *logout_ok*: logout was successful and a redirection to login page is required
-- *logout_failed*: logout was unsuccessful and a redirection to login page is required
-- *not_found*: route requested by client not known by any access policy
-- *redirect*: redirection to OAuth2 vendor's authorization request page is required
-- *unauthorized*: route requested by client requires authentication, thus redirection to login page is required
-- *forbidden*: route requested by client is forbidden to current logged in user, thus a redirection to logged in homepage is required
+| Enum | Case | Value | Description |
+| --- | --- | --- | --- |
+| [Authentication\ResultStatus](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/ResultStatus.php) | LOGIN_FAILED | login_ok | login was successful and a redirection to logged in homepage is required |
+| [Authentication\ResultStatus](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/ResultStatus.php) | LOGIN_FAILED | login_failed | login failed and a redirection to login page is required |
+| [Authentication\ResultStatus](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/ResultStatus.php) | LOGOUT_OK | logout_ok | logout was successful and a redirection to login page is required |
+| [Authentication\ResultStatus](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/ResultStatus.php) | LOGOUT_FAILED | logout_failed | logout was unsuccessful and a redirection to login page is required |
+| [Authentication\ResultStatus](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/ResultStatus.php) | DEFERRED | redirect | redirection to OAuth2 vendor's authorization request page is required |
+| [Authorization\ResultStatus](https://github.com/aherne/php-security-api/blob/v4.0/src/Authorization/ResultStatus.php) | NOT_FOUND | not_found | route requested by client not covered by any access policy |
+| [Authorization\ResultStatus](https://github.com/aherne/php-security-api/blob/v4.0/src/Authorization/ResultStatus.php) | UNAUTHORIZED | unauthorized | route requested by client requires authentication, thus redirection to login page is required |
+| [Authorization\ResultStatus](https://github.com/aherne/php-security-api/blob/v4.0/src/Authorization/ResultStatus.php) | FORBIDDEN | forbidden | route requested by client is forbidden to current logged in user, thus a redirection to logged in homepage is required |
 
 Usage example:
 
@@ -352,7 +354,7 @@ https://github.com/aherne/lucinda-framework/blob/master/src/Controllers/Security
 
 ### Class Request
 
-[Request](https://github.com/aherne/php-security-api/blob/master/src/Request.php) encapsulates information about request necessary for authentication and authorization via following public methods:
+[Request](https://github.com/aherne/php-security-api/blob/v4.0/src/Request.php) encapsulates information about request necessary for authentication and authorization via following public methods:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
@@ -375,7 +377,7 @@ https://github.com/aherne/lucinda-framework-engine/blob/master/src/RequestBinder
 
 ### Interface OAuth2 Driver
 
-[Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/master/src/Authentication/OAuth2/Driver.php) interface encapsulates an oauth2 vendor to authenticate with and defines following methods:
+[Authentication\OAuth2\Driver](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/OAuth2/Driver.php) interface encapsulates an oauth2 vendor to authenticate with and defines following methods:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
@@ -391,7 +393,7 @@ https://github.com/aherne/lucinda-framework-engine/blob/master/src/OAuth2/Abstra
 
 ### Interface OAuth2 UserInformation
 
-[Authentication\OAuth2\UserInformation](https://github.com/aherne/php-security-api/blob/master/src/Authentication/OAuth2/UserInformation.php) interface contains blueprints for retrieving information about logged in user on OAuth2 provider via following methods:
+[Authentication\OAuth2\UserInformation](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/OAuth2/UserInformation.php) interface contains blueprints for retrieving information about logged in user on OAuth2 provider via following methods:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
@@ -405,7 +407,7 @@ https://github.com/aherne/lucinda-framework-engine/blob/master/src/OAuth2/Abstra
 
 ### Interface OAuth2 VendorAuthenticationDAO
 
-[Authentication\OAuth2\VendorAuthenticationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authentication/OAuth2/VendorAuthenticationDAO.php) interface contains blueprints for saving info about logged in user on OAuth2 provider via following methods:
+[Authentication\OAuth2\VendorAuthenticationDAO](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/OAuth2/VendorAuthenticationDAO.php) interface contains blueprints for saving info about logged in user on OAuth2 provider via following methods:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
@@ -418,7 +420,7 @@ https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/
 
 ### Interface UserAuthenticationDAO
 
-[Authentication\DAO\UserAuthenticationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authentication/DAO/UserAuthenticationDAO.php) interface contains blueprints for form-based database authentication via following methods:
+[Authentication\DAO\UserAuthenticationDAO](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/DAO/UserAuthenticationDAO.php) interface contains blueprints for form-based database authentication via following methods:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
@@ -431,7 +433,7 @@ https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/
 
 ### Abstract Class LoginThrottler
 
-[Authentication\Form\LoginThrottler](https://github.com/aherne/php-security-api/blob/master/src/Authentication/Form/LoginThrottler.php) abstract class encapsulates form login throttling algorithm (against brute-force attacks) on a datasource (sql or nosql) via following public methods:
+[Authentication\Form\LoginThrottler](https://github.com/aherne/php-security-api/blob/v4.0/src/Authentication/Form/LoginThrottler.php) abstract class encapsulates form login throttling algorithm (against brute-force attacks) on a datasource (sql or nosql) via following public methods:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
@@ -453,7 +455,7 @@ https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/
 
 ### Abstract Class UserAuthorizationDAO
 
-[Authorization\DAO\UserAuthorizationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authorization/DAO/UserAuthorizationDAO.php) abstract class encapsulates database authorization where user accounts are checked in database via following public methods:
+[Authorization\DAO\UserAuthorizationDAO](https://github.com/aherne/php-security-api/blob/v4.0/src/Authorization/DAO/UserAuthorizationDAO.php) abstract class encapsulates database authorization where user accounts are checked in database via following public methods:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
@@ -472,7 +474,7 @@ https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/
 
 ### Abstract Class PageAuthorizationDAO
 
-[Authorization\DAO\PageAuthorizationDAO](https://github.com/aherne/php-security-api/blob/master/src/Authorization/DAO/PageAuthorizationDAO.php) abstract class encapsulates database authorization where access control list is checked in database via following public methods:
+[Authorization\DAO\PageAuthorizationDAO](https://github.com/aherne/php-security-api/blob/v4.0/src/Authorization/DAO/PageAuthorizationDAO.php) abstract class encapsulates database authorization where access control list is checked in database via following public methods:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |
@@ -492,7 +494,7 @@ https://github.com/aherne/lucinda-framework-configurer/blob/master/files/models/
 
 ### Interface UserRoles
 
-[Authorization\UserRoles](https://github.com/aherne/php-security-api/blob/master/src/Authorization/UserRoles.php) interface defines blueprints for any authorization where user roles are checked in database via following public methods:
+[Authorization\UserRoles](https://github.com/aherne/php-security-api/blob/v4.0/src/Authorization/UserRoles.php) interface defines blueprints for any authorization where user roles are checked in database via following public methods:
 
 | Method | Arguments | Returns | Description |
 | --- | --- | --- | --- |

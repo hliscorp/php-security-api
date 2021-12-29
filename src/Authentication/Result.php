@@ -6,17 +6,17 @@ namespace Lucinda\WebSecurity\Authentication;
  */
 class Result
 {
-    private $status;
-    private $callbackURI;
-    private $userID;
-    private $timePenalty = 0;
+    private ResultStatus $status;
+    private string $callbackURI;
+    private string|int|null $userID = null;
+    private int $timePenalty = 0;
 
     /**
      * Saves authentication result encapsulated by ResultStatus enum
      *
      * @param ResultStatus $status
      */
-    public function __construct(int $status)
+    public function __construct(ResultStatus $status)
     {
         $this->status = $status;
     }
@@ -26,7 +26,7 @@ class Result
      *
      * @return ResultStatus
      */
-    public function getStatus(): int
+    public function getStatus(): ResultStatus
     {
         return $this->status;
     }
@@ -54,9 +54,9 @@ class Result
     /**
      * Sets user unique identifier
      *
-     * @param mixed $userID
+     * @param string|int $userID
      */
-    public function setUserID($userID): void
+    public function setUserID(string|int $userID): void
     {
         $this->userID = $userID;
     }
@@ -64,9 +64,9 @@ class Result
     /**
      * Gets user unique identifier.
      *
-     * @return mixed
+     * @return string|int|null
      */
-    public function getUserID()
+    public function getUserID(): string|int|null
     {
         return $this->userID;
     }

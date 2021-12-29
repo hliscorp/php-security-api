@@ -6,20 +6,19 @@ namespace Lucinda\WebSecurity\PersistenceDrivers\Session;
  */
 class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver
 {
-    private $current_ip;
-    
-    private $parameterName;
-    private $expirationTime;
-    private $isHttpOnly;
-    private $isSecure;
+    private string $current_ip;
+    private string $parameterName;
+    private int $expirationTime;
+    private bool $isHttpOnly;
+    private bool $isSecure;
     
     /**
      * Creates a persistence driver object.
      *
      * @param string $parameterName Name of SESSION parameter that holds unique user identifier.
      * @param integer $expirationTime Time by which session expires no matter what, in seconds.
-     * @param bool $isHttpOnly Whether or not session should be using HTTP-only cookies.
-     * @param bool $isSecure Whether or not session should be using HTTPS-only cookies.
+     * @param bool $isHttpOnly Whether session should be using HTTP-only cookies.
+     * @param bool $isSecure Whether session should be using HTTPS-only cookies.
      * @param string $ip Value of REMOTE_ADDR parameter, unless ignored.
      */
     public function __construct(string $parameterName, int $expirationTime = 0, bool $isHttpOnly = false, bool $isSecure = false, string $ip="")
@@ -34,21 +33,22 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
     /**
      * Saves user's unique identifier into driver (eg: on login).
      *
-     * @param mixed $userID Unique user identifier (usually an integer)
+     * @param int|string $userID Unique user identifier (usually an integer)
      */
-    public function save($userID): void
+    public function save(int|string $userID): void
     {
         $_SESSION[$this->parameterName] = $userID;
         $_SESSION["ip"] = $this->current_ip;
         $_SESSION["time"] = time()+$this->expirationTime;
     }
-    
+
     /**
      * Loads logged in user's unique identifier from driver.
      *
-     * @return mixed Unique user identifier (usually an integer) or NULL if none exists.
+     * @return int|string|null Unique user identifier (usually an integer) or NULL if none exists.
+     * @throws HijackException
      */
-    public function load()
+    public function load(): int|string|null
     {
         // start session, using security options if requested
         if (session_id() == "") {
@@ -67,7 +67,7 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
         
         // do nothing if session does not include uid
         if (empty($_SESSION[$this->parameterName])) {
-            return;
+            return null;
         }
         
         // session hijacking prevention: session id is tied to a single ip
@@ -81,7 +81,7 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
         if ($this->expirationTime && time()>$_SESSION["time"]) {
             session_regenerate_id(true);
             $_SESSION = array();
-            return;
+            return null;
         }
         
         // update last time

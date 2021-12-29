@@ -6,8 +6,8 @@ namespace Lucinda\WebSecurity\Token;
  */
 class SynchronizerToken
 {
-    private $ip;
-    private $salt;
+    private string $ip;
+    private string $salt;
     
     /**
      * Constructs a synchronizer token.
@@ -24,12 +24,12 @@ class SynchronizerToken
     /**
      * Creates a token.
      *
-     * @param mixed $userID Unique user identifier for whom token will be registered
+     * @param int|string|null $userID Unique user identifier for whom token will be registered
      * @param integer $expirationTime Time by which token expires.
      * @throws EncryptionException If encryption of token fails.
      * @return string Encrypted token.
      */
-    public function encode($userID, int $expirationTime=3600): string
+    public function encode(int|string|null $userID, int $expirationTime=3600): string
     {
         $currentTime = time();
         $payload = ["uid"=>$userID, "ip"=>$this->ip, "time"=>$currentTime, "expiration"=>($currentTime+$expirationTime)];
@@ -46,9 +46,9 @@ class SynchronizerToken
      * @throws RegenerationException If token needs to be refreshed
      * @throws ExpiredException If token expired beyond regeneration threshold.
      * @throws EncryptionException If decryption of token fails.
-     * @return mixed Unique user identifier.
+     * @return int|string|null Unique user identifier.
      */
-    public function decode(string $token, int $maximumLifetime=0)
+    public function decode(string $token, int $maximumLifetime=0): int|string|null
     {
         $encryption = new Encryption($this->salt);
         $decryptedValue = $encryption->decrypt($token);
@@ -69,6 +69,6 @@ class SynchronizerToken
         }
         
         // return user identifier
-        return $parts["uid"];
+        return (!empty($parts["uid"])?$parts["uid"]:null);
     }
 }

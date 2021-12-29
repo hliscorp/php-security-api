@@ -7,14 +7,14 @@ namespace Lucinda\WebSecurity\Token;
 */
 class JsonWebTokenPayload
 {
-    private $issuer;
-    private $subject;
-    private $audience;
-    private $endTime;
-    private $startTime;
-    private $issuedTime;
-    private $id;
-    private $custom = array();
+    private ?string $issuer = null;
+    private int|string|null $subject = null;
+    private ?string $audience = null;
+    private ?int $endTime = null;
+    private ?int $startTime = null;
+    private ?int $issuedTime = null;
+    private ?string $id = null;
+    private array $custom = array();
     
     /**
      * Encapsulates JWT data received from client
@@ -78,9 +78,9 @@ class JsonWebTokenPayload
     /**
      * Sets user of an application of JWT.
      *
-     * @param mixed $userID Unique user identifier.
+     * @param int|string $userID Unique user identifier.
      */
-    public function setSubject($userID): void
+    public function setSubject(int|string $userID): void
     {
         $this->subject = $userID;
     }
@@ -88,9 +88,9 @@ class JsonWebTokenPayload
     /**
      * Gets user of JWT.
      *
-     * @return string|null
+     * @return int|string|null
      */
-    public function getSubject()
+    public function getSubject(): int|string|null
     {
         return $this->subject;
     }
@@ -180,7 +180,7 @@ class JsonWebTokenPayload
      *
      * @param string $value
      */
-    public function setApplicationId(string $value): void
+    public function setApplicationId(int|string $value): void
     {
         $this->id = strtolower($value);
     }
@@ -214,7 +214,7 @@ class JsonWebTokenPayload
      */
     public function getCustomClaim(string $name): ?string
     {
-        return (isset($this->custom[$name])?$this->custom[$name]:null);
+        return ($this->custom[$name] ?? null);
     }
 
     /**

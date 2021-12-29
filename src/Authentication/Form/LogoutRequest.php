@@ -6,8 +6,8 @@ namespace Lucinda\WebSecurity\Authentication\Form;
  */
 class LogoutRequest
 {
-    private $sourcePage;
-    private $targetPage;
+    private string $sourcePage;
+    private string $targetPage;
     
     /**
      * Sets current page.

@@ -12,14 +12,14 @@ interface VendorAuthenticationDAO
      * @param UserInformation $userInformation Object encapsulating detected OAuth2 user information.
      * @param string $vendorName Name of OAuth2 vendor user has logged in by
      * @param string $accessToken Access token to be saved in further requests for above user.
-     * @return mixed Unique user identifier (typically an integer)
+     * @return int|string|null Unique user identifier (typically an integer)
      */
-    public function login(UserInformation $userInformation, string $vendorName, string $accessToken);
+    public function login(UserInformation $userInformation, string $vendorName, string $accessToken): int|string|null;
     
     /**
      * Logs out local user and removes saved access token
      *
-     * @param mixed $userID Unique user identifier (typically an integer)
+     * @param int|string $userID Unique user identifier (typically an integer)
      */
-    public function logout($userID): void;
+    public function logout(int|string $userID): void;
 }

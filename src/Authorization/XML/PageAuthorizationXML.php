@@ -8,7 +8,7 @@ use Lucinda\WebSecurity\ConfigurationException;
  */
 class PageAuthorizationXML
 {
-    private $xml;
+    private \SimpleXMLElement $xml;
     
     /**
      * Sets XML to authorize into
@@ -19,13 +19,13 @@ class PageAuthorizationXML
     {
         $this->xml = $xml;
     }
-    
+
     /**
      * Gets roles from XML
      *
      * @param string $routeToAuthorize
-     * @throws ConfigurationException
      * @return string[]
+     * @throws ConfigurationException
      */
     public function getRoles(string $routeToAuthorize): array
     {

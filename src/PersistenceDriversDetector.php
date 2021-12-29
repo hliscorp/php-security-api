@@ -12,24 +12,26 @@ use Lucinda\WebSecurity\PersistenceDrivers\JsonWebTokenWrapper;
  */
 class PersistenceDriversDetector
 {
-    private $persistenceDrivers;
-    
+    private array $persistenceDrivers;
+
     /**
      * Performs detection process
      *
      * @param \SimpleXMLElement $xml
      * @param string $ipAddress
+     * @throws ConfigurationException
      */
     public function __construct(\SimpleXMLElement $xml, string $ipAddress)
     {
         $this->setPersistenceDrivers($xml, $ipAddress);
     }
-    
+
     /**
      * Reads &lt;persistence&gt; tag and collects matching persistence drivers
      *
      * @param \SimpleXMLElement $xml
      * @param string $ipAddress
+     * @throws ConfigurationException
      */
     private function setPersistenceDrivers(\SimpleXMLElement $xml, string $ipAddress): void
     {

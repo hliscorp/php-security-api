@@ -6,7 +6,7 @@ namespace Lucinda\WebSecurity\Authentication\OAuth2;
  */
 class AuthenticationResult extends \Lucinda\WebSecurity\Authentication\Result
 {
-    private $token;
+    private string $token;
     
     /**
      * Sets access token.
