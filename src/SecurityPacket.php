@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity;
 
 use Lucinda\WebSecurity\Authentication\ResultStatus as AuthenticationResultStatus;
@@ -7,7 +8,8 @@ use Lucinda\WebSecurity\PersistenceDrivers\Token\PersistenceDriver as TokenPersi
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
 
 /**
- * Holds information about authentication/authorization outcomes incompatible with continuing execution (requiring a redirection).
+ * Holds information about authentication/authorization outcomes incompatible with continuing execution
+ * (requiring a redirection).
  */
 class SecurityPacket extends \Exception
 {
@@ -15,7 +17,7 @@ class SecurityPacket extends \Exception
     private string $status;
     private ?string $accessToken;
     private ?int $timePenalty;
-    
+
     /**
      * Sets path to redirect to.
      *
@@ -25,7 +27,7 @@ class SecurityPacket extends \Exception
     {
         $this->callback = $callback;
     }
-    
+
     /**
      * Gets path to redirect to.
      *
@@ -35,7 +37,7 @@ class SecurityPacket extends \Exception
     {
         return $this->callback;
     }
-    
+
     /**
      * Sets redirection reason.
      *
@@ -74,7 +76,7 @@ class SecurityPacket extends \Exception
         }
         $this->status = $result;
     }
-    
+
     /**
      * Gets redirection reason.
      *
@@ -84,7 +86,7 @@ class SecurityPacket extends \Exception
     {
         return $this->status;
     }
-    
+
     /**
      * Sets access token (useful for stateless applications).
      *
@@ -103,7 +105,7 @@ class SecurityPacket extends \Exception
         }
         $this->accessToken = $token;
     }
-    
+
     /**
      * Gets access token. In order to stay authenticated, each request will have to include this as a header.
      *
@@ -113,21 +115,21 @@ class SecurityPacket extends \Exception
     {
         return $this->accessToken;
     }
-    
+
     /**
      * Sets number of seconds client will be banned from authenticating
      *
-     * @param integer $timePenalty
+     * @param int $timePenalty
      */
     public function setTimePenalty(int $timePenalty): void
     {
         $this->timePenalty = $timePenalty;
     }
-    
+
     /**
      * Gets number of seconds client will be banned from authenticating
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getTimePenalty(): ?int
     {

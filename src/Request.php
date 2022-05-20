@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity;
 
 /**
@@ -11,8 +12,11 @@ class Request
     private string $ipAddress;
     private string $method;
     private string $accessToken;
+    /**
+     * @var array<string,mixed>
+     */
     private array $parameters=[];
-    
+
     /**
      * Sets relative URI (page) requested by client
      *
@@ -22,7 +26,7 @@ class Request
     {
         $this->uri = $uri;
     }
-    
+
     /**
      * Sets context path that prefixes page requested by client,
      *
@@ -32,7 +36,7 @@ class Request
     {
         $this->contextPath = $contextPath;
     }
-    
+
     /**
      * Sets ip address used by client
      *
@@ -42,7 +46,7 @@ class Request
     {
         $this->ipAddress = $ipAddress;
     }
-    
+
     /**
      * Sets HTTP request method used by client in request
      *
@@ -52,17 +56,17 @@ class Request
     {
         $this->method = $method;
     }
-    
+
     /**
      * Sets request parameters that came along with http method
      *
-     * @return array
+     * @param array<string,mixed> $parameters
      */
     public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
-    
+
     /**
      * Sets access token value based on contents of HTTP authorization header of "bearer" type
      *
@@ -72,7 +76,7 @@ class Request
     {
         $this->accessToken = $accessToken;
     }
-    
+
     /**
      * Gets relative URI (page) requested by client
      *
@@ -82,7 +86,7 @@ class Request
     {
         return $this->uri;
     }
-    
+
     /**
      * Gets context path that prefixes page requested by client,
      *
@@ -92,7 +96,7 @@ class Request
     {
         return $this->contextPath;
     }
-    
+
     /**
      * Gets ip address used by client
      *
@@ -102,7 +106,7 @@ class Request
     {
         return $this->ipAddress;
     }
-    
+
     /**
      * Gets HTTP request method used by client in request
      *
@@ -112,17 +116,17 @@ class Request
     {
         return $this->method;
     }
-    
+
     /**
      * Gets request parameters that came along with http method
      *
-     * @return array
+     * @return array<string,mixed>
      */
     public function getParameters(): array
     {
         return $this->parameters;
     }
-    
+
     /**
      * Gets access token value.
      *

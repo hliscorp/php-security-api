@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\OAuth2;
 
 /**
@@ -7,7 +8,7 @@ namespace Lucinda\WebSecurity\Authentication\OAuth2;
 class AuthenticationResult extends \Lucinda\WebSecurity\Authentication\Result
 {
     private string $token;
-    
+
     /**
      * Sets access token.
      *
@@ -17,7 +18,7 @@ class AuthenticationResult extends \Lucinda\WebSecurity\Authentication\Result
     {
         $this->token = $token;
     }
-    
+
     /**
      * Gets access token
      *

@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authorization\DAO;
 
 /**
@@ -22,7 +23,7 @@ abstract class PageAuthorizationDAO
      * Detects database ID of page requested.
      *
      * @param string $pageURL URL of page requested
-     * @return integer|null
+     * @return int|null
      */
     abstract protected function detectID(string $pageURL): ?int;
 
@@ -32,11 +33,11 @@ abstract class PageAuthorizationDAO
      * @return boolean
      */
     abstract public function isPublic(): bool;
-    
+
     /**
      * Gets detected id of page requested
      *
-     * @return integer|NULL
+     * @return int|NULL
      */
     public function getID(): ?int
     {

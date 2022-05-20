@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity;
 
 use Lucinda\WebSecurity\Authorization\ResultStatus;
@@ -25,7 +26,7 @@ class Authorization
         $wrapper = $this->getWrapper($xml, $request, $userID);
         $this->authorize($wrapper, $request);
     }
-    
+
     /**
      * Detects authorization method and performs request & user authorization
      *
@@ -35,13 +36,16 @@ class Authorization
      * @throws ConfigurationException
      * @return AuthorizationWrapper
      */
-    private function getWrapper(\SimpleXMLElement $xmlRoot, Request $request, int|string|null $userID): AuthorizationWrapper
-    {
+    private function getWrapper(
+        \SimpleXMLElement $xmlRoot,
+        Request $request,
+        int|string|null $userID
+    ): AuthorizationWrapper {
         $xml = $xmlRoot->authorization;
         if (empty($xml)) {
             throw new ConfigurationException("Tag 'authorization' child of 'security' tag is empty or missing");
         }
-        
+
         $wrapper = null;
         if ($xml->by_route) {
             $wrapper = new XMLWrapper(
@@ -62,7 +66,7 @@ class Authorization
         }
         return $wrapper;
     }
-    
+
     /**
      * Handles results of failed authorization by throwing a SecurityPacket that matches type of failure
      *

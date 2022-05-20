@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity;
 
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
@@ -10,7 +11,7 @@ use Lucinda\WebSecurity\PersistenceDrivers\Token\PersistenceDriver as TokenPersi
 class UserIdDetector
 {
     private int|string|null $userID;
-    
+
     /**
      * Sets logged in user id based on persistence drivers
      *
@@ -21,7 +22,7 @@ class UserIdDetector
     {
         $this->setUserID($persistenceDrivers, $accessToken);
     }
-    
+
     /**
      * Saves detected unique user identifier from persistence drivers.
      *
@@ -39,7 +40,7 @@ class UserIdDetector
             }
         }
     }
-    
+
     /**
      * Gets detected unique user identifier
      *

@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\PersistenceDrivers;
 
 use Lucinda\WebSecurity\Token\SaltGenerator;
@@ -8,14 +9,14 @@ use Lucinda\UnitTest\Result;
 class SynchronizerTokenWrapperTest
 {
     private $xml;
-    
+
     public function __construct()
     {
         $this->xml = \simplexml_load_string('
 <synchronizer_token secret="'.(new SaltGenerator(10))->getSalt().'" expiration="2" regeneration="1"/>
 ');
     }
-    
+
     public function getDriver()
     {
         $results = [];

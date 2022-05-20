@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\Form;
 
 /**

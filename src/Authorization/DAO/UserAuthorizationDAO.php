@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authorization\DAO;
 
 /**
@@ -25,12 +26,12 @@ abstract class UserAuthorizationDAO
      * @return boolean
      */
     abstract public function isAllowed(PageAuthorizationDAO $page, string $httpRequestMethod): bool;
-    
+
     /**
      * Gets saved id of logged in user
      * @return  int|string|null
      */
-    public function getID():  int|string|null
+    public function getID(): int|string|null
     {
         return $this->userID;
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Authorization;
 
 use Lucinda\WebSecurity\Request;
@@ -9,7 +10,7 @@ use Lucinda\WebSecurity\Authorization\XMLWrapper;
 class XMLWrapperTest
 {
     private $xml1;
-    
+
     public function __construct()
     {
         $xml1 = \simplexml_load_string('
@@ -55,34 +56,34 @@ class XMLWrapperTest
     public function getResult()
     {
         $results = [];
-        
+
         $request = new Request();
         $request->setMethod("GET");
-        
+
         $configurations = ["users@xml"=>$this->xml1, "users@dao"=>$this->xml2];
-        
+
         foreach ($configurations as $description=>$xml) {
             $request->setUri("asdf");
             $object = new XMLWrapper($xml, $request, null);
             $results[] = new Result($object->getResult()->getStatus()==ResultStatus::NOT_FOUND, "test path not found (".$description.")");
-            
+
             $request->setUri("login");
             $object = new XMLWrapper($xml, $request, null);
             $results[] = new Result($object->getResult()->getStatus()==ResultStatus::OK, "guest allowed to login (".$description.")");
-            
+
             $request->setUri("index");
             $object = new XMLWrapper($xml, $request, null);
             $results[] = new Result($object->getResult()->getStatus()==ResultStatus::UNAUTHORIZED, "guest unauthorized to index (".$description.")");
-            
+
             $request->setUri("index");
             $object = new XMLWrapper($xml, $request, 1);
             $results[] = new Result($object->getResult()->getStatus()==ResultStatus::OK, "user allowed to index (".$description.")");
-            
+
             $request->setUri("administration");
             $object = new XMLWrapper($xml, $request, 1);
             $results[] = new Result($object->getResult()->getStatus()==ResultStatus::FORBIDDEN, "user forbidden to administration (".$description.")");
         }
-        
+
         return $results;
     }
 }

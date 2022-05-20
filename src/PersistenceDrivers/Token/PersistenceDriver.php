@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\PersistenceDrivers\Token;
 
 /**
@@ -8,7 +9,7 @@ namespace Lucinda\WebSecurity\PersistenceDrivers\Token;
 abstract class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver
 {
     protected ?string $accessToken = null;
-    
+
     /**
      * Sets access token value based on contents of HTTP authorization header of "bearer" type
      *
@@ -18,7 +19,7 @@ abstract class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDriv
     {
         $this->accessToken = $accessToken;
     }
-    
+
     /**
      * Gets access token value.
      *

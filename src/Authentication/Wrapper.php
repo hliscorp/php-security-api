@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication;
 
 /**
@@ -24,7 +25,7 @@ abstract class Wrapper
         }
         $this->result = $result;
     }
-    
+
     /**
      * Gets authentication result.
      *

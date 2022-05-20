@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity;
 
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
@@ -12,6 +13,9 @@ use Lucinda\WebSecurity\PersistenceDrivers\JsonWebTokenWrapper;
  */
 class PersistenceDriversDetector
 {
+    /**
+     * @var PersistenceDriver[]
+     */
     private array $persistenceDrivers;
 
     /**
@@ -39,28 +43,28 @@ class PersistenceDriversDetector
         if (empty($xml)) {
             return;
         } // it is allowed for elements to not persist
-        
+
         if ($xml->session) {
             $wrapper = new SessionWrapper($xml->session, $ipAddress);
             $this->persistenceDrivers[] = $wrapper->getDriver();
         }
-        
+
         if ($xml->remember_me) {
             $wrapper = new RememberMeWrapper($xml->remember_me, $ipAddress);
             $this->persistenceDrivers[] = $wrapper->getDriver();
         }
-        
+
         if ($xml->synchronizer_token) {
             $wrapper = new SynchronizerTokenWrapper($xml->synchronizer_token, $ipAddress);
             $this->persistenceDrivers[] = $wrapper->getDriver();
         }
-        
+
         if ($xml->json_web_token) {
             $wrapper = new JsonWebTokenWrapper($xml->json_web_token, $ipAddress);
             $this->persistenceDrivers[] = $wrapper->getDriver();
         }
     }
-    
+
     /**
      * Gets detected drivers for authenticated state persistence.
      *

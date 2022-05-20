@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Authorization;
 
 use Lucinda\WebSecurity\Authorization\Result as AuthorizationResult;
@@ -8,7 +9,7 @@ use Lucinda\UnitTest\Result;
 class ResultTest
 {
     private $object;
-    
+
     public function __construct()
     {
         $this->object = new AuthorizationResult(ResultStatus::FORBIDDEN, "index");
@@ -18,7 +19,7 @@ class ResultTest
     {
         return new Result($this->object->getStatus()==ResultStatus::FORBIDDEN);
     }
-        
+
 
     public function getCallbackURI()
     {

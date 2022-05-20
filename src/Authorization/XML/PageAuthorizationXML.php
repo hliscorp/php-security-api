@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authorization\XML;
 
 use Lucinda\WebSecurity\ConfigurationException;
@@ -9,7 +10,7 @@ use Lucinda\WebSecurity\ConfigurationException;
 class PageAuthorizationXML
 {
     private \SimpleXMLElement $xml;
-    
+
     /**
      * Sets XML to authorize into
      *

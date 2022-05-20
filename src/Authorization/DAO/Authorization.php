@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authorization\DAO;
 
 use Lucinda\WebSecurity\Authorization\Result;
@@ -11,7 +12,7 @@ class Authorization
 {
     private string $loggedInFailureCallback;
     private string $loggedOutFailureCallback;
-    
+
     /**
      * Creates an object
      *
@@ -23,7 +24,7 @@ class Authorization
         $this->loggedInFailureCallback = $loggedInFailureCallback;
         $this->loggedOutFailureCallback = $loggedOutFailureCallback;
     }
-    
+
     /**
      * Performs an authorization task
      *

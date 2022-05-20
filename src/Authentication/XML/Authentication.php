@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\XML;
 
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
@@ -12,16 +13,19 @@ use Lucinda\WebSecurity\Authentication\ResultStatus;
 class Authentication
 {
     private \SimpleXMLElement $xml;
+    /**
+     * @var PersistenceDriver[]
+     */
     private array $persistenceDrivers;
-    
+
     /**
      * Creates a form authentication object.
      *
      * @param \SimpleXMLElement $xml
-     * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that allow authenticated state to persist between requests.
+     * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that persist authenticated state.
      * @throws ConfigurationException If one of persistenceDrivers entries is not a PersistentDriver
      */
-    public function __construct(\SimpleXMLElement $xml, array $persistenceDrivers = array())
+    public function __construct(\SimpleXMLElement $xml, array $persistenceDrivers = [])
     {
         // check argument that it's instance of PersistenceDriver
         foreach ($persistenceDrivers as $persistentDriver) {
@@ -29,12 +33,12 @@ class Authentication
                 throw new ConfigurationException("Items must be instanceof PersistenceDriver");
             }
         }
-        
+
         // save pointers
         $this->xml = $xml;
         $this->persistenceDrivers = $persistenceDrivers;
     }
-    
+
     /**
      * Performs a login operation:
      * - queries XML for an user id based on credentials
@@ -63,7 +67,7 @@ class Authentication
             return $result;
         }
     }
-    
+
     /**
      * Performs a logout operation:
      * - removes user id from persistence drivers (if any)
@@ -87,7 +91,7 @@ class Authentication
             foreach ($this->persistenceDrivers as $persistentDriver) {
                 $persistentDriver->clear();
             }
-            
+
             // returns result
             return new Result(ResultStatus::LOGOUT_OK);
         }

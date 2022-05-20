@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Token;
 
 /**
@@ -8,7 +9,7 @@ class SynchronizerToken
 {
     private string $ip;
     private string $salt;
-    
+
     /**
      * Constructs a synchronizer token.
      *
@@ -20,12 +21,12 @@ class SynchronizerToken
         $this->ip = $ip;
         $this->salt = $salt;
     }
-    
+
     /**
      * Creates a token.
      *
      * @param int|string|null $userID Unique user identifier for whom token will be registered
-     * @param integer $expirationTime Time by which token expires.
+     * @param int $expirationTime Time by which token expires.
      * @throws EncryptionException If encryption of token fails.
      * @return string Encrypted token.
      */
@@ -36,12 +37,12 @@ class SynchronizerToken
         $encryption = new Encryption($this->salt);
         return $encryption->encrypt(json_encode($payload));
     }
-    
+
     /**
      * Decodes a token and returns user id.
      *
      * @param string $token Encrypted token.
-     * @param integer $maximumLifetime Time by which token should be regenerated.
+     * @param int $maximumLifetime Time by which token should be regenerated.
      * @throws Exception If token fails validations.
      * @throws RegenerationException If token needs to be refreshed
      * @throws ExpiredException If token expired beyond regeneration threshold.
@@ -53,7 +54,7 @@ class SynchronizerToken
         $encryption = new Encryption($this->salt);
         $decryptedValue = $encryption->decrypt($token);
         $parts = json_decode($decryptedValue, true);
-        
+
         // validate token
         if ($this->ip!=$parts["ip"]) {
             throw new Exception("Token was issued from a different ip!");
@@ -67,8 +68,8 @@ class SynchronizerToken
             $tre->setPayload($parts["ip"]);
             throw $tre;
         }
-        
+
         // return user identifier
-        return (!empty($parts["uid"])?$parts["uid"]:null);
+        return (!empty($parts["uid"]) ? $parts["uid"] : null);
     }
 }

@@ -1,8 +1,10 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication;
 
 use Lucinda\WebSecurity\Authentication\OAuth2\Authentication;
 use Lucinda\WebSecurity\Authentication\OAuth2\VendorAuthenticationDAO;
+use Lucinda\WebSecurity\Token\EncryptionException;
 use Lucinda\WebSecurity\Token\Exception as TokenException;
 use Lucinda\WebSecurity\Request;
 use Lucinda\WebSecurity\CsrfTokenDetector;
@@ -13,57 +15,61 @@ use Lucinda\WebSecurity\Authentication\OAuth2\XMLParser;
 use Lucinda\WebSecurity\ConfigurationException;
 
 /**
- * Binds OAuth2Authentication @ SECURITY-API and Driver @ OAUTH2-CLIENT-API with settings from configuration.xml @ SERVLETS-API and vendor-specific
- * (eg: google / facebook) driver implementation, then performs login/logout if path requested matches paths @ xml.
+ * Perform login/logout via an oauth2 vendor (eg: facebook) if path requested matches that @ xml.
  */
 class OAuth2Wrapper extends Wrapper
 {
     private XMLParser $xmlParser;
     private Authentication $driver;
-    
+
     /**
      * Creates an object
      *
-     * @param \SimpleXMLElement $xml XML holding information relevant to authentication (above all via security.authentication tag)
+     * @param \SimpleXMLElement $xml XML holding information relevant to authentication
      * @param Request $request Encapsulated client request data.
      * @param CsrfTokenDetector $csrf Driver performing CSRF validation
-     * @param PersistenceDriver[] $persistenceDrivers Drivers where authenticated state is persisted (eg: session, remember me cookie).
-     * @param OAuth2Driver[] List of oauth2 drivers detected
-     * @throws ConfigurationException If POST parameters are not provided when logging in or DAO classes are misconfigured.
+     * @param PersistenceDriver[] $persistenceDrivers Drivers where authenticated state is persisted (eg: session).
+     * @param OAuth2Driver[] $drivers List of oauth2 drivers detected
+     * @throws ConfigurationException If POST parameters are not provided when logging in or DAO classes are mis-configured.
      * @throws TokenException If CSRF checks fail
-     * @throws OAuth2Exception If vendor responds with an error
+     * @throws OAuth2Exception|EncryptionException If vendor responds with an error
      */
-    public function __construct(\SimpleXMLElement $xml, Request $request, CsrfTokenDetector $csrf, array $persistenceDrivers, array $drivers)
-    {
+    public function __construct(
+        \SimpleXMLElement $xml,
+        Request $request,
+        CsrfTokenDetector $csrf,
+        array $persistenceDrivers,
+        array $drivers
+    ) {
         if (empty($drivers)) {
             return; // in case no drivers are active (localhost), disable authentication
         }
-        
+
         $this->xmlParser = new XMLParser($xml);
-        
+
         // setup class properties
         $this->driver = new Authentication($this->getDAO($xml), $persistenceDrivers);
-        
+
         // checks if login was requested
         foreach ($drivers as $driver) {
             if ($driver->getCallbackUrl() == $request->getUri()) {
                 $this->login($driver, $request, $csrf);
             }
         }
-        
+
         // checks if a logout action was requested
         if ($this->xmlParser->getLogoutCallback() == $request->getUri()) {
             $this->logout();
         }
     }
-    
+
     /**
      * Logs user in (and registers if not found)
      *
-     * @param OAuth2Driver $driverInfo Name of oauth2 driver (eg: facebook, google) that must exist as security.authentication.oauth2.{DRIVER} tag @ configuration.xml.
+     * @param OAuth2Driver $driverInfo Name of oauth2 driver (eg: facebook)
      * @param Request $request Encapsulated client request data.
      * @param CsrfTokenDetector $csrf Object that performs CSRF token checks.
-     * @throws TokenException|OAuth2Exception
+     * @throws TokenException|OAuth2Exception|EncryptionException
      */
     private function login(OAuth2Driver $driverInfo, Request $request, CsrfTokenDetector $csrf): void
     {
@@ -78,7 +84,7 @@ class OAuth2Wrapper extends Wrapper
         } elseif (!empty($parameters["error"])) {
             $exception = new OAuth2Exception($parameters["error"]);
             $exception->setErrorCode($parameters["error"]);
-            $exception->setErrorDescription(!empty($parameters["error_description"])?$parameters["error_description"]:"");
+            $exception->setErrorDescription($parameters["error_description"] ??  "");
             throw $exception;
         } else {
             // set result
@@ -87,7 +93,7 @@ class OAuth2Wrapper extends Wrapper
             $this->result = $result;
         }
     }
-    
+
     /**
      * Logs user out and empties all tokens for that user.
      */
@@ -96,7 +102,7 @@ class OAuth2Wrapper extends Wrapper
         $result = $this->driver->logout();
         $this->setResult($result, $this->xmlParser->getLoginCallback(), $this->xmlParser->getLoginCallback());
     }
-    
+
     /**
      * Gets DAO where authentication is saved
      *

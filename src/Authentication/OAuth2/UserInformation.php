@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\OAuth2;
 
 /**
@@ -12,14 +13,14 @@ interface UserInformation
      * @return int|string
      */
     public function getId(): int|string;
-    
+
     /**
      * Gets remote user name.
      *
      * @return string
      */
     public function getName(): string;
-    
+
     /**
      * Gets remote user email.
      *

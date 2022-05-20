@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\DAO;
 
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
@@ -13,16 +14,19 @@ use Lucinda\WebSecurity\Authentication\ResultStatus;
 class Authentication
 {
     private UserAuthenticationDAO $dao;
+    /**
+     * @var PersistenceDriver[]
+     */
     private array $persistenceDrivers;
-    
+
     /**
      * Creates a form authentication object.
      *
      * @param UserAuthenticationDAO $dao Forwards operations to database via a DAO.
-     * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that allow authenticated state to persist between requests.
+     * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that persist authenticated state.
      * @throws ConfigurationException If one of persistenceDrivers entries is not a PersistentDriver
      */
-    public function __construct(UserAuthenticationDAO $dao, array $persistenceDrivers = array())
+    public function __construct(UserAuthenticationDAO $dao, array $persistenceDrivers = [])
     {
         // check argument that it's instance of PersistenceDriver
         foreach ($persistenceDrivers as $persistentDriver) {
@@ -30,12 +34,12 @@ class Authentication
                 throw new ConfigurationException("Items must be instanceof PersistenceDriver");
             }
         }
-        
+
         // save pointers
         $this->dao = $dao;
         $this->persistenceDrivers = $persistenceDrivers;
     }
-    
+
     /**
      * Performs a login operation:
      * - queries DAO for an user id based on credentials
@@ -57,7 +61,7 @@ class Authentication
                 }
             }
         }
-        
+
         // perform login
         $userID = $this->dao->login($username, $password);
         if (empty($userID)) {
@@ -73,7 +77,7 @@ class Authentication
             return $result;
         }
     }
-    
+
     /**
      * Performs a logout operation:
      * - informs DAO that user has logged out
@@ -96,12 +100,12 @@ class Authentication
         } else {
             // should throw an exception if user is not already logged in
             $this->dao->logout($userID);
-            
+
             // clears data from persistence drivers
             foreach ($this->persistenceDrivers as $persistentDriver) {
                 $persistentDriver->clear();
             }
-            
+
             // returns result
             return new Result(ResultStatus::LOGOUT_OK);
         }

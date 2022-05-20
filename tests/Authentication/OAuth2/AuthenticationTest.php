@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Authentication\OAuth2;
 
 use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDriver;
@@ -13,7 +14,7 @@ class AuthenticationTest
 {
     private $dao;
     private $persistenceDriver;
-    
+
     public function __construct()
     {
         $this->dao = new MockVendorAuthenticationDAO();
@@ -30,7 +31,7 @@ class AuthenticationTest
         $results[] = new Result($this->persistenceDriver->load()==1, "tested login persistence");
         return $results;
     }
-        
+
 
     public function logout()
     {

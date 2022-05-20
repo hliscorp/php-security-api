@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\Form;
 
 use Lucinda\WebSecurity\Request;
@@ -8,16 +9,9 @@ use Lucinda\WebSecurity\Request;
  */
 class FormRequestValidator
 {
-    const DEFAULT_PARAMETER_USERNAME = "username";
-    const DEFAULT_PARAMETER_PASSWORD = "password";
-    const DEFAULT_PARAMETER_REMEMBER_ME = "remember_me";
-    const DEFAULT_TARGET_PAGE = "index";
-    const DEFAULT_LOGIN_PAGE = "login";
-    const DEFAULT_LOGOUT_PAGE = "logout";
-    
     private \SimpleXMLElement $xml;
     private Request $request;
-    
+
     /**
      * Matches POST request to XML tag &lt;form&gt;
      *
@@ -29,7 +23,7 @@ class FormRequestValidator
         $this->xml = $xml->authentication->form;
         $this->request = $request;
     }
-    
+
     /**
      * Performs a form login
      *
@@ -38,54 +32,31 @@ class FormRequestValidator
      */
     public function login(): ?LoginRequest
     {
+        $requestParameters = $this->request->getParameters();
+
+        $configuration = new LoginConfiguration($this->xml);
+
         $loginRequest = new LoginRequest();
-        
-        // set source page;
-        $sourcePage = (string) $this->xml->login["page"];
-        if (!$sourcePage) {
-            $sourcePage = self::DEFAULT_LOGIN_PAGE;
-        }
-        if ($sourcePage != $this->request->getUri() || $this->request->getMethod()!="POST") {
+        $loginRequest->setSourcePage($configuration->getSourcePage());
+        if ($loginRequest->getSourcePage() != $this->request->getUri() || $this->request->getMethod() != "POST") {
             return null;
         }
-        $loginRequest->setSourcePage($sourcePage);
-        
-        // get target page
-        $targetPage = (string) $this->xml->login["target"];
-        if (!$targetPage) {
-            $targetPage = self::DEFAULT_TARGET_PAGE;
-        }
-        $loginRequest->setDestinationPage($targetPage);
-        
-        // get parameter names
-        $parameterUsername = (string) $this->xml->login["parameter_username"];
-        if (!$parameterUsername) {
-            $parameterUsername = self::DEFAULT_PARAMETER_USERNAME;
-        }
-        $parameterPassword = (string) $this->xml->login["parameter_password"];
-        if (!$parameterPassword) {
-            $parameterPassword = self::DEFAULT_PARAMETER_PASSWORD;
-        }
-        $parameterRememberMe = (string) $this->xml->login["parameter_rememberMe"];
-        if (!$parameterRememberMe) {
-            $parameterRememberMe = self::DEFAULT_PARAMETER_REMEMBER_ME;
-        }
-        
-        // set parameter values
-        $requestParameters = $this->request->getParameters();
-        if (empty($requestParameters[$parameterUsername])) {
+        $loginRequest->setDestinationPage($configuration->getDestinationPage());
+        $parameterUsername = $configuration->getUsername();
+        if (!isset($requestParameters[$parameterUsername])) {
             throw new Exception("POST parameter missing: ".$parameterUsername);
         }
         $loginRequest->setUsername($requestParameters[$parameterUsername]);
-        if (empty($requestParameters[$parameterPassword])) {
+        $parameterPassword = $configuration->getPassword();
+        if (!isset($requestParameters[$parameterPassword])) {
             throw new Exception("POST parameter missing: ".$parameterPassword);
         }
         $loginRequest->setPassword($requestParameters[$parameterPassword]);
-        $loginRequest->setRememberMe(!empty($requestParameters[$parameterRememberMe]));
-        
+        $loginRequest->setRememberMe(!empty($requestParameters[$configuration->getRememberMe()]));
+
         return $loginRequest;
     }
-    
+
     /**
      * Performs a form logout
      *
@@ -93,25 +64,15 @@ class FormRequestValidator
      */
     public function logout(): ?LogoutRequest
     {
+        $configuration = new LogoutConfiguration($this->xml);
+
         $logoutRequest = new LogoutRequest();
-        
-        // set source page
-        $sourcePage = (string) $this->xml->logout["page"];
-        if (!$sourcePage) {
-            $sourcePage = self::DEFAULT_LOGOUT_PAGE;
-        }
-        if ($sourcePage != $this->request->getUri()) {
+        $logoutRequest->setSourcePage($configuration->getSourcePage());
+        if ($logoutRequest->getSourcePage() != $this->request->getUri()) {
             return null;
         }
-        $logoutRequest->setSourcePage($this->request->getUri());
-        
-        // set destination page
-        $targetPage = (string) $this->xml->logout["target"];
-        if (!$targetPage) {
-            $targetPage = self::DEFAULT_LOGIN_PAGE;
-        }
-        $logoutRequest->setDestinationPage($targetPage);
-        
+        $logoutRequest->setDestinationPage($configuration->getDestinationPage());
+
         return $logoutRequest;
     }
 }

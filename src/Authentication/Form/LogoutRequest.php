@@ -1,51 +1,29 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\Form;
 
 /**
- * Encapsulates logout request data. Inner class of FormRequestValidator!
+ * Encapsulates logout request data
  */
-class LogoutRequest
+class LogoutRequest extends UrlTargetRequest
 {
-    private string $sourcePage;
-    private string $targetPage;
-    
     /**
-     * Sets current page.
-     *
-     * @param string $sourcePage
-     */
-    public function setSourcePage(string $sourcePage): void
-    {
-        $this->sourcePage= $sourcePage;
-    }
-    
-    /**
-     * Sets page to redirect to on login/logout success/failure.
-     *
-     * @param string $targetPage
-     */
-    public function setDestinationPage(string $targetPage): void
-    {
-        $this->targetPage= $targetPage;
-    }
-    
-    /**
-     * Gets current page.
+     * Gets default logout source page, if none set in XML
      *
      * @return string
      */
-    public function getSourcePage(): string
+    protected function getDefaultSourcePage(): string
     {
-        return $this->sourcePage;
+        return "logout";
     }
-    
+
     /**
-     * Gets page to redirect to on login/logout success/failure.
+     * Gets default logout destination page, if none set in XML
      *
      * @return string
      */
-    public function getDestinationPage(): string
+    protected function getDefaultDestinationPage(): string
     {
-        return $this->targetPage;
+        return "login";
     }
 }

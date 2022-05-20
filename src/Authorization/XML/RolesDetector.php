@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authorization\XML;
 
 use Lucinda\WebSecurity\ConfigurationException;
@@ -8,6 +9,9 @@ use Lucinda\WebSecurity\ConfigurationException;
  */
 class RolesDetector
 {
+    /**
+     * @var string[]
+     */
     private array $roles;
 
     /**
@@ -20,8 +24,13 @@ class RolesDetector
      * @param int|string|null $matchingValue
      * @throws ConfigurationException
      */
-    public function __construct(\SimpleXMLElement $xml, string $parentTag, string $childTag, string $requiredAttribute, int|string|null $matchingValue)
-    {
+    public function __construct(
+        \SimpleXMLElement $xml,
+        string $parentTag,
+        string $childTag,
+        string $requiredAttribute,
+        int|string|null $matchingValue
+    ) {
         $this->setRoles($xml, $parentTag, $childTag, $requiredAttribute, $matchingValue);
     }
 
@@ -35,8 +44,13 @@ class RolesDetector
      * @param int|string|null $matchingValue
      * @throws ConfigurationException
      */
-    private function setRoles(\SimpleXMLElement $xml, string $parentTag, string $childTag, string $requiredAttribute, int|string|null $matchingValue): void
-    {
+    private function setRoles(
+        \SimpleXMLElement $xml,
+        string $parentTag,
+        string $childTag,
+        string $requiredAttribute,
+        int|string|null $matchingValue
+    ): void {
         $roles = [];
         $info = $xml->xpath("//".$parentTag."/".$childTag."[@".$requiredAttribute."='".$matchingValue."']");
         if (!empty($info)) {
@@ -51,7 +65,7 @@ class RolesDetector
         }
         $this->roles = $roles;
     }
-    
+
     /**
      * Gets roles detected
      *

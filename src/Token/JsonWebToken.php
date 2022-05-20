@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Token;
 
 /**
@@ -6,9 +7,12 @@ namespace Lucinda\WebSecurity\Token;
  */
 class JsonWebToken
 {
-    private array $headers = array("typ"=>"JWT","alg"=>"HS256");
+    /**
+     * @var array<string,string>
+     */
+    private array $headers = ["typ"=>"JWT","alg"=>"HS256"];
     private string $salt;
-    
+
     /**
      * Saves encryption password for later encoding or decoding
      *
@@ -18,7 +22,7 @@ class JsonWebToken
     {
         $this->salt = $salt;
     }
-    
+
     /**
      * Creates a JSON Web Token.
      *
@@ -30,14 +34,14 @@ class JsonWebToken
         $encodedHeaders = base64_encode(json_encode($this->headers));
         $encodedPayload = base64_encode(json_encode($sendPayload->toArray()));
         $unsignedToken = $encodedHeaders.".".$encodedPayload;
-        return $unsignedToken.".".base64_encode($this->getSignature($this->salt, $unsignedToken));
+        return $unsignedToken.".".base64_encode($this->getSignature($unsignedToken));
     }
-    
+
     /**
      * Reads and validates a JSON Web Token
      *
      * @param string $token JWT token
-     * @param integer $maximumLifetime Maximum lifetime of a JsonWebToken
+     * @param int $maximumLifetime Maximum lifetime of a JsonWebToken
      * @throws Exception When token fails validations.
      * @throws ExpiredException When token fails validations.
      * @throws RegenerationException When token needs to be regenerated.
@@ -49,15 +53,30 @@ class JsonWebToken
         if (sizeof($parts)!=3) {
             throw new Exception("Token size is invalid!");
         }
-        
+
         // check signature
         $unsignedToken = $parts[0].".".$parts[1];
-        if (base64_decode($parts[2])!=$this->getSignature($this->salt, $unsignedToken)) {
+        if (base64_decode($parts[2])!=$this->getSignature($unsignedToken)) {
             throw new Exception("Token decoding failed!");
         }
-        
+
         // validate times
         $payload = json_decode(base64_decode($parts[1]), true);
+        $this->validate($payload, $maximumLifetime);
+        return new JsonWebTokenPayload($payload);
+    }
+
+    /**
+     * Validates JSON Web Token payload
+     *
+     * @param array<string,string|int> $payload
+     * @param int $maximumLifetime
+     * @return void
+     * @throws ExpiredException
+     * @throws RegenerationException
+     */
+    private function validate(array $payload, int $maximumLifetime): void
+    {
         $currentTime = time();
         if (isset($payload["nbf"]) && $currentTime<$payload["nbf"]) {
             throw new ExpiredException("Token not started!");
@@ -70,10 +89,8 @@ class JsonWebToken
             $exception->setPayload(new JsonWebTokenPayload($payload));
             throw $exception;
         }
-        
-        return new JsonWebTokenPayload($payload);
     }
-    
+
     /**
      * Creates a JWT signature using HMAC-SHA256 algorithm and returns it.
      *

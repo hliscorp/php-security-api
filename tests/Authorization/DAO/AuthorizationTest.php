@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Authorization\DAO;
 
 use Test\Lucinda\WebSecurity\mocks\Authorization\MockPageAuthorizationDAO;
@@ -13,7 +14,7 @@ class AuthorizationTest
     public function authorize()
     {
         $authorization = new Authorization("login", "index");
-        
+
         $results = [];
         $results[] = new Result($this->test($authorization, "asdf", null)->getStatus()==ResultStatus::NOT_FOUND, "test path not found");
         $results[] = new Result($this->test($authorization, "login", null)->getStatus()==ResultStatus::OK, "guest allowed to login");
@@ -22,7 +23,7 @@ class AuthorizationTest
         $results[] = new Result($this->test($authorization, "administration", 1)->getStatus()==ResultStatus::FORBIDDEN, "user forbidden to administration");
         return $results;
     }
-        
+
     private function test(Authorization $authorization, string $url, ?int $userID): AuthorizationResult
     {
         return $authorization->authorize(new MockPageAuthorizationDAO($url), new MockUserAuthorizationDAO($userID), "GET");

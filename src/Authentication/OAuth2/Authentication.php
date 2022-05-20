@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\OAuth2;
 
 use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
@@ -13,8 +14,11 @@ use Lucinda\WebSecurity\Authentication\ResultStatus;
 class Authentication
 {
     private VendorAuthenticationDAO $dao;
+    /**
+     * @var PersistenceDriver[]
+     */
     private array $persistenceDrivers;
-    
+
     /**
      * Creates an authentication object.
      *
@@ -30,11 +34,11 @@ class Authentication
                 throw new ConfigurationException("Items must be instanceof PersistenceDriver");
             }
         }
-        
+
         $this->dao = $dao;
         $this->persistenceDrivers = $persistenceDrivers;
     }
-    
+
     /**
      * Performs login by delegating to driver-specific OAuth2 implementation.
      *
@@ -64,7 +68,7 @@ class Authentication
             return $result;
         }
     }
-    
+
     /**
      * Performs a logout operation:
      * - informs DAO that user has logged out (which must empty token)
@@ -86,12 +90,12 @@ class Authentication
         } else {
             // should throw an exception if user is not already logged in, empty access token
             $this->dao->logout($userID);
-            
+
             // clears data from persistence drivers
             foreach ($this->persistenceDrivers as $persistentDriver) {
                 $persistentDriver->clear();
             }
-            
+
             // returns result
             return new AuthenticationResult(ResultStatus::LOGOUT_OK);
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\mocks\Authorization;
 
 use Lucinda\WebSecurity\Authorization\DAO\PageAuthorizationDAO;
@@ -22,7 +23,7 @@ class MockPageAuthorizationDAO extends PageAuthorizationDAO
                 break;
         }
     }
-    
+
     public function isPublic(): bool
     {
         switch ($this->pageID) {

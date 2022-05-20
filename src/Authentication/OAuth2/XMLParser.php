@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\OAuth2;
 
 /**
@@ -6,14 +7,14 @@ namespace Lucinda\WebSecurity\Authentication\OAuth2;
  */
 class XMLParser
 {
-    const DEFAULT_LOGIN_PAGE = "login";
-    const DEFAULT_LOGOUT_PAGE = "logout";
-    const DEFAULT_TARGET_PAGE = "index";
-    
+    public const DEFAULT_LOGIN_PAGE = "login";
+    public const DEFAULT_LOGOUT_PAGE = "logout";
+    public const DEFAULT_TARGET_PAGE = "index";
+
     private string $loginCallback;
     private string $logoutCallback;
     private string $targetCallback;
-    
+
     /**
      * Kick-starts detection process.
      *
@@ -25,7 +26,7 @@ class XMLParser
         $this->setLogoutCallback($xml);
         $this->setTargetCallback($xml);
     }
-    
+
     /**
      * Sets callback URL to use in login failures
      *
@@ -39,7 +40,7 @@ class XMLParser
         }
         $this->loginCallback = $loginPage;
     }
-    
+
     /**
      * Sets callback URL to use in user logout
      *
@@ -53,7 +54,7 @@ class XMLParser
         }
         $this->logoutCallback = $logoutPage;
     }
-    
+
     /**
      * Sets callback URL to use in login successes
      *
@@ -67,7 +68,7 @@ class XMLParser
         }
         $this->targetCallback = $targetPage;
     }
-    
+
     /**
      * Gets callback URL to use in login failures
      *
@@ -77,7 +78,7 @@ class XMLParser
     {
         return $this->loginCallback;
     }
-    
+
     /**
      * Gets callback URL to use in user logout
      *
@@ -87,7 +88,7 @@ class XMLParser
     {
         return $this->logoutCallback;
     }
-    
+
     /**
      * Gets callback URL to use in login successes
      *

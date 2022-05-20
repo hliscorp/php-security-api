@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity;
 
 use Lucinda\WebSecurity\CsrfTokenDetector;
@@ -8,7 +9,7 @@ use Lucinda\UnitTest\Result;
 class CsrfTokenDetectorTest
 {
     private $xml;
-    
+
     public function __construct()
     {
         $this->xml = \simplexml_load_string('
@@ -21,9 +22,9 @@ class CsrfTokenDetectorTest
     public function generate()
     {
         $this->object = new CsrfTokenDetector($this->xml, "127.0.0.1");
-        return new Result(strlen($this->object->generate(0))==172);
+        return new Result(strlen($this->object->generate(0))==180);
     }
-        
+
 
     public function isValid()
     {

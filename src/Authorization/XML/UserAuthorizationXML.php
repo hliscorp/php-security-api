@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authorization\XML;
 
 use Lucinda\WebSecurity\Authorization\UserRoles;
@@ -10,7 +11,7 @@ use Lucinda\WebSecurity\ConfigurationException;
 class UserAuthorizationXML implements UserRoles
 {
     private \SimpleXMLElement $xml;
-    
+
     /**
      * Sets XML to authorize into
      *
@@ -20,7 +21,7 @@ class UserAuthorizationXML implements UserRoles
     {
         $this->xml = $xml;
     }
-    
+
     /**
      * Gets user roles from XML
      *
@@ -40,11 +41,11 @@ class UserAuthorizationXML implements UserRoles
         foreach ($tmp as $role) {
             $defaultRoles[] = trim($role);
         }
-        
+
         // gets user roles
         $detector = new RolesDetector($this->xml, "users", "user", "id", $userID);
         $userRoles = $detector->getRoles();
-        
-        return (!empty($userRoles)?$userRoles:$defaultRoles);
+
+        return (!empty($userRoles) ? $userRoles : $defaultRoles);
     }
 }

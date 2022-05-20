@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Token;
 
 /**
@@ -6,10 +7,10 @@ namespace Lucinda\WebSecurity\Token;
  */
 class Encryption
 {
-    const CYPHER_METHOD = "AES-256-CBC";
-    
+    public const CYPHER_METHOD = "AES-256-CBC";
+
     private string $salt;
-    
+
     /**
      * Creates an encryption instance using a salt password that's going to be used in encryption/decryption.
      * @param string $salt Encryption password.
@@ -18,7 +19,7 @@ class Encryption
     {
         $this->salt = $salt;
     }
-    
+
     /**
      * Encrypts data and returns encrypted value.
      *
@@ -28,16 +29,20 @@ class Encryption
      */
     public function encrypt(string $data): string
     {
-        $ivlen = openssl_cipher_iv_length(self::CYPHER_METHOD);
-        $iv = openssl_random_pseudo_bytes($ivlen);
-        $ciphertext_raw = openssl_encrypt($data, self::CYPHER_METHOD, $this->salt, OPENSSL_RAW_DATA, $iv);
-        if ($ciphertext_raw === false) {
+        $iv = $this->getIv();
+        $key = openssl_encrypt(
+            $data,
+            self::CYPHER_METHOD,
+            $this->salt,
+            0,
+            $iv
+        );
+        if ($key===false) {
             throw new EncryptionException("Encryption failed!");
         }
-        $hmac = hash_hmac('sha256', $ciphertext_raw, $this->salt, true);
-        return base64_encode($iv.$hmac.$ciphertext_raw);
+        return base64_encode($key.":".base64_encode($iv));
     }
-    
+
     /**
      * Decrypts data and returns decrypted value.
      *
@@ -47,19 +52,30 @@ class Encryption
      */
     public function decrypt(string $data): string
     {
-        $c = base64_decode($data);
-        $ivlen = openssl_cipher_iv_length(self::CYPHER_METHOD);
-        $iv = substr($c, 0, $ivlen);
-        $hmac = substr($c, $ivlen, $sha2len=32);
-        $ciphertext_raw = substr($c, $ivlen+$sha2len);
-        $original_plaintext = @openssl_decrypt($ciphertext_raw, self::CYPHER_METHOD, $this->salt, OPENSSL_RAW_DATA, $iv);
-        if ($original_plaintext === false) {
+        $parts = explode(":", base64_decode($data));
+        if (!isset($parts[1])) {
             throw new EncryptionException("Decryption failed!");
         }
-        $calcmac = hash_hmac('sha256', $ciphertext_raw, $this->salt, true);
-        if (!hash_equals($hmac, $calcmac)) {
-            throw new EncryptionException("Decryption failed!");
+        $val = openssl_decrypt(
+            $parts[0],
+            self::CYPHER_METHOD,
+            $this->salt,
+            0,
+            base64_decode($parts[1])
+        );
+        if ($val===false) {
+            throw new EncryptionException("Encryption failed!");
         }
-        return $original_plaintext;
+        return $val;
+    }
+
+    /**
+     * Gets a non-NULL initialized vector
+     *
+     * @return string
+     */
+    private function getIv(): string
+    {
+        return openssl_random_pseudo_bytes(openssl_cipher_iv_length(self::CYPHER_METHOD));
     }
 }

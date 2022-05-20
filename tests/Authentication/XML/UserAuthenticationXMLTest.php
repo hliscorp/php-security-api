@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Authentication\XML;
 
 use Lucinda\WebSecurity\Authentication\XML\UserAuthenticationXML;
@@ -15,7 +16,7 @@ class UserAuthenticationXMLTest
     </users>
 </security>');
         $object = new UserAuthenticationXML($xml);
-        
+
         $results = [];
         $results[] = new Result($object->login("test", "me1")===null, "tested failed login");
         $results[] = new Result($object->login("test", "me")==1, "tested successful login");

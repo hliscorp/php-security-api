@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Token;
 
 use Lucinda\WebSecurity\Token\SaltGenerator;

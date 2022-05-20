@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\XML;
 
 use Lucinda\WebSecurity\ConfigurationException;
@@ -9,7 +10,7 @@ use Lucinda\WebSecurity\ConfigurationException;
 class UserAuthenticationXML
 {
     private \SimpleXMLElement $xml;
-    
+
     /**
      * Sets XML to authorize user into.
      *
@@ -19,7 +20,7 @@ class UserAuthenticationXML
     {
         $this->xml = $xml;
     }
-    
+
     /**
      * Authenticates user by username and password.
      *
@@ -31,7 +32,7 @@ class UserAuthenticationXML
     public function login(string $username, string $password): string|null
     {
         $userID = null;
-        
+
         // extract user id
         if (!$this->xml->users) {
             throw new ConfigurationException("XML tag users not defined!");
@@ -49,7 +50,7 @@ class UserAuthenticationXML
                 }
             }
         }
-        
+
         return $userID;
     }
 }

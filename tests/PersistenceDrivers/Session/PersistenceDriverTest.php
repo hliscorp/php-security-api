@@ -1,19 +1,27 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\PersistenceDrivers\Session;
 
+use Lucinda\WebSecurity\PersistenceDrivers\CookieSecurityOptions;
 use Lucinda\WebSecurity\PersistenceDrivers\Session\PersistenceDriver;
 use Lucinda\UnitTest\Result;
 
 class PersistenceDriverTest
 {
     private $object;
-    
+
     public function __construct()
     {
-        $this->object = new PersistenceDriver("uid", 3600, false, false, "192.168.1.9");
+        $securityOptions = new CookieSecurityOptions();
+        $securityOptions->setExpirationTime(3600);
+        $this->object = new PersistenceDriver(
+            "uid",
+            $securityOptions,
+            "192.168.1.9"
+        );
     }
-    
-    
+
+
     public function save()
     {
         session_start();
@@ -25,7 +33,7 @@ class PersistenceDriverTest
     {
         return new Result($this->object->load()==1);
     }
-        
+
 
     public function clear()
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\PersistenceDrivers\Token;
 
 use Lucinda\WebSecurity\Token\JsonWebToken;
@@ -14,13 +15,13 @@ class JsonWebTokenPersistenceDriver extends PersistenceDriver
     private int $expirationTime;
     private int $regenerationTime;
     private JsonWebToken $tokenDriver;
-    
+
     /**
      * Creates a persistence driver object.
      *
      * @param string $salt Strong password to use for crypting. (Check: http://randomkeygen.com/)
-     * @param integer $expirationTime Time by which token expires (can be renewed), in seconds.
-     * @param integer $regenerationTime Time by which token is renewed, in seconds.
+     * @param int $expirationTime Time by which token expires (can be renewed), in seconds.
+     * @param int $regenerationTime Time by which token is renewed, in seconds.
      */
     public function __construct(string $salt, int $expirationTime = 3600, int $regenerationTime = 60)
     {
@@ -28,11 +29,11 @@ class JsonWebTokenPersistenceDriver extends PersistenceDriver
         $this->expirationTime = $expirationTime;
         $this->regenerationTime = $regenerationTime;
     }
-    
+
     /**
      * Saves user's unique identifier into driver (eg: on login).
      *
-     * @param int|string $userID Unique user identifier (usually an integer)
+     * @param int|string $userID Unique user identifier (usually an int)
      */
     public function save(int|string $userID): void
     {
@@ -42,11 +43,11 @@ class JsonWebTokenPersistenceDriver extends PersistenceDriver
         $payload->setEndTime(time()+$this->expirationTime);
         $this->accessToken = $this->tokenDriver->encode($payload);
     }
-    
+
     /**
      * Loads logged in user's unique identifier from driver.
      *
-     * @return int|string|null Unique user identifier (usually an integer) or NULL if none exists.
+     * @return int|string|null Unique user identifier (usually an int) or NULL if none exists.
      */
     public function load(): int|string|null
     {
@@ -66,7 +67,7 @@ class JsonWebTokenPersistenceDriver extends PersistenceDriver
         }
         return $userID;
     }
-    
+
     /**
      * Removes user's unique identifier from driver (eg: on logout).
      */

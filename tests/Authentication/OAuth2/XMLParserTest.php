@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Authentication\OAuth2;
 
 use Lucinda\WebSecurity\Authentication\OAuth2\XMLParser;
@@ -7,7 +8,7 @@ use Lucinda\UnitTest\Result;
 class XMLParserTest
 {
     private $parser;
-    
+
     public function __construct()
     {
         $xml = simplexml_load_string('
@@ -23,13 +24,13 @@ class XMLParserTest
     {
         return new Result($this->parser->getLoginCallback()=="login");
     }
-        
+
 
     public function getLogoutCallback()
     {
         return new Result($this->parser->getLogoutCallback()=="logout");
     }
-        
+
 
     public function getTargetCallback()
     {

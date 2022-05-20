@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\Form;
 
 use Lucinda\WebSecurity\Request;
@@ -10,7 +11,7 @@ abstract class LoginThrottler
 {
     protected Request $request;
     protected string $userName;
-    
+
     /**
      * Detects client throttling state based on arguments provided.
      *
@@ -21,27 +22,27 @@ abstract class LoginThrottler
     {
         $this->request = $request;
         $this->userName = $userName;
-        
+
         $this->setCurrentStatus();
     }
-    
+
     /**
      * Sets current throttling status based on arguments provided
      */
     abstract protected function setCurrentStatus(): void;
-    
+
     /**
      * Gets number of seconds client will be banned from authenticating
      *
      * @return int
      */
     abstract public function getTimePenalty(): int;
-    
+
     /**
      * Marks subsequent login as failed, making client liable for time penalties
      */
     abstract public function setFailure(): void;
-    
+
     /**
      * Marks subsequent login as successful, removing any previous failures and penalties
      */

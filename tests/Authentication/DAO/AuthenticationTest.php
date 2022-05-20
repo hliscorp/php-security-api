@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Authentication\DAO;
 
 use Lucinda\WebSecurity\Authentication\DAO\Authentication;
@@ -12,13 +13,13 @@ class AuthenticationTest
 {
     private $dao;
     private $persistenceDriver;
-    
+
     public function __construct()
     {
         $this->dao = new MockUsersAuthentication();
         $this->persistenceDriver = new SynchronizerTokenPersistenceDriver((new SaltGenerator(10))->getSalt(), "127.0.0.1");
     }
-    
+
 
     public function login()
     {
@@ -29,7 +30,7 @@ class AuthenticationTest
         $results[] = new Result($this->persistenceDriver->load()==1, "tested login persistence");
         return $results;
     }
-        
+
 
     public function logout()
     {

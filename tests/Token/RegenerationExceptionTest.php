@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Token;
 
 use Lucinda\WebSecurity\Token\RegenerationException;
@@ -7,7 +8,7 @@ use Lucinda\UnitTest\Result;
 class RegenerationExceptionTest
 {
     private $object;
-    
+
     public function __construct()
     {
         $this->object = new RegenerationException();
@@ -18,7 +19,7 @@ class RegenerationExceptionTest
         $this->object->setPayload("asdfgh");
         return new Result(true);
     }
-        
+
 
     public function getPayload()
     {

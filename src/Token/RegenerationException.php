@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Token;
 
 /**
@@ -7,7 +8,7 @@ namespace Lucinda\WebSecurity\Token;
 class RegenerationException extends \Exception
 {
     private mixed $payload;
-    
+
     /**
      * Sets payload to use in regeneration.
      *
@@ -17,7 +18,7 @@ class RegenerationException extends \Exception
     {
         $this->payload= $payload;
     }
-    
+
     /**
      * Gets payload that was used in regeneration.
      *

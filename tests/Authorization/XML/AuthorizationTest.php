@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Authorization\XML;
 
 use Lucinda\WebSecurity\Authorization\XML\Authorization;
@@ -26,7 +27,7 @@ class AuthorizationTest
     </routes>
 </xml>');
     }
-    
+
     public function authorize()
     {
         $authorization = new Authorization("login", "index");
@@ -38,7 +39,7 @@ class AuthorizationTest
         $results[] = new Result($this->test($authorization, "administration", 1)->getStatus()==ResultStatus::FORBIDDEN, "user forbidden to administration");
         return $results;
     }
-    
+
     private function test(Authorization $authorization, string $url, ?int $userID): AuthorizationResult
     {
         return $authorization->authorize($this->xml, $url, $userID, new UserAuthorizationXML($this->xml));

@@ -1,17 +1,16 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\Form;
 
 /**
- * Encapsulates login request data. Inner class of FormRequestValidator!
+ * Encapsulates login request data
  */
-class LoginRequest
+class LoginRequest extends UrlTargetRequest
 {
-    private string $sourcePage;
-    private string $targetPage;
     private string $username;
     private string $password;
     private bool $rememberMe;
-    
+
     /**
      * Sets value of user name sent in login attempt.
      *
@@ -21,7 +20,7 @@ class LoginRequest
     {
         $this->username = $username;
     }
-    
+
     /**
      * Sets value of user password sent in login attempt.
      *
@@ -31,7 +30,7 @@ class LoginRequest
     {
         $this->password= $password;
     }
-    
+
     /**
      * Sets value of remember me option sent in login attempt (or null, if application doesn't support remember me)
      *
@@ -41,27 +40,7 @@ class LoginRequest
     {
         $this->rememberMe= $rememberMe;
     }
-    
-    /**
-     * Sets current page.
-     *
-     * @param string $sourcePage
-     */
-    public function setSourcePage(string $sourcePage): void
-    {
-        $this->sourcePage= $sourcePage;
-    }
-    
-    /**
-     * Sets page to redirect to on login/logout success/failure.
-     *
-     * @param string $targetPage
-     */
-    public function setDestinationPage(string $targetPage): void
-    {
-        $this->targetPage= $targetPage;
-    }
-    
+
     /**
      * Gets value of user name sent in login attempt.
      *
@@ -71,7 +50,7 @@ class LoginRequest
     {
         return $this->username;
     }
-    
+
     /**
      * Gets value of user password sent in login attempt.
      *
@@ -81,34 +60,34 @@ class LoginRequest
     {
         return $this->password;
     }
-    
+
     /**
      * Gets value of remember me option sent in login attempt (or null, if application doesn't support remember me)
      *
      * @return boolean
      */
-    public function getRememberMe(): bool
+    public function isRememberMe(): bool
     {
         return $this->rememberMe;
     }
-    
+
     /**
-     * Gets current page.
+     * Gets default login source page, if none set in XML
      *
      * @return string
      */
-    public function getSourcePage(): string
+    protected function getDefaultSourcePage(): string
     {
-        return $this->sourcePage;
+        return "login";
     }
-    
+
     /**
-     * Gets page to redirect to on login/logout success/failure.
+     * Gets default login target page, if none set in XML
      *
      * @return string
      */
-    public function getDestinationPage(): string
+    protected function getDefaultDestinationPage(): string
     {
-        return $this->targetPage;
+        return "index";
     }
 }

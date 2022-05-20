@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authorization;
 
 /**
@@ -7,7 +8,7 @@ namespace Lucinda\WebSecurity\Authorization;
 abstract class Wrapper
 {
     private Result $result;
-    
+
     /**
      * Sets result of authorization attempt.
      *
@@ -17,7 +18,7 @@ abstract class Wrapper
     {
         $this->result = $result;
     }
-    
+
     /**
      * Gets result of authorization attempt
      *

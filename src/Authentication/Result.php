@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication;
 
 /**
@@ -20,7 +21,7 @@ class Result
     {
         $this->status = $status;
     }
-    
+
     /**
      * Gets authentication status.
      *
@@ -30,7 +31,7 @@ class Result
     {
         return $this->status;
     }
-    
+
     /**
      * Sets callback URL.
      *
@@ -50,7 +51,7 @@ class Result
     {
         return $this->callbackURI;
     }
-    
+
     /**
      * Sets user unique identifier
      *
@@ -60,7 +61,7 @@ class Result
     {
         $this->userID = $userID;
     }
-    
+
     /**
      * Gets user unique identifier.
      *
@@ -70,21 +71,21 @@ class Result
     {
         return $this->userID;
     }
-    
+
     /**
      * Sets number of seconds client will be banned from authenticating
      *
-     * @param integer $timePenalty
+     * @param int $timePenalty
      */
     public function setTimePenalty(int $timePenalty): void
     {
         $this->timePenalty = $timePenalty;
     }
-    
+
     /**
      * Gets number of seconds client will be banned from authenticating
      *
-     * @return integer
+     * @return int
      */
     public function getTimePenalty(): int
     {

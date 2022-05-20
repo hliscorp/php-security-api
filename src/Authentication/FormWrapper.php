@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication;
 
 use Lucinda\WebSecurity\Authentication\Form\FormRequestValidator;
@@ -25,8 +26,6 @@ abstract class FormWrapper extends Wrapper
      * @throws ConfigurationException
      * @throws Form\Exception
      * @throws TokenException
-     * @throws \Lucinda\WebSecurity\Token\EncryptionException
-     * @throws \Lucinda\WebSecurity\Token\RegenerationException
      */
     protected function process(\SimpleXMLElement $xml, Request $request, CsrfTokenDetector $csrfTokenDetector): void
     {

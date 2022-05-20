@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\PersistenceDrivers;
 
 use Lucinda\WebSecurity\Token\SaltGenerator;
@@ -8,7 +9,7 @@ use Lucinda\UnitTest\Result;
 class JsonWebTokenWrapperTest
 {
     private $xml;
-    
+
     public function __construct()
     {
         $this->xml = \simplexml_load_string('

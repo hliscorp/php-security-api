@@ -1,16 +1,15 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\OAuth2;
 
 /**
  * Exception thrown when authentication fails on provider
- *
- * @author aherne
  */
 class Exception extends \Exception
 {
-    private $errorCode;
-    private $errorDescription;
-    
+    private string $errorCode;
+    private string $errorDescription;
+
     /**
      * Sets error code
      *
@@ -20,7 +19,7 @@ class Exception extends \Exception
     {
         $this->errorCode = $errorCode;
     }
-    
+
     /**
      * Gets error code
      *
@@ -30,7 +29,7 @@ class Exception extends \Exception
     {
         return $this->errorCode;
     }
-    
+
     /**
      * Sets error description
      *
@@ -40,7 +39,7 @@ class Exception extends \Exception
     {
         $this->errorDescription = $errorDescription;
     }
-    
+
     /**
      * Gets error description
      *

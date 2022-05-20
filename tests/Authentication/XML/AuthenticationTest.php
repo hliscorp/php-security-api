@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Authentication\XML;
 
 use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDriver;
@@ -11,7 +12,7 @@ class AuthenticationTest
 {
     private $xml;
     private $persistenceDriver;
-    
+
     public function __construct()
     {
         $this->xml = simplexml_load_string('
@@ -32,7 +33,7 @@ class AuthenticationTest
         $results[] = new Result($this->persistenceDriver->load()==1, "tested login persistence");
         return $results;
     }
-        
+
 
     public function logout()
     {

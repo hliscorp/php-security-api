@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity;
 
 use Lucinda\WebSecurity\PersistenceDriversDetector;
@@ -12,7 +13,7 @@ use Lucinda\WebSecurity\PersistenceDrivers\Token\SynchronizerTokenPersistenceDri
 class PersistenceDriversDetectorTest
 {
     private $xml;
-    
+
     public function __construct()
     {
         $salt = (new SaltGenerator(10))->getSalt();

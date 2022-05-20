@@ -1,6 +1,8 @@
 <?php
+
 namespace Lucinda\WebSecurity;
 
+use Lucinda\WebSecurity\PersistenceDrivers\PersistenceDriver;
 use Lucinda\WebSecurity\PersistenceDrivers\Token\PersistenceDriver as TokenPersistenceDriver;
 use Lucinda\WebSecurity\Authentication\OAuth2\Driver as OAuth2Driver;
 
@@ -9,7 +11,10 @@ use Lucinda\WebSecurity\Authentication\OAuth2\Driver as OAuth2Driver;
  */
 class Wrapper
 {
-    private array $persistenceDrivers = array();
+    /**
+     * @var PersistenceDriver[]
+     */
+    private array $persistenceDrivers = [];
     private string|int|null $userID;
     private CsrfTokenDetector $csrfToken;
 
@@ -28,12 +33,12 @@ class Wrapper
         if (empty($xml)) {
             throw new ConfigurationException("XML tag 'security' is missing");
         }
-        
+
         // applies web security on request
         $this->setPersistenceDrivers($xml, $request);
         $this->setUserID($request);
         $this->setCsrfToken($xml, $request);
-        
+
         $this->authenticate($xml, $request, $oauth2Drivers);
         $this->authorize($xml, $request);
     }
@@ -50,7 +55,7 @@ class Wrapper
         $pdd = new PersistenceDriversDetector($mainXML, $request->getIpAddress());
         $this->persistenceDrivers = $pdd->getPersistenceDrivers();
     }
-    
+
     /**
      * Sets authenticated user unique identifier based on drivers where it was persisted into
      *
@@ -75,7 +80,8 @@ class Wrapper
     }
 
     /**
-     * Performs user authentication based on mechanism chosen by developmer in XML (eg: from database via login form, from an oauth2 provider, etc)
+     * Performs user authentication based on mechanism chosen by developmer in XML (eg: from database via login form,
+     * from an oauth2 provider, etc)
      *
      * @param \SimpleXMLElement $mainXML
      * @param Request $request
@@ -86,7 +92,7 @@ class Wrapper
     {
         new Authentication($mainXML, $request, $this->csrfToken, $this->persistenceDrivers, $oauth2Drivers);
     }
-    
+
     /**
      * Performs request authorization based on mechanism chosen by developmer in XML (eg: from database)
      *
@@ -98,7 +104,7 @@ class Wrapper
     {
         new Authorization($mainXML, $request, $this->userID);
     }
-    
+
     /**
      * Gets detected logged in unique user identifier
      *
@@ -119,7 +125,7 @@ class Wrapper
     {
         return $this->csrfToken->generate($this->userID);
     }
-    
+
     /**
      * Gets access token for stateless apps
      *

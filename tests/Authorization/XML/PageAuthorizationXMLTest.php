@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Authorization\XML;
 
 use Lucinda\WebSecurity\Authorization\XML\PageAuthorizationXML;
@@ -19,7 +20,7 @@ class PageAuthorizationXMLTest
 </xml>
 ');
         $object = new PageAuthorizationXML($xml);
-        
+
         $results = [];
         $results[] = new Result($object->getRoles("asdf")==[], "checks route without roles");
         $results[] = new Result($object->getRoles("login")==["GUEST","USER"], "checks route without roles");

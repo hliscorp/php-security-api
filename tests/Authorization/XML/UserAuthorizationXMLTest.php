@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Authorization\XML;
 
 use Lucinda\WebSecurity\Authorization\XML\UserAuthorizationXML;
@@ -16,7 +17,7 @@ class UserAuthorizationXMLTest
 </xml>
 ');
         $object = new UserAuthorizationXML($xml);
-        
+
         $results = [];
         $results[] = new Result($object->getRoles(null)==["GUEST"], "checks user without roles");
         $results[] = new Result($object->getRoles(1)==["USER"], "checks user without roles");

@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authorization;
 
 use Lucinda\WebSecurity\Request;
@@ -8,38 +9,39 @@ use Lucinda\WebSecurity\Authorization\DAO\PageAuthorizationDAO;
 use Lucinda\WebSecurity\Authorization\DAO\Authorization;
 
 /**
- * Binds DAOAuthorization @ SECURITY-API to settings from configuration.xml @ SERVLETS-API then performs request authorization via database.
+ * Binds DAOAuthorization @ SECURITY-API to settings from configuration.xml @ SERVLETS-API then performs request
+ * authorization via database.
  */
 class DAOWrapper extends Wrapper
 {
-    const DEFAULT_LOGGED_IN_PAGE = "index";
-    const DEFAULT_LOGGED_OUT_PAGE = "login";
-    
+    public const DEFAULT_LOGGED_IN_PAGE = "index";
+    public const DEFAULT_LOGGED_OUT_PAGE = "login";
+
     /**
      * Creates an object
      *
      * @param \SimpleXMLElement $xml Contents of security.authorization.by_dao tag @ configuration.xml
      * @param Request $request Encapsulated request made by client
-     * @param int|string|null $userID Unique user identifier (usually an integer)
-     * @throws ConfigurationException If resources referenced in XML do not exist or do not extend/implement required blueprint.
+     * @param int|string|null $userID Unique user identifier (usually an int)
+     * @throws ConfigurationException If resources referenced in XML do not exist or do not extend/implement blueprint.
      */
     public function __construct(\SimpleXMLElement $xml, Request $request, int|string|null $userID)
     {
         // create dao object
         $xmlTag = $xml->authorization->by_dao;
-        
+
         // detects logged in callback to use if authorization fails
         $loggedInCallback = (string) $xmlTag["logged_in_callback"];
         if (!$loggedInCallback) {
             $loggedInCallback = self::DEFAULT_LOGGED_IN_PAGE;
         }
-        
+
         // detects logged out callback to use if authorization fails
         $loggedOutCallback = (string) $xmlTag["logged_out_callback"];
         if (!$loggedOutCallback) {
             $loggedOutCallback = self::DEFAULT_LOGGED_OUT_PAGE;
         }
-        
+
         // loads and instances page DAO object
         $pageDAO = $this->getPageDAO($xml, $request->getUri());
 

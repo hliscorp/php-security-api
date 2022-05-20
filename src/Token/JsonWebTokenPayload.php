@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Token;
 
 /**
@@ -14,47 +15,39 @@ class JsonWebTokenPayload
     private ?int $startTime = null;
     private ?int $issuedTime = null;
     private ?string $id = null;
-    private array $custom = array();
-    
+    /**
+     * @var array<string,string>
+     */
+    private array $custom = [];
+
     /**
      * Encapsulates JWT data received from client
      *
-     * @param string[string] $data
+     * @param array<string,string|int> $data
      */
-    public function __construct(array $data= array())
+    public function __construct(array $data= [])
     {
+        $correspondences = [
+            "iss"=>"issuer",
+            "sub"=>"subject",
+            "aud"=>"audience",
+            "exp"=>"endTime",
+            "nbf"=>"startTime",
+            "iat"=>"issuedTime",
+            "jti"=>"id",
+        ];
         if (!empty($data)) {
             foreach ($data as $key=>$value) {
-                switch ($key) {
-                    case "iss":
-                        $this->issuer = $value;
-                        break;
-                    case "sub":
-                        $this->subject = $value;
-                        break;
-                    case "aud":
-                        $this->audience = $value;
-                        break;
-                    case "exp":
-                        $this->endTime = $value;
-                        break;
-                    case "nbf":
-                        $this->startTime = $value;
-                        break;
-                    case "iat":
-                        $this->issuedTime = $value;
-                        break;
-                    case "jti":
-                        $this->id = $value;
-                        break;
-                    default:
-                        $this->custom[$key] = $value;
-                        break;
+                if (isset($correspondences[$key])) {
+                    $field = $correspondences[$key];
+                    $this->$field = $value;
+                } else {
+                    $this->custom[$key] = $value;
                 }
             }
         }
     }
-    
+
     /**
      * Sets security token service (STS) that issued the JWT.
      *
@@ -118,7 +111,7 @@ class JsonWebTokenPayload
     /**
      * Sets time by which token expires.
      *
-     * @param integer $value
+     * @param int $value
      */
     public function setEndTime(int $value): void
     {
@@ -128,7 +121,7 @@ class JsonWebTokenPayload
     /**
      * Gets time by which token expires.
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getEndTime(): ?int
     {
@@ -138,7 +131,7 @@ class JsonWebTokenPayload
     /**
      * Sets time by which token starts.
      *
-     * @param integer $value
+     * @param int $value
      */
     public function setStartTime(int $value): void
     {
@@ -148,7 +141,7 @@ class JsonWebTokenPayload
     /**
      * Gets time by which token starts.
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getStartTime(): ?int
     {
@@ -158,7 +151,7 @@ class JsonWebTokenPayload
     /**
      * Sets time when token was issued.
      *
-     * @param integer $value
+     * @param int $value
      */
     public function setIssuedTime(int $value): void
     {
@@ -168,7 +161,7 @@ class JsonWebTokenPayload
     /**
      * Gets time by which token was issued.
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getIssuedTime(): ?int
     {
@@ -178,7 +171,7 @@ class JsonWebTokenPayload
     /**
      * Sets application that is using the token to access a resource.
      *
-     * @param string $value
+     * @param int|string $value
      */
     public function setApplicationId(int|string $value): void
     {
@@ -194,7 +187,7 @@ class JsonWebTokenPayload
     {
         return $this->id;
     }
-    
+
     /**
      * Sets custom payload parameter not among those specified in https://tools.ietf.org/html/rfc7519#section-4.1
      *
@@ -205,7 +198,7 @@ class JsonWebTokenPayload
     {
         $this->custom[$name] = $value;
     }
-    
+
     /**
      * Gets value of custom payload parameter or null if not found.
      *
@@ -220,31 +213,24 @@ class JsonWebTokenPayload
     /**
      * Converts payload to array.
      *
-     * @return string[string]
+     * @return array<string,string>
      */
     public function toArray(): array
     {
-        $response = array();
-        if ($this->issuer) {
-            $response["iss"] = $this->issuer;
-        }
-        if ($this->subject) {
-            $response["sub"] = $this->subject;
-        }
-        if ($this->audience) {
-            $response["aud"] = $this->audience;
-        }
-        if ($this->endTime) {
-            $response["exp"] = $this->endTime;
-        }
-        if ($this->startTime) {
-            $response["nbf"] = $this->startTime;
-        }
-        if ($this->issuedTime) {
-            $response["iat"] = $this->issuedTime;
-        }
-        if ($this->id) {
-            $response["jti"] = $this->id;
+        $correspondences = [
+            "iss"=>"issuer",
+            "sub"=>"subject",
+            "aud"=>"audience",
+            "exp"=>"endTime",
+            "nbf"=>"startTime",
+            "iat"=>"issuedTime",
+            "jti"=>"id",
+        ];
+        $response = [];
+        foreach ($correspondences as $key=>$value) {
+            if ($val = $this->$value) {
+                $response[$key] = $val;
+            }
         }
         if (!empty($this->custom)) {
             $response = array_merge($response, $this->custom);

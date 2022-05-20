@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\Lucinda\WebSecurity\Token;
 
 use Lucinda\WebSecurity\Token\SynchronizerToken;
@@ -9,18 +10,18 @@ class SynchronizerTokenTest
 {
     private $object;
     private $value;
-    
+
     public function __construct()
     {
         $this->object = new SynchronizerToken("127.0.0.1", (new SaltGenerator(12))->getSalt());
     }
-    
+
     public function encode()
     {
         $this->value = $this->object->encode(1);
         return new Result(true);
     }
-        
+
 
     public function decode()
     {

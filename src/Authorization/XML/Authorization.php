@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authorization\XML;
 
 use Lucinda\WebSecurity\ConfigurationException;
@@ -17,7 +18,7 @@ class Authorization
 {
     private string $loggedInFailureCallback;
     private string $loggedOutFailureCallback;
-    
+
     /**
      * Creates an object
      *
@@ -29,7 +30,7 @@ class Authorization
         $this->loggedInFailureCallback = $loggedInFailureCallback;
         $this->loggedOutFailureCallback = $loggedOutFailureCallback;
     }
-    
+
     /**
      * Performs an authorization task.
      *
@@ -39,23 +40,27 @@ class Authorization
      * @param UserRoles $userAuthorizationRoles
      * @return Result
      */
-    public function authorize(\SimpleXMLElement $xml, string $routeToAuthorize, int|string|null $userID, UserRoles $userAuthorizationRoles): Result
-    {
+    public function authorize(
+        \SimpleXMLElement $xml,
+        string $routeToAuthorize,
+        int|string|null $userID,
+        UserRoles $userAuthorizationRoles
+    ): Result {
         $status = 0;
         $callbackURI = "";
-        
+
         // check if user is authenticated
         $isUserGuest = !$userID;
-        
+
         // get user roles
         $userRoles = $userAuthorizationRoles->getRoles($userID);
-        
+
         // get page roles
         $pageDAO = new PageAuthorizationXML($xml);
         $pageRoles = $pageDAO->getRoles($routeToAuthorize);
         if (empty($pageRoles)) {
             $status = ResultStatus::NOT_FOUND;
-            $callbackURI = ($isUserGuest?$this->loggedOutFailureCallback:$this->loggedInFailureCallback);
+            $callbackURI = ($isUserGuest ? $this->loggedOutFailureCallback : $this->loggedInFailureCallback);
         } else {
             // compare user roles to page roles
             $allowed = false;
@@ -65,7 +70,7 @@ class Authorization
                     break;
                 }
             }
-            
+
             // now perform rights check
             if ($allowed) {
                 $status = ResultStatus::OK;
@@ -77,7 +82,7 @@ class Authorization
                 $callbackURI = $this->loggedInFailureCallback;
             }
         }
-        
+
         return new Result($status, $callbackURI);
     }
 }

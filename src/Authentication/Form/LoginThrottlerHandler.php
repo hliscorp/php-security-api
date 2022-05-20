@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity\Authentication\Form;
 
 use Lucinda\WebSecurity\Authentication\ResultStatus;
@@ -11,7 +12,7 @@ use Lucinda\WebSecurity\Request;
 class LoginThrottlerHandler
 {
     private LoginThrottler $instance;
-   
+
     /**
      * Sets login throttler to run validations on
      *
@@ -21,7 +22,7 @@ class LoginThrottlerHandler
     {
         $this->instance = $instance;
     }
-    
+
     /**
      * Asks throttler if client is liable for a new login attempt. If not, a login failed authentication result is generated!
      *
@@ -39,7 +40,7 @@ class LoginThrottlerHandler
         }
         return null;
     }
-    
+
     /**
      * Informs throttler about outcome of login attempt.
      *

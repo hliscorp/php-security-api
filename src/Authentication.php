@@ -1,4 +1,5 @@
 <?php
+
 namespace Lucinda\WebSecurity;
 
 use Lucinda\WebSecurity\Authentication\DAOWrapper;
@@ -24,14 +25,19 @@ class Authentication
      * @param OAuth2Driver[] $oauth2Drivers
      * @throws \Exception
      */
-    public function __construct(\SimpleXMLElement $xml, Request $request, CsrfTokenDetector $csrfTokenDetector, array $persistenceDrivers, array $oauth2Drivers)
-    {
+    public function __construct(
+        \SimpleXMLElement $xml,
+        Request $request,
+        CsrfTokenDetector $csrfTokenDetector,
+        array $persistenceDrivers,
+        array $oauth2Drivers
+    ) {
         $wrappers = $this->getWrappers($xml, $request, $csrfTokenDetector, $persistenceDrivers, $oauth2Drivers);
         foreach ($wrappers as $wrapper) {
             $this->authenticate($wrapper, $request, $persistenceDrivers);
         }
     }
-    
+
     /**
      * Detects authentication methods and performs authentication if needed
      *
@@ -43,14 +49,19 @@ class Authentication
      * @return AuthenticationWrapper[]
      * @throws \Exception
      */
-    private function getWrappers(\SimpleXMLElement $xmlRoot, Request $request, CsrfTokenDetector $csrfTokenDetector, array $persistenceDrivers, array $oauth2Drivers): array
-    {
-        $wrappers = array();
+    private function getWrappers(
+        \SimpleXMLElement $xmlRoot,
+        Request $request,
+        CsrfTokenDetector $csrfTokenDetector,
+        array $persistenceDrivers,
+        array $oauth2Drivers
+    ): array {
+        $wrappers = [];
         $xml = $xmlRoot->authentication;
         if (empty($xml)) {
             throw new ConfigurationException("Tag 'authentication' child of 'security' is empty or missing");
         }
-        
+
         if ($xml->form) {
             if ((string) $xml->form["dao"]) {
                 $wrappers[] = new DAOWrapper(
@@ -82,7 +93,7 @@ class Authentication
         }
         return $wrappers;
     }
-    
+
     /**
      * Handles results of authentication, if any was requested, by throwing a SecurityPacket
      *
@@ -91,8 +102,11 @@ class Authentication
      * @param PersistenceDriver[] $persistenceDrivers
      * @throws SecurityPacket
      */
-    private function authenticate(AuthenticationWrapper $wrapper, Request $request, array $persistenceDrivers): void
-    {
+    private function authenticate(
+        AuthenticationWrapper $wrapper,
+        Request $request,
+        array $persistenceDrivers
+    ): void {
         if ($wrapper->getResult()) {
             // authentication was requested
             $transport = new SecurityPacket();
