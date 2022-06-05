@@ -12,9 +12,11 @@ class SynchronizerTokenWrapperTest
 
     public function __construct()
     {
-        $this->xml = \simplexml_load_string('
+        $this->xml = \simplexml_load_string(
+            '
 <synchronizer_token secret="'.(new SaltGenerator(10))->getSalt().'" expiration="2" regeneration="1"/>
-');
+'
+        );
     }
 
     public function getDriver()

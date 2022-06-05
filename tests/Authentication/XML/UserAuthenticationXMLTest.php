@@ -9,12 +9,14 @@ class UserAuthenticationXMLTest
 {
     public function login()
     {
-        $xml = simplexml_load_string('
+        $xml = simplexml_load_string(
+            '
 <security>
     <users>
         <user id="1" username="test" password="'.password_hash("me", PASSWORD_BCRYPT).'"/>
     </users>
-</security>');
+</security>'
+        );
         $object = new UserAuthenticationXML($xml);
 
         $results = [];

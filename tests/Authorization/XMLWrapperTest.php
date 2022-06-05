@@ -13,7 +13,8 @@ class XMLWrapperTest
 
     public function __construct()
     {
-        $xml1 = \simplexml_load_string('
+        $xml1 = \simplexml_load_string(
+            '
 <xml>
     <security>
         <authorization>
@@ -30,9 +31,11 @@ class XMLWrapperTest
         <route id="administration" roles="ADMINISTRATOR"/>
     </routes>
 </xml>
-');
+'
+        );
         $this->xml1 = $xml1->security;
-        $xml2 = \simplexml_load_string('
+        $xml2 = \simplexml_load_string(
+            '
 <xml>
     <security>
         <authentication>
@@ -49,7 +52,8 @@ class XMLWrapperTest
         <route id="administration" roles="ADMINISTRATOR"/>
     </routes>
 </xml>
-');
+'
+        );
         $this->xml2 = $xml2->security;
     }
 

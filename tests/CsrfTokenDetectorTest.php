@@ -12,11 +12,13 @@ class CsrfTokenDetectorTest
 
     public function __construct()
     {
-        $this->xml = \simplexml_load_string('
+        $this->xml = \simplexml_load_string(
+            '
 <security>
     <csrf secret="'.(new SaltGenerator(10))->getSalt().'"/>
 </security>
-');
+'
+        );
     }
 
     public function generate()

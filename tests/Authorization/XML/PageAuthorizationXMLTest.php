@@ -9,7 +9,8 @@ class PageAuthorizationXMLTest
 {
     public function getRoles()
     {
-        $xml = \simplexml_load_string('
+        $xml = \simplexml_load_string(
+            '
 <xml>
     <routes>
         <route id="login" roles="GUEST,USER"/>
@@ -18,7 +19,8 @@ class PageAuthorizationXMLTest
         <route id="admin" roles="ADMINISTRATOR"/>
     </routes>
 </xml>
-');
+'
+        );
         $object = new PageAuthorizationXML($xml);
 
         $results = [];

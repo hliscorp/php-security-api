@@ -12,9 +12,11 @@ class JsonWebTokenWrapperTest
 
     public function __construct()
     {
-        $this->xml = \simplexml_load_string('
+        $this->xml = \simplexml_load_string(
+            '
 <json_web_token secret="'.(new SaltGenerator(10))->getSalt().'" expiration="2" regeneration="1"/>
-');
+'
+        );
     }
 
     public function getDriver()

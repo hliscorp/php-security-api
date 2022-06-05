@@ -14,7 +14,8 @@ class AuthorizationTest
 
     public function __construct()
     {
-        $this->xml = \simplexml_load_string('
+        $this->xml = \simplexml_load_string(
+            '
 <xml>
     <users roles="GUEST">
         <user id="1" roles="USER"/>
@@ -25,7 +26,8 @@ class AuthorizationTest
         <route id="logout" roles="USER,ADMINISTRATOR"/>
         <route id="administration" roles="ADMINISTRATOR"/>
     </routes>
-</xml>');
+</xml>'
+        );
     }
 
     public function authorize()

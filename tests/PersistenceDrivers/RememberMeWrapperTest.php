@@ -12,9 +12,11 @@ class RememberMeWrapperTest
 
     public function __construct()
     {
-        $this->xml = \simplexml_load_string('
+        $this->xml = \simplexml_load_string(
+            '
 <remember_me secret="'.(new SaltGenerator(10))->getSalt().'"/>
-');
+'
+        );
     }
 
     public function getDriver()

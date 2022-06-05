@@ -11,9 +11,11 @@ class SessionWrapperTest
 
     public function __construct()
     {
-        $this->xml = \simplexml_load_string('
+        $this->xml = \simplexml_load_string(
+            '
 <session/>
-');
+'
+        );
     }
 
     public function getDriver()

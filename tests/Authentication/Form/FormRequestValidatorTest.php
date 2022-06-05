@@ -12,12 +12,14 @@ class FormRequestValidatorTest
 
     public function __construct()
     {
-        $this->xml = simplexml_load_string('
+        $this->xml = simplexml_load_string(
+            '
 <security>
     <authentication>
         <form/>
     </authentication>
-</security>');
+</security>'
+        );
     }
 
 

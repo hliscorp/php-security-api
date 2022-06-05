@@ -9,7 +9,8 @@ class RolesDetectorTest
 {
     public function getRoles()
     {
-        $xml = \simplexml_load_string('
+        $xml = \simplexml_load_string(
+            '
 <xml>
     <routes roles="USER">
         <route id="login" roles="GUEST,USER"/>
@@ -18,7 +19,8 @@ class RolesDetectorTest
         <route id="admin" roles="ADMINISTRATOR"/>
     </routes>
 </xml>
-');
+'
+        );
         $results = [];
 
         $object = new RolesDetector($xml, "routes", "route", "id", "asdf");

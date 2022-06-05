@@ -22,13 +22,15 @@ class DAOWrapperTest
     public function __construct()
     {
         $secret = (new SaltGenerator(10))->getSalt();
-        $this->xml = simplexml_load_string('
+        $this->xml = simplexml_load_string(
+            '
 <security>
     <csrf secret="'.$secret.'"/>
     <authentication>
         <form dao="Test\Lucinda\WebSecurity\mocks\Authentication\MockUsersAuthentication" throttler="Test\Lucinda\WebSecurity\mocks\Authentication\MockLoginThrottler"/>
     </authentication>
-</security>');
+</security>'
+        );
         $this->persistenceDriver = new SynchronizerTokenPersistenceDriver($secret, "127.0.0.1");
         $this->csrfTokenDetector = new CsrfTokenDetector($this->xml, "127.0.0.1");
     }

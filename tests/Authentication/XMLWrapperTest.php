@@ -21,7 +21,8 @@ class XMLWrapperTest
     public function __construct()
     {
         $secret = (new SaltGenerator(10))->getSalt();
-        $xml = simplexml_load_string('
+        $xml = simplexml_load_string(
+            '
 <xml>
     <security>
         <csrf secret="'.$secret.'"/>
@@ -32,7 +33,8 @@ class XMLWrapperTest
     <users>
         <user id="1" username="test" password="'.password_hash("me", PASSWORD_BCRYPT).'"/>
     </users>
-</xml>');
+</xml>'
+        );
         $this->xml = $xml->security;
         $this->persistenceDriver = new SynchronizerTokenPersistenceDriver($secret, "127.0.0.1");
         $this->csrfTokenDetector = new CsrfTokenDetector($this->xml, "127.0.0.1");

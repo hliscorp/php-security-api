@@ -12,22 +12,26 @@ class LoginConfigurationTest
 
     public function __construct()
     {
-        $xml1 = simplexml_load_string('
+        $xml1 = simplexml_load_string(
+            '
 <security>
     <authentication>
         <form>
             <login parameter_username="user" parameter_password="pass"   parameter_rememberMe="rm" page="test" target="me"/>  
         </form>
     </authentication>
-</security>');
+</security>'
+        );
         $this->configuration1 = new LoginConfiguration($xml1->authentication->form);
-        $xml2 = simplexml_load_string('
+        $xml2 = simplexml_load_string(
+            '
 <security>
     <authentication>
         <form>
         </form>
     </authentication>
-</security>');
+</security>'
+        );
         $this->configuration2 = new LoginConfiguration($xml2->authentication->form);
     }
 

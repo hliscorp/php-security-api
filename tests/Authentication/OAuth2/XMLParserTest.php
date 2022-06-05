@@ -11,12 +11,14 @@ class XMLParserTest
 
     public function __construct()
     {
-        $xml = simplexml_load_string('
+        $xml = simplexml_load_string(
+            '
 <security>
     <authentication>
         <oauth2/>
     </authentication>
-</security>');
+</security>'
+        );
         $this->parser = new XMLParser($xml);
     }
 

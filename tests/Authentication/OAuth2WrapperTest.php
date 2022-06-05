@@ -22,13 +22,15 @@ class OAuth2WrapperTest
     public function __construct()
     {
         $secret = (new SaltGenerator(10))->getSalt();
-        $this->xml = simplexml_load_string('
+        $this->xml = simplexml_load_string(
+            '
 <security>
     <csrf secret="'.$secret.'"/>
     <authentication>
         <oauth2 dao="Test\Lucinda\WebSecurity\mocks\Authentication\MockVendorAuthenticationDAO"/>
     </authentication>
-</security>');
+</security>'
+        );
         $this->persistenceDriver = new SynchronizerTokenPersistenceDriver($secret, "127.0.0.1");
         $this->oauth2Driver = new MockOauth2Driver("Facebook");
         $this->csrfTokenDetector = new CsrfTokenDetector($this->xml, "127.0.0.1");

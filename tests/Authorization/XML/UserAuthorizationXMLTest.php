@@ -9,13 +9,15 @@ class UserAuthorizationXMLTest
 {
     public function getRoles()
     {
-        $xml = \simplexml_load_string('
+        $xml = \simplexml_load_string(
+            '
 <xml>
     <users roles="GUEST">
         <user id="1" roles="USER"/>
     </users>
 </xml>
-');
+'
+        );
         $object = new UserAuthorizationXML($xml);
 
         $results = [];

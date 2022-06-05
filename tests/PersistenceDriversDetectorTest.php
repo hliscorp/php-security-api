@@ -17,7 +17,8 @@ class PersistenceDriversDetectorTest
     public function __construct()
     {
         $salt = (new SaltGenerator(10))->getSalt();
-        $this->xml = \simplexml_load_string('
+        $this->xml = \simplexml_load_string(
+            '
 <security>
     <persistence>
         <session/>
@@ -26,7 +27,8 @@ class PersistenceDriversDetectorTest
         <json_web_token secret="'.$salt.'"/>
     </persistence>
 </security>
-');
+'
+        );
     }
 
     public function getPersistenceDrivers()

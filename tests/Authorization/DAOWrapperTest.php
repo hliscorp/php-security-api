@@ -13,13 +13,15 @@ class DAOWrapperTest
 
     public function __construct()
     {
-        $this->xml = \simplexml_load_string('
+        $this->xml = \simplexml_load_string(
+            '
 <security>
     <authorization>
         <by_dao page_dao="Test\Lucinda\WebSecurity\mocks\Authorization\MockPageAuthorizationDAO" user_dao="Test\Lucinda\WebSecurity\mocks\Authorization\MockUserAuthorizationDAO"/>
     </authorization>
 </security>
-');
+'
+        );
     }
 
 

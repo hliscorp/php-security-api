@@ -24,7 +24,8 @@ class WrapperTest
         // TODO: test full xmls
 
         $secret = (new SaltGenerator(10))->getSalt();
-        $this->xml_dao_dao = \simplexml_load_string('
+        $this->xml_dao_dao = \simplexml_load_string(
+            '
 <xml>
     <security>
         <csrf secret="'.$secret.'"/>
@@ -39,8 +40,10 @@ class WrapperTest
         </authorization>
     </security>
 </xml>
-');
-        $this->xml_dao_xml = \simplexml_load_string('
+'
+        );
+        $this->xml_dao_xml = \simplexml_load_string(
+            '
 <xml>
     <security>
         <csrf secret="'.$secret.'"/>
@@ -61,8 +64,10 @@ class WrapperTest
         <route id="administration" roles="ADMINISTRATOR"/>
     </routes>
 </xml>
-');
-        $this->xml_xml_dao = \simplexml_load_string('
+'
+        );
+        $this->xml_xml_dao = \simplexml_load_string(
+            '
 <xml>
     <security>
         <csrf secret="'.$secret.'"/>
@@ -80,8 +85,10 @@ class WrapperTest
         <user id="1" username="test" password="'.password_hash("me", PASSWORD_BCRYPT).'"/>
     </users>
 </xml>
-');
-        $this->xml_xml_xml = \simplexml_load_string('
+'
+        );
+        $this->xml_xml_xml = \simplexml_load_string(
+            '
 <xml>
     <security>
         <csrf secret="'.$secret.'"/>
@@ -105,8 +112,10 @@ class WrapperTest
         <route id="administration" roles="ADMINISTRATOR"/>
     </routes>
 </xml>
-');
-        $this->xml_oauth2_dao = \simplexml_load_string('
+'
+        );
+        $this->xml_oauth2_dao = \simplexml_load_string(
+            '
 <xml>
     <security>
         <csrf secret="'.$secret.'"/>
@@ -121,8 +130,10 @@ class WrapperTest
         </authorization>
     </security>
 </xml>
-');
-        $this->xml_oauth2_xml = \simplexml_load_string('
+'
+        );
+        $this->xml_oauth2_xml = \simplexml_load_string(
+            '
 <xml>
     <security>
         <csrf secret="'.$secret.'"/>
@@ -144,7 +155,8 @@ class WrapperTest
         <route id="administration" roles="ADMINISTRATOR"/>
     </routes>
 </xml>
-');
+'
+        );
     }
 
     public function getUserID()

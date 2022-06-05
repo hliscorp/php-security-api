@@ -12,22 +12,26 @@ class LogoutConfigurationTest
 
     public function __construct()
     {
-        $xml1 = simplexml_load_string('
+        $xml1 = simplexml_load_string(
+            '
 <security>
     <authentication>
         <form>
             <logout page="test" target="me"/>  
         </form>
     </authentication>
-</security>');
+</security>'
+        );
         $this->configuration1 = new LogoutConfiguration($xml1->authentication->form);
-        $xml2 = simplexml_load_string('
+        $xml2 = simplexml_load_string(
+            '
 <security>
     <authentication>
         <form>
         </form>
     </authentication>
-</security>');
+</security>'
+        );
         $this->configuration2 = new LogoutConfiguration($xml2->authentication->form);
     }
 

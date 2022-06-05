@@ -15,12 +15,14 @@ class AuthenticationTest
 
     public function __construct()
     {
-        $this->xml = simplexml_load_string('
+        $this->xml = simplexml_load_string(
+            '
 <security>
     <users>
         <user id="1" username="test" password="'.password_hash("me", PASSWORD_BCRYPT).'"/>
     </users>
-</security>');
+</security>'
+        );
         $this->persistenceDriver = new SynchronizerTokenPersistenceDriver((new SaltGenerator(10))->getSalt(), "127.0.0.1");
     }
 
