@@ -14,7 +14,7 @@ class Result
      * Saves authorization result encapsulated by ResultStatus enum along with callback URI
      *
      * @param ResultStatus $status
-     * @param string $callbackURI
+     * @param string       $callbackURI
      */
     public function __construct(ResultStatus $status, string $callbackURI)
     {

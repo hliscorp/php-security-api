@@ -24,8 +24,8 @@ class UserAuthenticationXML
     /**
      * Authenticates user by username and password.
      *
-     * @param string $username
-     * @param string $password
+     * @param  string $username
+     * @param  string $password
      * @throws ConfigurationException
      * @return string|null
      */

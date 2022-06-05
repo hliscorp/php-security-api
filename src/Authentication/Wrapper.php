@@ -12,7 +12,7 @@ abstract class Wrapper
     /**
      * Sets authentication result.
      *
-     * @param Result $result Holds a reference to an object that encapsulates authentication result.
+     * @param Result $result     Holds a reference to an object that encapsulates authentication result.
      * @param string $sourcePage Callback path to redirect to on failure.
      * @param string $targetPage Callback path to redirect to on success.
      */

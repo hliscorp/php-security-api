@@ -11,6 +11,7 @@ abstract class UserAuthorizationDAO
 
     /**
      * UserAuthorizationDAO constructor.
+     *
      * @param int|string|null $userID Unique user identifier
      */
     public function __construct(int|string|null $userID)
@@ -21,15 +22,16 @@ abstract class UserAuthorizationDAO
     /**
      * Checks if current user is allowed to access a page.
      *
-     * @param PageAuthorizationDAO $page
-     * @param string $httpRequestMethod Current HTTP request method
+     * @param  PageAuthorizationDAO $page
+     * @param  string               $httpRequestMethod Current HTTP request method
      * @return boolean
      */
     abstract public function isAllowed(PageAuthorizationDAO $page, string $httpRequestMethod): bool;
 
     /**
      * Gets saved id of logged in user
-     * @return  int|string|null
+     *
+     * @return int|string|null
      */
     public function getID(): int|string|null
     {

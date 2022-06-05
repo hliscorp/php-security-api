@@ -26,7 +26,7 @@ class JsonWebToken
     /**
      * Creates a JSON Web Token.
      *
-     * @param JsonWebTokenPayload $sendPayload Payload to save in json web token.
+     * @param  JsonWebTokenPayload $sendPayload Payload to save in json web token.
      * @return string JWT token
      */
     public function encode(JsonWebTokenPayload $sendPayload): string
@@ -40,8 +40,8 @@ class JsonWebToken
     /**
      * Reads and validates a JSON Web Token
      *
-     * @param string $token JWT token
-     * @param int $maximumLifetime Maximum lifetime of a JsonWebToken
+     * @param  string $token           JWT token
+     * @param  int    $maximumLifetime Maximum lifetime of a JsonWebToken
      * @throws Exception When token fails validations.
      * @throws ExpiredException When token fails validations.
      * @throws RegenerationException When token needs to be regenerated.
@@ -69,8 +69,8 @@ class JsonWebToken
     /**
      * Validates JSON Web Token payload
      *
-     * @param array<string,string|int> $payload
-     * @param int $maximumLifetime
+     * @param  array<string,string|int> $payload
+     * @param  int                      $maximumLifetime
      * @return void
      * @throws ExpiredException
      * @throws RegenerationException
@@ -94,7 +94,7 @@ class JsonWebToken
     /**
      * Creates a JWT signature using HMAC-SHA256 algorithm and returns it.
      *
-     * @param string $unsignedToken
+     * @param  string $unsignedToken
      * @return string
      */
     private function getSignature(string $unsignedToken): string

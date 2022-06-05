@@ -18,11 +18,11 @@ class Authentication
     /**
      * Detects authentication methods
      *
-     * @param \SimpleXMLElement $xml
-     * @param Request $request
-     * @param CsrfTokenDetector $csrfTokenDetector
-     * @param PersistenceDriver[] $persistenceDrivers
-     * @param OAuth2Driver[] $oauth2Drivers
+     * @param  \SimpleXMLElement   $xml
+     * @param  Request             $request
+     * @param  CsrfTokenDetector   $csrfTokenDetector
+     * @param  PersistenceDriver[] $persistenceDrivers
+     * @param  OAuth2Driver[]      $oauth2Drivers
      * @throws \Exception
      */
     public function __construct(
@@ -41,11 +41,11 @@ class Authentication
     /**
      * Detects authentication methods and performs authentication if needed
      *
-     * @param \SimpleXMLElement $xmlRoot
-     * @param Request $request
-     * @param CsrfTokenDetector $csrfTokenDetector
-     * @param PersistenceDriver[] $persistenceDrivers
-     * @param OAuth2Driver[] $oauth2Drivers
+     * @param  \SimpleXMLElement   $xmlRoot
+     * @param  Request             $request
+     * @param  CsrfTokenDetector   $csrfTokenDetector
+     * @param  PersistenceDriver[] $persistenceDrivers
+     * @param  OAuth2Driver[]      $oauth2Drivers
      * @return AuthenticationWrapper[]
      * @throws \Exception
      */
@@ -97,9 +97,9 @@ class Authentication
     /**
      * Handles results of authentication, if any was requested, by throwing a SecurityPacket
      *
-     * @param AuthenticationWrapper $wrapper
-     * @param Request $request
-     * @param PersistenceDriver[] $persistenceDrivers
+     * @param  AuthenticationWrapper $wrapper
+     * @param  Request               $request
+     * @param  PersistenceDriver[]   $persistenceDrivers
      * @throws SecurityPacket
      */
     private function authenticate(

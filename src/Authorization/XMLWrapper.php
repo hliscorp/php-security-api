@@ -19,9 +19,9 @@ class XMLWrapper extends Wrapper
     /**
      * Creates an object.
      *
-     * @param \SimpleXMLElement $xml Contents of root @ configuration.xml
-     * @param Request $request Encapsulated request made by client
-     * @param int|string|null $userID Unique user identifier
+     * @param \SimpleXMLElement $xml     Contents of root @ configuration.xml
+     * @param Request           $request Encapsulated request made by client
+     * @param int|string|null   $userID  Unique user identifier
      */
     public function __construct(\SimpleXMLElement $xml, Request $request, int|string|null $userID)
     {
@@ -40,19 +40,21 @@ class XMLWrapper extends Wrapper
 
         // authorize and save result
         $authorization = new Authorization($loggedInCallback, $loggedOutCallback);
-        $this->setResult($authorization->authorize(
-            $xml->xpath("..")[0],
-            $request->getUri(),
-            $userID,
-            $this->getDAO($xml, $userID)
-        ));
+        $this->setResult(
+            $authorization->authorize(
+                $xml->xpath("..")[0],
+                $request->getUri(),
+                $userID,
+                $this->getDAO($xml, $userID)
+            )
+        );
     }
 
     /**
      * Gets algorithm to check if page roles match that of current user
      *
-     * @param \SimpleXMLElement $xml
-     * @param int|string|null $userID
+     * @param  \SimpleXMLElement $xml
+     * @param  int|string|null   $userID
      * @return UserRoles
      */
     private function getDAO(\SimpleXMLElement $xml, int|string|null $userID): UserRoles

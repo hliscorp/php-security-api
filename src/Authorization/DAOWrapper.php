@@ -20,9 +20,9 @@ class DAOWrapper extends Wrapper
     /**
      * Creates an object
      *
-     * @param \SimpleXMLElement $xml Contents of security.authorization.by_dao tag @ configuration.xml
-     * @param Request $request Encapsulated request made by client
-     * @param int|string|null $userID Unique user identifier (usually an int)
+     * @param  \SimpleXMLElement $xml     Contents of security.authorization.by_dao tag @ configuration.xml
+     * @param  Request           $request Encapsulated request made by client
+     * @param  int|string|null   $userID  Unique user identifier (usually an int)
      * @throws ConfigurationException If resources referenced in XML do not exist or do not extend/implement blueprint.
      */
     public function __construct(\SimpleXMLElement $xml, Request $request, int|string|null $userID)
@@ -56,8 +56,8 @@ class DAOWrapper extends Wrapper
     /**
      * Gets DAO where page rights are checked
      *
-     * @param \SimpleXMLElement $xml
-     * @param string $pageUrl
+     * @param  \SimpleXMLElement $xml
+     * @param  string            $pageUrl
      * @return PageAuthorizationDAO
      * @throws ConfigurationException
      */
@@ -73,8 +73,8 @@ class DAOWrapper extends Wrapper
     /**
      * Gets DAO where user rights are checked
      *
-     * @param \SimpleXMLElement $xml
-     * @param int|string|null $userID
+     * @param  \SimpleXMLElement $xml
+     * @param  int|string|null   $userID
      * @return UserAuthorizationDAO
      * @throws ConfigurationException
      */

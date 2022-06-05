@@ -25,7 +25,7 @@ class UserAuthorizationXML implements UserRoles
     /**
      * Gets user roles from XML
      *
-     * @param int|string|null $userID
+     * @param  int|string|null $userID
      * @throws ConfigurationException
      * @return string[]
      */

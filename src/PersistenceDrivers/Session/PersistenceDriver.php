@@ -16,9 +16,9 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
     /**
      * Creates a persistence driver object.
      *
-     * @param string $parameterName Name of SESSION parameter that holds unique user identifier.
+     * @param string                $parameterName   Name of SESSION parameter that holds unique user identifier.
      * @param CookieSecurityOptions $securityOptions
-     * @param string $ip Value of REMOTE_ADDR parameter, unless ignored.
+     * @param string                $ip              Value of REMOTE_ADDR parameter, unless ignored.
      */
     public function __construct(
         string $parameterName,

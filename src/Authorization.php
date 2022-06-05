@@ -15,9 +15,9 @@ class Authorization
     /**
      * Detects authorization methods
      *
-     * @param \SimpleXMLElement $xml
-     * @param Request $request
-     * @param int|string|null $userID
+     * @param  \SimpleXMLElement $xml
+     * @param  Request           $request
+     * @param  int|string|null   $userID
      * @throws SecurityPacket
      * @throws ConfigurationException
      */
@@ -30,9 +30,9 @@ class Authorization
     /**
      * Detects authorization method and performs request & user authorization
      *
-     * @param \SimpleXMLElement $xmlRoot
-     * @param Request $request
-     * @param int|string|null $userID
+     * @param  \SimpleXMLElement $xmlRoot
+     * @param  Request           $request
+     * @param  int|string|null   $userID
      * @throws ConfigurationException
      * @return AuthorizationWrapper
      */
@@ -70,8 +70,8 @@ class Authorization
     /**
      * Handles results of failed authorization by throwing a SecurityPacket that matches type of failure
      *
-     * @param AuthorizationWrapper $wrapper
-     * @param Request $request
+     * @param  AuthorizationWrapper $wrapper
+     * @param  Request              $request
      * @throws SecurityPacket
      */
     private function authorize(AuthorizationWrapper $wrapper, Request $request): void

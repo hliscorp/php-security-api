@@ -21,8 +21,8 @@ class Authentication
     /**
      * Creates a form authentication object.
      *
-     * @param \SimpleXMLElement $xml
-     * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that persist authenticated state.
+     * @param  \SimpleXMLElement   $xml
+     * @param  PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that persist authenticated state.
      * @throws ConfigurationException If one of persistenceDrivers entries is not a PersistentDriver
      */
     public function __construct(\SimpleXMLElement $xml, array $persistenceDrivers = [])
@@ -44,8 +44,8 @@ class Authentication
      * - queries XML for an user id based on credentials
      * - saves user_id in persistence drivers (if any)
      *
-     * @param string $username Value of user name
-     * @param string $password Value of user password
+     * @param  string $username Value of user name
+     * @param  string $password Value of user password
      * @return Result Encapsulates result of login attempt.
      * @throws ConfigurationException If POST parameters are invalid.
      */

@@ -22,8 +22,8 @@ class Authentication
     /**
      * Creates a form authentication object.
      *
-     * @param UserAuthenticationDAO $dao Forwards operations to database via a DAO.
-     * @param PersistenceDriver[] $persistenceDrivers List of PersistentDriver entries that persist authenticated state.
+     * @param  UserAuthenticationDAO $dao                Forwards operations to database via a DAO.
+     * @param  PersistenceDriver[]   $persistenceDrivers List of PersistentDriver entries that persist authenticated state.
      * @throws ConfigurationException If one of persistenceDrivers entries is not a PersistentDriver
      */
     public function __construct(UserAuthenticationDAO $dao, array $persistenceDrivers = [])
@@ -45,9 +45,9 @@ class Authentication
      * - queries DAO for an user id based on credentials
      * - saves user_id in persistence drivers (if any)
      *
-     * @param string $username Value of user name
-     * @param string $password Value of user password
-     * @param boolean $rememberMe Value of remember me option (if any)
+     * @param  string  $username   Value of user name
+     * @param  string  $password   Value of user password
+     * @param  boolean $rememberMe Value of remember me option (if any)
      * @return Result Encapsulates result of login attempt.
      */
     public function login(string $username, string $password, bool $rememberMe=null): Result

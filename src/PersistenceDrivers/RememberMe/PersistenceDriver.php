@@ -20,10 +20,10 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
     /**
      * Creates a persistence driver object.
      *
-     * @param string $salt Strong password to use for crypting. (Check: http://randomkeygen.com/)
-     * @param string $parameterName Name of SESSION parameter that holds cypted unique user identifier.
+     * @param string                $salt            Strong password to use for crypting. (Check: http://randomkeygen.com/)
+     * @param string                $parameterName   Name of SESSION parameter that holds cypted unique user identifier.
      * @param CookieSecurityOptions $securityOptions
-     * @param string $ip Value of REMOTE_ADDR attribute, unless ignored.
+     * @param string                $ip              Value of REMOTE_ADDR attribute, unless ignored.
      */
     public function __construct(
         string $salt,
@@ -39,7 +39,7 @@ class PersistenceDriver implements \Lucinda\WebSecurity\PersistenceDrivers\Persi
     /**
      * Saves user's unique identifier into driver (eg: on login).
      *
-     * @param int|string $userID Unique user identifier (usually an int)
+     * @param  int|string $userID Unique user identifier (usually an int)
      * @throws EncryptionException
      */
     public function save(int|string $userID): void

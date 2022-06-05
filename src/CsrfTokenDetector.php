@@ -21,8 +21,8 @@ class CsrfTokenDetector
     /**
      * Creates an object
      *
-     * @param \SimpleXMLElement $xml Contents of security.csrf @ configuration.xml
-     * @param string $ipAddress Client ip address resolved from headers
+     * @param  \SimpleXMLElement $xml       Contents of security.csrf @ configuration.xml
+     * @param  string            $ipAddress Client ip address resolved from headers
      * @throws ConfigurationException If XML is improperly configured.
      */
     public function __construct(\SimpleXMLElement $xml, string $ipAddress)
@@ -51,7 +51,8 @@ class CsrfTokenDetector
 
     /**
      * Encodes a token based on unique user identifier
-     * @param int|string|null $userID Unique user identifier (usually an int)
+     *
+     * @param  int|string|null $userID Unique user identifier (usually an int)
      * @return string Value of synchronizer token.
      * @throws EncryptionException If encryption of token fails.
      */
@@ -63,8 +64,8 @@ class CsrfTokenDetector
     /**
      * Checks if a token is valid for specific uuid.
      *
-     * @param string $token Value of synchronizer token
-     * @param int|string|null $userID Unique user identifier (usually an int)
+     * @param  string          $token  Value of synchronizer token
+     * @param  int|string|null $userID Unique user identifier (usually an int)
      * @return boolean
      */
     public function isValid(string $token, int|string|null $userID): bool

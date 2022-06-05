@@ -22,8 +22,8 @@ class Authentication
     /**
      * Creates an authentication object.
      *
-     * @param VendorAuthenticationDAO $dao Forwards authentication checks to DB.
-     * @param PersistenceDriver[] $persistenceDrivers List of drivers to persist user unique identifier into.
+     * @param  VendorAuthenticationDAO $dao                Forwards authentication checks to DB.
+     * @param  PersistenceDriver[]     $persistenceDrivers List of drivers to persist user unique identifier into.
      * @throws ConfigurationException When persistence drivers are invalid.
      */
     public function __construct(VendorAuthenticationDAO $dao, array $persistenceDrivers)
@@ -42,8 +42,8 @@ class Authentication
     /**
      * Performs login by delegating to driver-specific OAuth2 implementation.
      *
-     * @param Driver $driver Forwards retrieval of user information based on access token.
-     * @param string $authorizationCode Authorization code to use in retrieving access token
+     * @param  Driver $driver            Forwards retrieval of user information based on access token.
+     * @param  string $authorizationCode Authorization code to use in retrieving access token
      * @return AuthenticationResult Encapsulates result of login attempt.
      */
     public function login(Driver $driver, string $authorizationCode): AuthenticationResult
@@ -73,6 +73,7 @@ class Authentication
      * Performs a logout operation:
      * - informs DAO that user has logged out (which must empty token)
      * - removes user id from persistence drivers (if any)
+     *
      * @return AuthenticationResult Encapsulates result of logout attempt.
      */
     public function logout(): AuthenticationResult

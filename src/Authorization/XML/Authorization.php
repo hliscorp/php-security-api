@@ -10,8 +10,8 @@ use Lucinda\WebSecurity\Authorization\UserRoles;
 /**
  * Encapsulates request authorization via XML that must have routes configured as:
  * <routes>
- * 	<route id="{PAGE_TO_AUTHORIZE" access="ROLE_GUEST|ROLE_USER" ... />
- * 	...
+ *     <route id="{PAGE_TO_AUTHORIZE" access="ROLE_GUEST|ROLE_USER" ... />
+ *     ...
  * </routes>
  */
 class Authorization
@@ -34,10 +34,10 @@ class Authorization
     /**
      * Performs an authorization task.
      *
-     * @param \SimpleXMLElement $xml
-     * @param string $routeToAuthorize
-     * @param int|string|null $userID
-     * @param UserRoles $userAuthorizationRoles
+     * @param  \SimpleXMLElement $xml
+     * @param  string            $routeToAuthorize
+     * @param  int|string|null   $userID
+     * @param  UserRoles         $userAuthorizationRoles
      * @return Result
      */
     public function authorize(

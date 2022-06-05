@@ -19,9 +19,9 @@ class JsonWebTokenPersistenceDriver extends PersistenceDriver
     /**
      * Creates a persistence driver object.
      *
-     * @param string $salt Strong password to use for crypting. (Check: http://randomkeygen.com/)
-     * @param int $expirationTime Time by which token expires (can be renewed), in seconds.
-     * @param int $regenerationTime Time by which token is renewed, in seconds.
+     * @param string $salt             Strong password to use for crypting. (Check: http://randomkeygen.com/)
+     * @param int    $expirationTime   Time by which token expires (can be renewed), in seconds.
+     * @param int    $regenerationTime Time by which token is renewed, in seconds.
      */
     public function __construct(string $salt, int $expirationTime = 3600, int $regenerationTime = 60)
     {

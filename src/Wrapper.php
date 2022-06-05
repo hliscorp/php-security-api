@@ -21,9 +21,9 @@ class Wrapper
     /**
      * Performs class logic by delegating to specialized methods
      *
-     * @param \SimpleXMLElement $xml
-     * @param Request $request
-     * @param OAuth2Driver[] $oauth2Drivers
+     * @param  \SimpleXMLElement $xml
+     * @param  Request           $request
+     * @param  OAuth2Driver[]    $oauth2Drivers
      * @throws ConfigurationException
      */
     public function __construct(\SimpleXMLElement $xml, Request $request, array $oauth2Drivers = [])
@@ -46,8 +46,8 @@ class Wrapper
     /**
      * Sets drivers where authenticated user unique identifier is persisted based on contents of XML tag 'persistence'
      *
-     * @param \SimpleXMLElement $mainXML
-     * @param Request $request
+     * @param  \SimpleXMLElement $mainXML
+     * @param  Request           $request
      * @throws ConfigurationException
      */
     private function setPersistenceDrivers(\SimpleXMLElement $mainXML, Request $request): void
@@ -70,8 +70,8 @@ class Wrapper
     /**
      * Gets class where anti-csrf token is generated and verified
      *
-     * @param \SimpleXMLElement $mainXML
-     * @param Request $request
+     * @param  \SimpleXMLElement $mainXML
+     * @param  Request           $request
      * @throws ConfigurationException
      */
     private function setCsrfToken(\SimpleXMLElement $mainXML, Request $request): void
@@ -83,9 +83,9 @@ class Wrapper
      * Performs user authentication based on mechanism chosen by developmer in XML (eg: from database via login form,
      * from an oauth2 provider, etc)
      *
-     * @param \SimpleXMLElement $mainXML
-     * @param Request $request
-     * @param OAuth2Driver[] $oauth2Drivers
+     * @param  \SimpleXMLElement $mainXML
+     * @param  Request           $request
+     * @param  OAuth2Driver[]    $oauth2Drivers
      * @throws \Exception
      */
     private function authenticate(\SimpleXMLElement $mainXML, Request $request, array $oauth2Drivers): void
@@ -96,8 +96,8 @@ class Wrapper
     /**
      * Performs request authorization based on mechanism chosen by developmer in XML (eg: from database)
      *
-     * @param \SimpleXMLElement $mainXML
-     * @param Request $request
+     * @param  \SimpleXMLElement $mainXML
+     * @param  Request           $request
      * @throws \Exception
      */
     private function authorize(\SimpleXMLElement $mainXML, Request $request): void

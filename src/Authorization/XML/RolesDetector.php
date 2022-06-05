@@ -17,11 +17,11 @@ class RolesDetector
     /**
      * Calls for roles detection
      *
-     * @param \SimpleXMLElement $xml
-     * @param string $parentTag
-     * @param string $childTag
-     * @param string $requiredAttribute
-     * @param int|string|null $matchingValue
+     * @param  \SimpleXMLElement $xml
+     * @param  string            $parentTag
+     * @param  string            $childTag
+     * @param  string            $requiredAttribute
+     * @param  int|string|null   $matchingValue
      * @throws ConfigurationException
      */
     public function __construct(
@@ -37,11 +37,11 @@ class RolesDetector
     /**
      * etects roles from matching child tag or, if not found, gets default roles
      *
-     * @param \SimpleXMLElement $xml
-     * @param string $parentTag
-     * @param string $childTag
-     * @param string $requiredAttribute
-     * @param int|string|null $matchingValue
+     * @param  \SimpleXMLElement $xml
+     * @param  string            $parentTag
+     * @param  string            $childTag
+     * @param  string            $requiredAttribute
+     * @param  int|string|null   $matchingValue
      * @throws ConfigurationException
      */
     private function setRoles(

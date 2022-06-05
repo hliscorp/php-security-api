@@ -15,8 +15,8 @@ abstract class LoginThrottler
     /**
      * Detects client throttling state based on arguments provided.
      *
-     * @param Request $request Encapsulated client request data.
-     * @param string $userName Username client has attempted
+     * @param Request $request  Encapsulated client request data.
+     * @param string  $userName Username client has attempted
      */
     public function __construct(Request $request, string $userName)
     {

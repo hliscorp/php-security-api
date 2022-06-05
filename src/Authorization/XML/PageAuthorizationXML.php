@@ -24,7 +24,7 @@ class PageAuthorizationXML
     /**
      * Gets roles from XML
      *
-     * @param string $routeToAuthorize
+     * @param  string $routeToAuthorize
      * @return string[]
      * @throws ConfigurationException
      */

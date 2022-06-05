@@ -12,7 +12,7 @@ class SaltGenerator
     /**
      * Performs generation process.
      *
-     * @param int $length
+     * @param  int $length
      * @throws \Exception
      */
     public function __construct(int $length)
@@ -23,7 +23,7 @@ class SaltGenerator
     /**
      * Generates a salt of fixed length to use as salt/password in token generation
      *
-     * @param int $length
+     * @param  int $length
      * @throws \Exception
      */
     private function setSalt(int $length): void

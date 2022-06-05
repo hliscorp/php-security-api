@@ -17,8 +17,8 @@ class JsonWebTokenWrapper extends PersistenceDriverWrapper
     /**
      * Sets up current persistence driver from XML into driver property.
      *
-     * @param \SimpleXMLElement $xml Contents of XML tag that sets up persistence driver.
-     * @param string $ipAddress Detected client IP address
+     * @param  \SimpleXMLElement $xml       Contents of XML tag that sets up persistence driver.
+     * @param  string            $ipAddress Detected client IP address
      * @throws ConfigurationException If resources referenced in XML do not exist or do not extend/implement blueprint.
      */
     protected function setDriver(\SimpleXMLElement $xml, string $ipAddress): void

@@ -26,7 +26,7 @@ class LoginThrottlerHandler
     /**
      * Asks throttler if client is liable for a new login attempt. If not, a login failed authentication result is generated!
      *
-     * @param Request $request Encapsulated client request data.
+     * @param  Request $request Encapsulated client request data.
      * @return Result|null
      */
     public function start(Request $request): ?Result

@@ -13,6 +13,7 @@ class Encryption
 
     /**
      * Creates an encryption instance using a salt password that's going to be used in encryption/decryption.
+     *
      * @param string $salt Encryption password.
      */
     public function __construct(string $salt)
@@ -23,7 +24,7 @@ class Encryption
     /**
      * Encrypts data and returns encrypted value.
      *
-     * @param string $data Value to encrypt.
+     * @param  string $data Value to encrypt.
      * @throws EncryptionException If encryption fails.
      * @return string Encrypted representation of data.
      */
@@ -46,7 +47,7 @@ class Encryption
     /**
      * Decrypts data and returns decrypted value.
      *
-     * @param string $data Encrypted representation of data.
+     * @param  string $data Encrypted representation of data.
      * @throws EncryptionException If decryption fails.
      * @return string Decrypted data.
      */

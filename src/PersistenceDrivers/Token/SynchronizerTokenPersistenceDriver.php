@@ -20,10 +20,10 @@ class SynchronizerTokenPersistenceDriver extends PersistenceDriver
     /**
      * Creates a persistence driver object.
      *
-     * @param string $salt Strong password to use for crypting.
-     * @param string $ip Value of REMOTE_ADDR attribute, unless ignored.
-     * @param int $expirationTime Time by which token expires (can be renewed), in seconds.
-     * @param int $regenerationTime Time by which token is renewed, in seconds.
+     * @param string $salt             Strong password to use for crypting.
+     * @param string $ip               Value of REMOTE_ADDR attribute, unless ignored.
+     * @param int    $expirationTime   Time by which token expires (can be renewed), in seconds.
+     * @param int    $regenerationTime Time by which token is renewed, in seconds.
      */
     public function __construct(string $salt, string $ip, int $expirationTime = 3600, int $regenerationTime = 60)
     {
@@ -35,7 +35,7 @@ class SynchronizerTokenPersistenceDriver extends PersistenceDriver
     /**
      * Saves user's unique identifier into driver (eg: on login).
      *
-     * @param int|string $userID Unique user identifier (usually an int)
+     * @param  int|string $userID Unique user identifier (usually an int)
      * @throws EncryptionException
      */
     public function save(int|string $userID): void

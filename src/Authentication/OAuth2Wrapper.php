@@ -25,11 +25,11 @@ class OAuth2Wrapper extends Wrapper
     /**
      * Creates an object
      *
-     * @param \SimpleXMLElement $xml XML holding information relevant to authentication
-     * @param Request $request Encapsulated client request data.
-     * @param CsrfTokenDetector $csrf Driver performing CSRF validation
-     * @param PersistenceDriver[] $persistenceDrivers Drivers where authenticated state is persisted (eg: session).
-     * @param OAuth2Driver[] $drivers List of oauth2 drivers detected
+     * @param  \SimpleXMLElement   $xml                XML holding information relevant to authentication
+     * @param  Request             $request            Encapsulated client request data.
+     * @param  CsrfTokenDetector   $csrf               Driver performing CSRF validation
+     * @param  PersistenceDriver[] $persistenceDrivers Drivers where authenticated state is persisted (eg: session).
+     * @param  OAuth2Driver[]      $drivers            List of oauth2 drivers detected
      * @throws ConfigurationException If POST parameters are not provided when logging in or DAO classes are mis-configured.
      * @throws TokenException If CSRF checks fail
      * @throws OAuth2Exception|EncryptionException If vendor responds with an error
@@ -66,9 +66,9 @@ class OAuth2Wrapper extends Wrapper
     /**
      * Logs user in (and registers if not found)
      *
-     * @param OAuth2Driver $driverInfo Name of oauth2 driver (eg: facebook)
-     * @param Request $request Encapsulated client request data.
-     * @param CsrfTokenDetector $csrf Object that performs CSRF token checks.
+     * @param  OAuth2Driver      $driverInfo Name of oauth2 driver (eg: facebook)
+     * @param  Request           $request    Encapsulated client request data.
+     * @param  CsrfTokenDetector $csrf       Object that performs CSRF token checks.
      * @throws TokenException|OAuth2Exception|EncryptionException
      */
     private function login(OAuth2Driver $driverInfo, Request $request, CsrfTokenDetector $csrf): void
@@ -106,7 +106,7 @@ class OAuth2Wrapper extends Wrapper
     /**
      * Gets DAO where authentication is saved
      *
-     * @param \SimpleXMLElement $xml
+     * @param  \SimpleXMLElement $xml
      * @throws ConfigurationException
      * @return VendorAuthenticationDAO
      * @throws ConfigurationException

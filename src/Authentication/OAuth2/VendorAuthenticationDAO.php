@@ -11,9 +11,9 @@ interface VendorAuthenticationDAO
      * Logs in OAuth2 user into current application. Exchanges authenticated OAuth2 user information for a
      * local user ID.
      *
-     * @param UserInformation $userInformation Object encapsulating detected OAuth2 user information.
-     * @param string $vendorName Name of OAuth2 vendor user has logged in by
-     * @param string $accessToken Access token to be saved in further requests for above user.
+     * @param  UserInformation $userInformation Object encapsulating detected OAuth2 user information.
+     * @param  string          $vendorName      Name of OAuth2 vendor user has logged in by
+     * @param  string          $accessToken     Access token to be saved in further requests for above user.
      * @return int|string|null Unique user identifier (typically an int)
      */
     public function login(UserInformation $userInformation, string $vendorName, string $accessToken): int|string|null;

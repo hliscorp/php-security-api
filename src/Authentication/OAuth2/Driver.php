@@ -10,7 +10,7 @@ interface Driver
     /**
      * Gets remote user information from oauth2 driver via access token.
      *
-     * @param string $accessToken OAuth2 access token
+     * @param  string $accessToken OAuth2 access token
      * @return UserInformation Remote user information
      */
     public function getUserInformation(string $accessToken): UserInformation;
@@ -25,7 +25,7 @@ interface Driver
     /**
      * Produces an authorization code request URL for current provider
      *
-     * @param string $state
+     * @param  string $state
      * @return string
      */
     public function getAuthorizationCode(string $state): string;
@@ -33,7 +33,7 @@ interface Driver
     /**
      * Asks remote provider to exchange authorization code with an access token
      *
-     * @param string $authorizationCode
+     * @param  string $authorizationCode
      * @return string
      */
     public function getAccessToken(string $authorizationCode): string;

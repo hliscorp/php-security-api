@@ -16,7 +16,7 @@ class UserIdDetector
      * Sets logged in user id based on persistence drivers
      *
      * @param PersistenceDriver[] $persistenceDrivers List of persistence drivers to detect from.
-     * @param string $accessToken
+     * @param string              $accessToken
      */
     public function __construct(array $persistenceDrivers, string $accessToken="")
     {

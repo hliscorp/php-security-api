@@ -3,9 +3,9 @@
 namespace Lucinda\WebSecurity\Token;
 
 /**
-* Encapsulates a JSON Web Token payload. More info:
-* https://azure.microsoft.com/en-us/documentation/articles/active-directory-token-and-claims/
-*/
+ * Encapsulates a JSON Web Token payload. More info:
+ * https://azure.microsoft.com/en-us/documentation/articles/active-directory-token-and-claims/
+ */
 class JsonWebTokenPayload
 {
     private ?string $issuer = null;
@@ -202,7 +202,7 @@ class JsonWebTokenPayload
     /**
      * Gets value of custom payload parameter or null if not found.
      *
-     * @param string $name
+     * @param  string $name
      * @return string|null
      */
     public function getCustomClaim(string $name): ?string

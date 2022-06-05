@@ -20,9 +20,9 @@ abstract class FormWrapper extends Wrapper
     /**
      * Processes authentication request
      *
-     * @param \SimpleXMLElement $xml
-     * @param Request $request
-     * @param CsrfTokenDetector $csrfTokenDetector
+     * @param  \SimpleXMLElement $xml
+     * @param  Request           $request
+     * @param  CsrfTokenDetector $csrfTokenDetector
      * @throws ConfigurationException
      * @throws Form\Exception
      * @throws TokenException
@@ -59,9 +59,9 @@ abstract class FormWrapper extends Wrapper
     /**
      * Gets DAO where login attempts are counted and throttled, if necessary
      *
-     * @param \SimpleXMLElement $xml
-     * @param Request $request
-     * @param LoginRequest $loginRequest
+     * @param  \SimpleXMLElement $xml
+     * @param  Request           $request
+     * @param  LoginRequest      $loginRequest
      * @return LoginThrottler
      * @throws ConfigurationException
      */

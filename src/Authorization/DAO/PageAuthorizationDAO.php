@@ -22,7 +22,7 @@ abstract class PageAuthorizationDAO
     /**
      * Detects database ID of page requested.
      *
-     * @param string $pageURL URL of page requested
+     * @param  string $pageURL URL of page requested
      * @return int|null
      */
     abstract protected function detectID(string $pageURL): ?int;

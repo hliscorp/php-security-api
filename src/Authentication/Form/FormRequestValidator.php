@@ -16,7 +16,7 @@ class FormRequestValidator
      * Matches POST request to XML tag &lt;form&gt;
      *
      * @param \SimpleXMLElement $xml
-     * @param Request $request
+     * @param Request           $request
      */
     public function __construct(\SimpleXMLElement $xml, Request $request)
     {

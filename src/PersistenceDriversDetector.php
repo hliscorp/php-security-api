@@ -21,8 +21,8 @@ class PersistenceDriversDetector
     /**
      * Performs detection process
      *
-     * @param \SimpleXMLElement $xml
-     * @param string $ipAddress
+     * @param  \SimpleXMLElement $xml
+     * @param  string            $ipAddress
      * @throws ConfigurationException
      */
     public function __construct(\SimpleXMLElement $xml, string $ipAddress)
@@ -33,8 +33,8 @@ class PersistenceDriversDetector
     /**
      * Reads &lt;persistence&gt; tag and collects matching persistence drivers
      *
-     * @param \SimpleXMLElement $xml
-     * @param string $ipAddress
+     * @param  \SimpleXMLElement $xml
+     * @param  string            $ipAddress
      * @throws ConfigurationException
      */
     private function setPersistenceDrivers(\SimpleXMLElement $xml, string $ipAddress): void

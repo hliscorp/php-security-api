@@ -25,10 +25,10 @@ class DAOWrapper extends FormWrapper
     /**
      * Creates an object.
      *
-     * @param \SimpleXMLElement $xml XML holding information relevant to authentication
-     * @param Request $request Encapsulated client request data.
-     * @param CsrfTokenDetector $csrfTokenDetector Driver performing CSRF validation
-     * @param PersistenceDriver[] $persistenceDrivers Drivers where authenticated state is persisted (eg: session).
+     * @param  \SimpleXMLElement   $xml                XML holding information relevant to authentication
+     * @param  Request             $request            Encapsulated client request data.
+     * @param  CsrfTokenDetector   $csrfTokenDetector  Driver performing CSRF validation
+     * @param  PersistenceDriver[] $persistenceDrivers Drivers where authenticated state is persisted (eg: session).
      * @throws ConfigurationException
      * @throws Form\Exception
      * @throws TokenException
@@ -46,7 +46,7 @@ class DAOWrapper extends FormWrapper
     /**
      * Gets DAO where authentication is performed
      *
-     * @param \SimpleXMLElement $xml
+     * @param  \SimpleXMLElement $xml
      * @return UserAuthenticationDAO
      * @throws ConfigurationException
      */

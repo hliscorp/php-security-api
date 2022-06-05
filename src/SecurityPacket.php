@@ -47,32 +47,32 @@ class SecurityPacket extends \Exception
     {
         $result = "";
         switch ($status) {
-            case AuthenticationResultStatus::LOGIN_OK:
-                $result= "login_ok";
-                break;
-            case AuthenticationResultStatus::LOGOUT_OK:
-                $result= "logout_ok";
-                break;
-            case AuthenticationResultStatus::DEFERRED:
-                $result= "redirect";
-                break;
-            case AuthenticationResultStatus::LOGIN_FAILED:
-                $result= "login_failed";
-                break;
-            case AuthenticationResultStatus::LOGOUT_FAILED:
-                $result= "logout_failed";
-                break;
-            case AuthorizationResultStatus::UNAUTHORIZED:
-                $result= "unauthorized";
-                break;
-            case AuthorizationResultStatus::FORBIDDEN:
-                $result= "forbidden";
-                break;
-            case AuthorizationResultStatus::NOT_FOUND:
-                $result= "not_found";
-                break;
-            default:
-                break;
+        case AuthenticationResultStatus::LOGIN_OK:
+            $result= "login_ok";
+            break;
+        case AuthenticationResultStatus::LOGOUT_OK:
+            $result= "logout_ok";
+            break;
+        case AuthenticationResultStatus::DEFERRED:
+            $result= "redirect";
+            break;
+        case AuthenticationResultStatus::LOGIN_FAILED:
+            $result= "login_failed";
+            break;
+        case AuthenticationResultStatus::LOGOUT_FAILED:
+            $result= "logout_failed";
+            break;
+        case AuthorizationResultStatus::UNAUTHORIZED:
+            $result= "unauthorized";
+            break;
+        case AuthorizationResultStatus::FORBIDDEN:
+            $result= "forbidden";
+            break;
+        case AuthorizationResultStatus::NOT_FOUND:
+            $result= "not_found";
+            break;
+        default:
+            break;
         }
         $this->status = $result;
     }
@@ -90,7 +90,7 @@ class SecurityPacket extends \Exception
     /**
      * Sets access token (useful for stateless applications).
      *
-     * @param int|string|null $userID Authenticated user id.
+     * @param int|string|null     $userID             Authenticated user id.
      * @param PersistenceDriver[] $persistenceDrivers List of persistence drivers registered.
      */
     public function setAccessToken(int|string|null $userID, array $persistenceDrivers): void

@@ -24,10 +24,10 @@ class XMLWrapper extends FormWrapper
     /**
      * Creates an object.
      *
-     * @param \SimpleXMLElement $xml Contents of security.authentication.form tag @ configuration.xml.
-     * @param Request $request Encapsulated client request data.
-     * @param CsrfTokenDetector $csrfTokenDetector Driver performing CSRF validation
-     * @param PersistenceDriver[] $persistenceDrivers Drivers where authenticated state is persisted (eg: session).
+     * @param  \SimpleXMLElement   $xml                Contents of security.authentication.form tag @ configuration.xml.
+     * @param  Request             $request            Encapsulated client request data.
+     * @param  CsrfTokenDetector   $csrfTokenDetector  Driver performing CSRF validation
+     * @param  PersistenceDriver[] $persistenceDrivers Drivers where authenticated state is persisted (eg: session).
      * @throws ConfigurationException
      * @throws Form\Exception
      * @throws TokenException

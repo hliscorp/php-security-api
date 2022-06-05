@@ -16,7 +16,7 @@ class Authorization
     /**
      * Creates an object
      *
-     * @param string $loggedInFailureCallback Callback page to use when authorization fails for logged in users.
+     * @param string $loggedInFailureCallback  Callback page to use when authorization fails for logged in users.
      * @param string $loggedOutFailureCallback Callback page to use when authorization fails for logged out (guest) users.
      */
     public function __construct(string $loggedInFailureCallback, string $loggedOutFailureCallback)
@@ -28,9 +28,9 @@ class Authorization
     /**
      * Performs an authorization task
      *
-     * @param PageAuthorizationDAO $page
-     * @param UserAuthorizationDAO $user
-     * @param string $httpRequestMethod
+     * @param  PageAuthorizationDAO $page
+     * @param  UserAuthorizationDAO $user
+     * @param  string               $httpRequestMethod
      * @return Result
      */
     public function authorize(PageAuthorizationDAO $page, UserAuthorizationDAO $user, string $httpRequestMethod): Result

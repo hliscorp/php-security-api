@@ -10,7 +10,7 @@ interface UserRoles
     /**
      * Gets user roles
      *
-     * @param int|string|null $userID
+     * @param  int|string|null $userID
      * @return string[]
      */
     public function getRoles(int|string|null $userID): array;
