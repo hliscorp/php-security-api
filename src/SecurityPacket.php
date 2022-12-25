@@ -45,36 +45,17 @@ class SecurityPacket extends \Exception
      */
     public function setStatus(AuthenticationResultStatus|AuthorizationResultStatus $status): void
     {
-        $result = "";
-        switch ($status) {
-        case AuthenticationResultStatus::LOGIN_OK:
-            $result= "login_ok";
-            break;
-        case AuthenticationResultStatus::LOGOUT_OK:
-            $result= "logout_ok";
-            break;
-        case AuthenticationResultStatus::DEFERRED:
-            $result= "redirect";
-            break;
-        case AuthenticationResultStatus::LOGIN_FAILED:
-            $result= "login_failed";
-            break;
-        case AuthenticationResultStatus::LOGOUT_FAILED:
-            $result= "logout_failed";
-            break;
-        case AuthorizationResultStatus::UNAUTHORIZED:
-            $result= "unauthorized";
-            break;
-        case AuthorizationResultStatus::FORBIDDEN:
-            $result= "forbidden";
-            break;
-        case AuthorizationResultStatus::NOT_FOUND:
-            $result= "not_found";
-            break;
-        default:
-            break;
-        }
-        $this->status = $result;
+        $this->status = match ($status) {
+            AuthenticationResultStatus::LOGIN_OK => "login_ok",
+            AuthenticationResultStatus::LOGOUT_OK => "logout_ok",
+            AuthenticationResultStatus::DEFERRED => "redirect",
+            AuthenticationResultStatus::LOGIN_FAILED => "login_failed",
+            AuthenticationResultStatus::LOGOUT_FAILED => "logout_failed",
+            AuthorizationResultStatus::UNAUTHORIZED => "unauthorized",
+            AuthorizationResultStatus::FORBIDDEN => "forbidden",
+            AuthorizationResultStatus::NOT_FOUND => "not_found",
+            default => "",
+        };;
     }
 
     /**
