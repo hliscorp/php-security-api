@@ -77,7 +77,7 @@ class CsrfTokenDetector
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
     }
