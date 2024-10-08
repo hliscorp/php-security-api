@@ -40,7 +40,7 @@ class XMLAuthorization
      * @throws AuthorizationException If route is misconfigured.
      * @return AuthorizationResult
      */
-    public function authorize(\SimpleXMLElement $xml, $routeToAuthorize, $userID=0, UserAuthorizationRoles $userAuthorizationRoles)
+    public function authorize(\SimpleXMLElement $xml, $routeToAuthorize, $userID, UserAuthorizationRoles $userAuthorizationRoles)
     {
         $status = 0;
         $callbackURI = "";
