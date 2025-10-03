@@ -1,8 +1,18 @@
 {
-    "name": "lucinda/security",
+    "name": "hlis/security",
     "type": "library",
     "description": "API implementing common web security patterns (eg: authentication, authorization) for PHP applications based on OWASP guidelines",
-    "keywords": ["security","authentication","authorization","owasp","jwt","oauth2","xml","dao","token"],
+    "keywords": [
+        "security",
+        "authentication",
+        "authorization",
+        "owasp",
+        "jwt",
+        "oauth2",
+        "xml",
+        "dao",
+        "token"
+    ],
     "homepage": "https://github.com/aherne/php-security-api",
     "license": "MIT",
     "require": {
@@ -11,19 +21,25 @@
         "ext-openssl": "*"
     },
     "require-dev": {
-    	"lucinda/unit-testing": "^1.0"
+        "hlis/unit-testing": "^1.0"
     },
     "autoload": {
-    	"psr-4": {
-        	"Lucinda\\WebSecurity\\": "src/",
-                "Test\\Lucinda\\WebSecurity\\": "tests/"
-    	}
+        "psr-4": {
+            "Lucinda\\WebSecurity\\": "src/",
+            "Test\\Lucinda\\WebSecurity\\": "tests/"
+        }
     },
     "authors": [
         {
             "name": "Lucian Popescu",
             "email": "lucian.gabriel.popescu@gmail.com",
             "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/hliscorp/unit-testing"
         }
     ]
 }
