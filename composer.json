@@ -1,5 +1,5 @@
 {
-    "name": "hlis/security",
+    "name": "lucinda/security",
     "type": "library",
     "description": "API implementing common web security patterns (eg: authentication, authorization) for PHP applications based on OWASP guidelines",
     "keywords": [
@@ -21,7 +21,7 @@
         "ext-openssl": "*"
     },
     "require-dev": {
-        "hlis/unit-testing": "^2.0"
+        "lucinda/unit-testing": "^2.0"
     },
     "autoload": {
         "psr-4": {
